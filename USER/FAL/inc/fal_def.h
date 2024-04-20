@@ -13,7 +13,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include "fal/porting/fal_cfg.h"
+#include "fal_cfg.h"
 
 #define FAL_SW_VERSION                 "0.5.99"
 
@@ -46,26 +46,26 @@
 #endif
 
 #ifndef FAL_PRINTF
-	#ifdef RT_VER_NUM
-		/* for RT-Thread platform */
-		extern void rt_kprintf(const char *fmt, ...);
-		#define FAL_PRINTF rt_kprintf
-	#else
-		#define FAL_PRINTF printf
-	#endif /* RT_VER_NUM */
+#ifdef RT_VER_NUM
+/* for RT-Thread platform */
+extern void rt_kprintf(const char *fmt, ...);
+#define FAL_PRINTF rt_kprintf
+#else
+#define FAL_PRINTF printf
+#endif /* RT_VER_NUM */
 #endif /* FAL_PRINTF */
 
 #if FAL_DEBUG
-	#ifdef fal_assert
-		#undef fal_assert
-	#endif
-	#define fal_assert(EXPR)                                                \
-		if (!(EXPR))                                                          \
-		{                                                                     \
-			FAL_PRINTF("(%s) has assert failed at %s.\n", #EXPR, __FUNCTION__); \
-			while (1)                                                           \
-				;                                                                 \
-		}
+#ifdef fal_assert
+	#undef fal_assert
+#endif
+#define fal_assert(EXPR)                                                \
+	if (!(EXPR))                                                          \
+	{                                                                     \
+		FAL_PRINTF("(%s) has assert failed at %s.\n", #EXPR, __FUNCTION__); \
+		while (1)                                                           \
+			;                                                                 \
+	}
 
 	/* debug level log */
 	#ifdef fal_log_d
@@ -87,6 +87,7 @@
 		#undef fal_log_d
 	#endif
 	#define fal_log_d(...)
+
 #endif /* FAL_DEBUG */
 
 #if FAL_LOG_ERR
@@ -98,8 +99,9 @@
 		FAL_PRINTF("\033[31;22m[E][FAL] (%s:%d) ", __FUNCTION__, __LINE__); \
 		FAL_PRINTF(__VA_ARGS__);                                            \
 		FAL_PRINTF("\033[0m\n")
+
 #else
-	#define fal_log_err(...)
+	#define fal_log_err(...) 
 #endif
 
 #if FAL_LOG_INFO
@@ -139,8 +141,8 @@ struct fal_flash_dev
 	} ops;
 
 	/* write minimum granularity, unit: bit.
-	   1(nor flash)/ 8(stm32f2/f4)/ 32(stm32f1)/ 64(stm32l4)
-	   0 will not take effect. */
+		 1(nor flash)/ 8(stm32f2/f4)/ 32(stm32f1)/ 64(stm32l4)
+		 0 will not take effect. */
 	size_t write_gran;
 };
 typedef struct fal_flash_dev *fal_flash_dev_t;

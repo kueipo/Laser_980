@@ -31,7 +31,6 @@ void Serial_PutString(char *p_string);
 HAL_StatusTypeDef Serial_PutByte(uint8_t param);
 void cpu_reset(void);
 
-// Flash operation ==========================================================
 int Read_Flash(uint32_t addr, uint8_t *buf, size_t size);
 int Write_Flash(uint32_t addr, const uint8_t *buf, size_t size);
 int Erase_Flash(uint32_t addr, size_t size);

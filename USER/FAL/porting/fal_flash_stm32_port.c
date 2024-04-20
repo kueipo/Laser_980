@@ -9,6 +9,7 @@
  */
 
 #include <fal/inc/fal.h>
+
 #include "main.h"
 
 #ifndef FAL_USING_STM_FLASH_DEV_NAME

@@ -7,12 +7,13 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -57,8 +58,22 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define FAN_Pin GPIO_PIN_1
-#define FAN_GPIO_Port GPIOB
+#define BUTTON_Pin GPIO_PIN_13
+#define BUTTON_GPIO_Port GPIOC
+#define POWER_Pin GPIO_PIN_14
+#define POWER_GPIO_Port GPIOC
+#define BUZZER_0_Pin GPIO_PIN_15
+#define BUZZER_0_GPIO_Port GPIOB
+#define HANDPIECE_Pin GPIO_PIN_15
+#define HANDPIECE_GPIO_Port GPIOA
+#define SAFELOCKER_0_Pin GPIO_PIN_3
+#define SAFELOCKER_0_GPIO_Port GPIOB
+#define KEY_0_Pin GPIO_PIN_4
+#define KEY_0_GPIO_Port GPIOB
+#define FOOT_Pin GPIO_PIN_5
+#define FOOT_GPIO_Port GPIOB
+#define HANDLE_DETECTION_Pin GPIO_PIN_6
+#define HANDLE_DETECTION_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

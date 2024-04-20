@@ -141,7 +141,7 @@ void Serial_PutString(char *p_string)
   {
     length++;
   }
-  Data_Transmit((uint8_t *)p_string, length, TX_TIMEOUT);
+	Data_Transmit((uint8_t *)p_string, length, TX_TIMEOUT);
 #else
   UNUSED(p_string);
 #endif
@@ -155,10 +155,6 @@ void Serial_PutString(char *p_string)
 HAL_StatusTypeDef Serial_PutByte(uint8_t param)
 {
   /* May be timeouted... */
-  if (g_huart->gState == HAL_UART_STATE_TIMEOUT)
-  {
-    g_huart->gState = HAL_UART_STATE_READY;
-  }
   return Data_Transmit(&param, 1, TX_TIMEOUT);
 }
 
@@ -185,6 +181,7 @@ HAL_StatusTypeDef Data_Transmit(uint8_t *pData, size_t Size, uint32_t Timeout)
   {
     g_huart->gState = HAL_UART_STATE_READY;
   }
+	
 	return HAL_UART_Transmit(g_huart, pData, Size, Timeout);
 }
 

@@ -1,6 +1,6 @@
 
 /* Includes ------------------------------------------------------------------*/
-#include "iap/INC/iap.h"
+#include "iap/inc/iap.h"
 
 /* Global variables ----------------------------------------------------------*/
 uint8_t aFileName[FILE_NAME_LENGTH];
@@ -14,7 +14,7 @@ UART_HandleTypeDef *g_huart = YMODEM_DOWNLOAD_PORT;
 static pFunction JumpToApplication;
 static uint32_t JumpAddress;
 #if ENABLE_MENU
-static uint32_t FlashProtection = 0;
+	static uint32_t FlashProtection = 0;
 #endif /* ENABLE_MENU */
 /* Private function prototypes -----------------------------------------------*/
 
@@ -31,18 +31,55 @@ COM_StatusTypeDef SerialDownload(void)
 	
   uint32_t size = 0;
   COM_StatusTypeDef result;
-	
+
 #if ENABLE_BOOT_MODE
-	Send_UpdataCMD(DEV_TYPE);
+  aFileName[0] = 0xA5;
+  aFileName[1] = 0x5A;
+  aFileName[2] = 0x06;
+  aFileName[3] = 0x83;
+  aFileName[4] = DEV_TYPE;
+  aFileName[5] = 0xFC;
+  aFileName[6] = 0x01;
+  aFileName[7] = 0x00;
+  aFileName[8] = 0xA0;
+  HAL_UART_Transmit(g_huart, aFileName, 9, TX_TIMEOUT);
 
   HAL_UART_Receive(g_huart, aFileName, FILE_NAME_LENGTH, 1500);
   if (g_huart->RxXferCount != FILE_NAME_LENGTH)
   {
     return COM_ERROR;
   }
-#endif
-	
+#else
 	/* Abort TX and RX */
+  HAL_Delay(200);
+//  HAL_UART_Abort(&huart1);
+//	HAL_UART_Abort(&huart2);
+//  HAL_UART_Abort(&huart3);
+//  HAL_UART_Abort(&huart4);
+//  HAL_UART_Abort(&huart5);
+
+  /* disable interrupt */
+  //	__disable_irq();
+//  HAL_TIM_Base_Stop(&htim1);
+//	HAL_TIM_Base_Stop(&htim2);
+//	HAL_TIM_Base_Stop(&htim3);
+//	HAL_TIM_Base_Stop(&htim4);
+//	HAL_TIM_Base_Stop(&htim5);
+//	HAL_TIM_Base_Stop(&htim6);
+//	HAL_TIM_Base_Stop(&htim7);
+//	HAL_TIM_Base_Stop(&htim8);
+//	HAL_TIM_Base_Stop(&htim9);
+//	HAL_TIM_Base_Stop(&htim10);
+//	HAL_TIM_Base_Stop(&htim11);
+//	HAL_TIM_Base_Stop(&htim12);
+//	HAL_TIM_Base_Stop(&htim13);
+//	HAL_TIM_Base_Stop(&htim14);
+//	HAL_TIM_Base_Stop(&htim15);
+//	HAL_TIM_Base_Stop(&htim16);
+//	HAL_TIM_Base_Stop(&htim17);
+//	HAL_TIM_Base_Stop(&htim18);
+#endif
+
   HAL_UART_Abort(g_huart);
 
   result = Ymodem_Receive(&size);
@@ -66,12 +103,11 @@ void SerialUpload(void)
   uint32_t read_addr = 0;
   uint8_t buf[SIZE_LENGTH];
 
-  uint8_t errors = 0;
+  uint32_t errors = 0;
   uint8_t times = 0;
 
-#if ENABLE_PRINT_DEBUG /* Print debug message */
+	/* Print debug message */
   Serial_PutString("\n\n\rSelect Receive File\n\r");
-#endif /* ENABLE_PRINT_DEBUG */
 
   if (fal_partition_read(opt_area, read_addr, buf, SIZE_LENGTH) < SIZE_LENGTH)
     return;
@@ -82,7 +118,11 @@ void SerialUpload(void)
     filesize <<= 8;
     filesize += buf[i];
   }
-
+	
+	/* Verify filesize */
+	if (filesize >= opt_area->len)
+		return;
+	
   /* wait'C' */
   while (1)
   {
@@ -94,10 +134,9 @@ void SerialUpload(void)
       {
         /* Transmit the flash image through ymodem protocol */
         status = Ymodem_Transmit((uint8_t *)(&read_addr), (const uint8_t *)FILE_NAME, filesize);
-        //	status = Ymodem_Transmit((uint8_t*)APPLICATION_ADDRESS, (const uint8_t*)"UploadedFlashImage.bin", USER_FLASH_SIZE);
         return;
       }
-#if ENABLE_PRINT_DEBUG /* Print debug message */
+			/* Print debug message */
 			if (status != 0)
 			{
 			  Serial_PutString("\n\rError Occurred while Transmitting File\n\r");
@@ -106,13 +145,12 @@ void SerialUpload(void)
 			{
 			  Serial_PutString("\n\rFile uploaded successfully \n\r");
 			}
-#endif /* ENABLE_PRINT_DEBUG */
     }
     else
     {
       times = 0;
 
-      if (++errors >= (MAX_ERRORS))
+      if (++errors >= (MAX_ERRORS * 10))
         return;
     }
   }
@@ -131,11 +169,11 @@ void IAP_Menu(void)
   uint8_t key = 0;
 
   Serial_PutString("\r\n======================================================================");
-  Serial_PutString("\r\n=              (C) COPYRIGHT 2015 STMicroelectronics                 =");
+  Serial_PutString("\r\n=              (C) COPYRIGHT 2020 ICB Ltd                            =");
   Serial_PutString("\r\n=                                                                    =");
-  Serial_PutString("\r\n=  STM32F1xx In-Application Programming Application  (Version 1.0.0) =");
+  Serial_PutString("\r\n=  STM32Fxxx In-Application Programming Application  (Version 1.0.0) =");
   Serial_PutString("\r\n=                                                                    =");
-  Serial_PutString("\r\n=                                   By MCD Application Team          =");
+  Serial_PutString("\r\n=                                                    By ICB          =");
   Serial_PutString("\r\n======================================================================");
   Serial_PutString("\r\n\r\n");
 
@@ -160,7 +198,7 @@ void IAP_Menu(void)
     Serial_PutString("==========================================================\r\n\n");
 
     /* Clean the input path */
-//    __HAL_UART_FLUSH_DRREGISTER(DEV_UART_PORT);
+    __HAL_UART_FLUSH_DRREGISTER(DEV_UART_PORT);
 	
     /* Receive key */
     HAL_UART_Receive(g_huart, &key, 1, RX_TIMEOUT);
@@ -170,7 +208,7 @@ void IAP_Menu(void)
     case '1' :
       /* Download user application in the Flash */
       SerialDownload();
-		return;
+			return;
    //   break;
     case '2' :
       /* Upload user application from the Flash */
@@ -179,11 +217,11 @@ void IAP_Menu(void)
     case '3' :
       Serial_PutString("Start program execution......\r\n\n");
       /* execute the new program */
-      JumpAddress = *(__IO uint32_t*) (APPLICATION_ADDRESS + 4);
+      JumpAddress = *(__IO uint32_t*) (APP_ADDRESS + 4);
       /* Jump to user application */
       JumpToApplication = (pFunction) JumpAddress;
       /* Initialize user application's Stack Pointer */
-      __set_MSP(*(__IO uint32_t*) APPLICATION_ADDRESS);
+      __set_MSP(*(__IO uint32_t*) APP_ADDRESS);
       JumpToApplication();
       break;
     case '4' :
@@ -217,9 +255,9 @@ void IAP_Menu(void)
         }
       }
       break;
-	default:
-	Serial_PutString("Invalid Number ! ==> The number should be either 1, 2, 3 or 4\r");
-	break;
+		default:
+			Serial_PutString("Invalid Number ! ==> The number should be either 1, 2, 3 or 4\r");
+			break;
     }
   }
 }
@@ -227,13 +265,12 @@ void IAP_Menu(void)
 
 void Execute_Application(void)
 {
-#if ENABLE_PRINT_DEBUG /* Print debug message */
+
   Serial_PutString("\r\nExecute the loaded application\r\n");
-  HAL_Delay(500);
-#endif /* ENABLE_PRINT_DEBUG */
-	
+  HAL_Delay(20);
+
   /* Judge whether the stack address value is between 0x 2000 0000 - 0x 2000 2000 */
-  if (((*(__IO uint32_t *)APPLICATION_ADDRESS) & 0x2FFE0000) == 0x20000000)
+  if (((*(__IO uint32_t *)APP_ADDRESS) & 0x2FFE0000) == 0x20000000)
   {
 #if 0
 		__disable_irq();
@@ -249,19 +286,19 @@ void Execute_Application(void)
 #endif
     /* Jump to user application */
 		/* Corresponds to the second item in the app interrupt vector table, the reset address */
-    JumpAddress = *(__IO uint32_t *)(APPLICATION_ADDRESS + 4); 																		
+    JumpAddress = *(__IO uint32_t *)(APP_ADDRESS + 4); 																		
     /* Forcibly converting an address to a function pointer */
     JumpToApplication = (pFunction)JumpAddress;
     /* Initialize user application's Stack Pointer */
-    __set_MSP(*(__IO uint32_t *)APPLICATION_ADDRESS);
+    __set_MSP(*(__IO uint32_t *)APP_ADDRESS);
     /* Call the function (actually operate the app reset address to perform the reset operation) */
     JumpToApplication();
   }
   else
   {
-#if ENABLE_PRINT_DEBUG /* Print debug message */
+	/* Print debug message */
     Serial_PutString("\n\rAPPLICATION_ADDRESS error \n\r");
-#endif /* ENABLE_PRINT_DEBUG */
+
 		HAL_Delay(1000);
   }
 }
@@ -272,42 +309,5 @@ void Execute_Application(void)
  * @retval None
  */
 void Execute_Updata(void)
-{
-}
-
-/**
- * @brief  Send_UpdataCMD
- * @param  devtype
- * @retval None
- */
-void Send_UpdataCMD(uint8_t devtype)
-{
-	aFileName[0] = 0xA5;
-	aFileName[1] = 0x5A;
-	aFileName[2] = 0x05;
-	aFileName[3] = 0x82;
-	aFileName[4] = devtype;
-	aFileName[5] = 0xFC;
-	aFileName[6] = 0x00;
-	aFileName[7] = 0xAA;
-	HAL_UART_Transmit(g_huart, aFileName, 8, TX_TIMEOUT);
-}
-
-/**
- * @brief  Send_DownloadCMD
- * @param  devtype
- * @retval None
- */
-void Send_DownloadCMD(uint8_t devtype)
-{
-	aFileName[0] = 0xA5;
-	aFileName[1] = 0x5A;
-	aFileName[2] = 0x06;
-	aFileName[3] = 0x83;
-	aFileName[4] = devtype;
-	aFileName[5] = 0xFC;
-	aFileName[6] = 0x01;
-	aFileName[7] = 0x00;
-	aFileName[8] = 0xAA;
-	HAL_UART_Transmit(g_huart, aFileName, 9, TX_TIMEOUT);
+{	
 }

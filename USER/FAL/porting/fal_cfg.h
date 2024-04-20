@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2006-2018, RT-Thread Development Team
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Change Logs:
- * Date           Author       Notes
- * 2018-05-17     armink       the first version
- */
 
 #ifndef _FAL_CFG_H_
 #define _FAL_CFG_H_
@@ -17,8 +8,6 @@
 #define FAL_DEBUG				0
 #define	FAL_LOG_ERR			0
 #define FAL_LOG_INFO		0
-
-#define FAL_TEST_ENABLE	0
 
 #define FAL_PART_HAS_TABLE_CFG
 
