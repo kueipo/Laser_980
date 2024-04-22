@@ -11,7 +11,7 @@
 #ifndef _FAL_CFG_H_
 #define _FAL_CFG_H_
 
-#include "UI/UI_Img_Map.h"
+#include "../UI/UI_Img_Map.h"
 
 #define USING_STM32_FLASH
 #define USING_NOR_FLASH

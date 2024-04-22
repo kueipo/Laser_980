@@ -1,6 +1,6 @@
 
 /* Includes ------------------------------------------------------------------*/
-#include "iap/INC/iap.h"
+#include "iap/inc/iap.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -27,8 +27,9 @@ struct progress_st Progress = {
 uint8_t aPacketData[PACKET_1K_SIZE + PACKET_DATA_INDEX + PACKET_TRAILER_SIZE];
 
 /* Private function prototypes -----------------------------------------------*/
+#if ENABLE_SERIAL_UPLOAD
 static void PrepareIntialPacket(uint8_t *p_data, const uint8_t *p_file_name, uint32_t length);
-// static void PreparePacket(uint8_t *p_source, uint8_t *p_packet, uint8_t pkt_nr, uint32_t size_blk);
+#endif /* ENABLE_SERIAL_UPLOAD */
 static HAL_StatusTypeDef ReceivePacket(uint8_t *p_data, uint32_t *p_length, uint32_t timeout);
 uint16_t UpdateCRC16(uint16_t crc_in, uint8_t byte);
 uint16_t Cal_CRC16(const uint8_t *p_data, uint32_t size);
@@ -136,6 +137,7 @@ static HAL_StatusTypeDef ReceivePacket(uint8_t *p_data, uint32_t *p_length, uint
 	return status;
 }
 
+#if ENABLE_SERIAL_UPLOAD
 /**
  * @brief  Prepare the first block
  * @param  p_data:  output buffer
@@ -184,41 +186,6 @@ static void PrepareIntialPacket(uint8_t *p_data, const uint8_t *p_file_name, uin
  * @param  size_blk: length of the block to be sent in bytes
  * @retval None
  */
-#if 0
-static void PreparePacket(uint8_t *p_source, uint8_t *p_packet, uint8_t pkt_nr, uint32_t size_blk)
-{
-	uint8_t *p_record;
-	uint32_t i, size, packet_size;
-
-	/* Make first three packet */
-	packet_size = size_blk >= PACKET_1K_SIZE ? PACKET_1K_SIZE : PACKET_SIZE;
-	size = size_blk < packet_size ? size_blk : packet_size;
-	if (packet_size == PACKET_1K_SIZE)
-	{
-		p_packet[PACKET_START_INDEX] = STX;
-	}
-	else
-	{
-		p_packet[PACKET_START_INDEX] = SOH;
-	}
-	p_packet[PACKET_NUMBER_INDEX] = pkt_nr;
-	p_packet[PACKET_CNUMBER_INDEX] = (~pkt_nr);
-	p_record = p_source;
-
-	/* Filename packet has valid data */
-	for (i = PACKET_DATA_INDEX; i < size + PACKET_DATA_INDEX; i++)
-	{
-		p_packet[i] = *p_record++;
-	}
-	if (size <= packet_size)
-	{
-		for (i = size + PACKET_DATA_INDEX; i < packet_size + PACKET_DATA_INDEX; i++)
-		{
-			p_packet[i] = 0x1A; /* EOF (0x1A) or 0x00 */
-		}
-	}
-}
-#else
 static void PreparePacket(uint32_t p_source, uint8_t *p_packet, uint8_t pkt_nr, uint32_t size_blk)
 {
 		uint8_t *p_record;
@@ -256,8 +223,7 @@ static void PreparePacket(uint32_t p_source, uint8_t *p_packet, uint8_t pkt_nr, 
 			}
 		}
 }
-#endif
-
+#endif /* ENABLE_SERIAL_UPLOAD */
 /**
  * @brief  Update CRC16 for input byte
  * @param  crc_in input value
@@ -332,12 +298,7 @@ uint8_t CalcChecksum(const uint8_t *p_data, uint32_t size)
  */
 COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 {
-	uint32_t erase_addr = 0;
-	uint32_t erase_size = 0;
-	int32_t res;
-
 	uint32_t i, packet_length, session_done = 0, file_done, errors = 0;
-//	uint8_t session_begin = 0;
 	uint32_t ramsource, filesize;
 	uint8_t *file_ptr;
 	uint8_t file_size[FILE_SIZE_LENGTH], tmp;
@@ -349,11 +310,20 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 	COM_StatusTypeDef result = COM_OK;
 
 	uint8_t received_start = 0;
+	
+#if ENABLE_FAL_SUPPORT
 	/* Initialize flashdestination variable */
 	uint32_t flashdestination = 0;
-
 	opt_area_size = opt_area->len;
-
+	uint32_t erase_addr = 0;
+	uint32_t erase_size = 0;
+	int32_t res;
+#else
+	/* Initialize flashdestination variable */
+	uint32_t flashdestination = APP_ADDRESS;
+	opt_area_size = APP_SIZE;
+#endif /* ENABLE_FAL_SUPPORT */
+	
 	while ((session_done == 0) && (result == COM_OK))
 	{
 		packets_received = 0;
@@ -395,6 +365,7 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 				default:
 					/* Normal packet */
 					if (aPacketData[PACKET_NUMBER_INDEX] != packets_received)
+
 					{
 						Serial_PutByte(NAK);
 					}
@@ -437,16 +408,14 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 									result = COM_LIMIT;
 								}
 
+								/* erase user data area */
+#if ENABLE_FAL_SUPPORT
 								/* Storage file size */
 								file_size[0] = (filesize >> 24) & 0xff;
 								file_size[1] = (filesize >> 16) & 0xff;
 								file_size[2] = (filesize >> 8) & 0xff;
 								file_size[3] = filesize & 0xff;
-
-								/* erase user data area */
-#if 0
-								if (FLASH_If_Erase(APPLICATION_ADDRESS) != FLASHIF_OK)
-#else
+								
 								erase_size = filesize;
 								if (ONCE_MAX_EARSE < erase_size) // if the area is too large, and it will timeout
 									erase_size = ONCE_MAX_EARSE;
@@ -456,10 +425,10 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 									erase_addr += res;
 
 								if (fal_partition_write(opt_area, flashdestination, (uint8_t *)file_size, 4) >= 0)
-								{
 									flashdestination += 4;
-								}
 								else
+#else
+								if (FLASH_Erase(APP_ADDRESS, filesize) < filesize)
 #endif
 								{
 									/* End session */
@@ -486,9 +455,7 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 						{
 							ramsource = (uint32_t)&aPacketData[PACKET_DATA_INDEX];
 							/* Write received data in Flash */
-#if 0
-              if (FLASH_If_Write(flashdestination, (uint32_t*) ramsource, packet_length/4) == FLASHIF_OK)
-#else
+#if ENABLE_FAL_SUPPORT
 							/* Check whether the erased space is enough to write data */
 							if (erase_addr < (flashdestination + packet_length))
 							{
@@ -504,6 +471,8 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 							}
 
 							if (fal_partition_write(opt_area, flashdestination, (uint8_t *)ramsource, packet_length) >= 0)
+#else
+							if (FLASH_Write(flashdestination, (uint8_t*)ramsource, packet_length) == packet_length)
 #endif
 							{
 								flashdestination += packet_length;
@@ -521,7 +490,6 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 							}
 						}
 						packets_received++;
-					//	session_begin = 1;
 						errors = MAX_ERRORS - 5;
 					}
 					break;
@@ -533,10 +501,6 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
 				result = COM_ABORT;
 				break;
 			default:
-			//	if (session_begin > 0)
-			//	{
-			//		errors++;
-			//	}
 				if (++errors > MAX_ERRORS)
 				{
 					/* Abort communication */
@@ -563,7 +527,7 @@ COM_StatusTypeDef Ymodem_Receive(uint32_t *p_size)
  * @param  file_size: Size of the transmission
  * @retval COM_StatusTypeDef result of the communication
  */
-#if 1
+#if ENABLE_SERIAL_UPLOAD
 COM_StatusTypeDef Ymodem_Transmit(uint8_t *p_buf, const uint8_t *p_file_name, uint32_t file_size)
 {
 	uint32_t errors = 0, ack_recpt = 0, size = 0, pkt_size;
@@ -635,7 +599,7 @@ COM_StatusTypeDef Ymodem_Transmit(uint8_t *p_buf, const uint8_t *p_file_name, ui
 	{
 		/* Prepare next packet */
 #if 0
-      PreparePacket((uint8_t*)(&p_buf_int), aPacketData, blk_number, size);
+		PreparePacket((uint8_t*)(&p_buf_int), aPacketData, blk_number, size);
 #else
 		PreparePacket(p_buf_int, aPacketData, blk_number, size);
 #endif
@@ -675,14 +639,7 @@ COM_StatusTypeDef Ymodem_Transmit(uint8_t *p_buf, const uint8_t *p_file_name, ui
 				{
 					p_buf_int += pkt_size;
 					size -= pkt_size;
-//        if (blk_number == (USER_FLASH_SIZE / PACKET_1K_SIZE))
-//        {
-//           result = COM_LIMIT; /* boundary error */
-//        }
-//        else
-//        {
 					blk_number++;
-//        }
 				}
 				else
 				{
@@ -782,221 +739,7 @@ COM_StatusTypeDef Ymodem_Transmit(uint8_t *p_buf, const uint8_t *p_file_name, ui
 
 	return result; /* file transmitted successfully */
 }
-#else
-COM_StatusTypeDef Ymodem_Transmit(uint8_t *p_buf, const uint8_t *p_file_name, uint32_t file_size)
-{
-	uint32_t errors = 0, ack_recpt = 0, size = 0, pkt_size;
-	uint8_t *p_buf_int;
-	COM_StatusTypeDef result = COM_OK;
-	uint32_t blk_number = 1;
-	uint8_t a_rx_ctrl[2];
-	uint8_t i;
-#ifdef CRC16_F
-	uint32_t temp_crc;
-#else	 /* CRC16_F */
-	uint8_t temp_chksum;
-#endif /* CRC16_F */
-
-	/* Prepare first block - header */
-	PrepareIntialPacket(aPacketData, p_file_name, file_size);
-
-	while ((!ack_recpt) && (result == COM_OK))
-	{
-		/* Send Packet */
-		HAL_UART_Transmit(g_huart, &aPacketData[PACKET_START_INDEX], PACKET_SIZE + PACKET_HEADER_SIZE, NAK_TIMEOUT);
-
-		/* Send CRC or Check Sum based on CRC16_F */
-#ifdef CRC16_F
-		temp_crc = Cal_CRC16(&aPacketData[PACKET_DATA_INDEX], PACKET_SIZE);
-		Serial_PutByte(temp_crc >> 8);
-		Serial_PutByte(temp_crc & 0xFF);
-#else	 /* CRC16_F */
-		temp_chksum = CalcChecksum(&aPacketData[PACKET_DATA_INDEX], PACKET_SIZE);
-		Serial_PutByte(temp_chksum);
-#endif /* CRC16_F */
-
-		/* Wait for Ack and 'C' */
-		if (HAL_UART_Receive(g_huart, &a_rx_ctrl[0], 1, NAK_TIMEOUT) == HAL_OK)
-		{
-			if (a_rx_ctrl[0] == ACK)
-			{
-				ack_recpt = 1;
-			}
-			else if (a_rx_ctrl[0] == CA)
-			{
-				if ((HAL_UART_Receive(g_huart, &a_rx_ctrl[0], 1, NAK_TIMEOUT) == HAL_OK) && (a_rx_ctrl[0] == CA))
-				{
-					HAL_Delay(2);
-#if defined(STM32F103xE)
-   			__HAL_UART_FLUSH_DRREGISTER(g_huart);
-#endif /* STM32F103xE */
-					result = COM_ABORT;
-				}
-			}
-		}
-		else
-		{
-			errors++;
-		}
-		if (errors >= MAX_ERRORS)
-		{
-			result = COM_ERROR;
-		}
-	}
-
-	p_buf_int = p_buf;
-	size = file_size;
-
-	/* Here 1024 bytes length is used to send the packets */
-	while ((size) && (result == COM_OK))
-	{
-		/* Prepare next packet */
-		PreparePacket(p_buf_int, aPacketData, blk_number, size);
-		ack_recpt = 0;
-		a_rx_ctrl[0] = 0;
-		errors = 0;
-
-		/* Resend packet if NAK for few times else end of communication */
-		while ((!ack_recpt) && (result == COM_OK))
-		{
-			/* Send next packet */
-			if (size >= PACKET_1K_SIZE)
-			{
-				pkt_size = PACKET_1K_SIZE;
-			}
-			else
-			{
-				pkt_size = PACKET_SIZE;
-			}
-
-			HAL_UART_Transmit(g_huart, &aPacketData[PACKET_START_INDEX], pkt_size + PACKET_HEADER_SIZE, NAK_TIMEOUT);
-
-			/* Send CRC or Check Sum based on CRC16_F */
-#ifdef CRC16_F
-			temp_crc = Cal_CRC16(&aPacketData[PACKET_DATA_INDEX], pkt_size);
-			Serial_PutByte(temp_crc >> 8);
-			Serial_PutByte(temp_crc & 0xFF);
-#else	 /* CRC16_F */
-			temp_chksum = CalcChecksum(&aPacketData[PACKET_DATA_INDEX], pkt_size);
-			Serial_PutByte(temp_chksum);
-#endif /* CRC16_F */
-
-			/* Wait for Ack */
-			if ((HAL_UART_Receive(g_huart, &a_rx_ctrl[0], 1, NAK_TIMEOUT) == HAL_OK) && (a_rx_ctrl[0] == ACK))
-			{
-				ack_recpt = 1;
-				if (size > pkt_size)
-				{
-					p_buf_int += pkt_size;
-					size -= pkt_size;
-					if (blk_number == (USER_FLASH_SIZE / PACKET_1K_SIZE))
-					{
-						result = COM_LIMIT; /* boundary error */
-					}
-					else
-					{
-						blk_number++;
-					}
-				}
-				else
-				{
-					p_buf_int += pkt_size;
-					size = 0;
-				}
-			}
-			else
-			{
-				errors++;
-			}
-
-			/* Resend packet if NAK  for a count of 10 else end of communication */
-			if (errors >= MAX_ERRORS)
-			{
-				result = COM_ERROR;
-			}
-		}
-	}
-
-	/* Sending End Of Transmission char */
-	ack_recpt = 0;
-	a_rx_ctrl[0] = 0x00;
-	errors = 0;
-	while ((!ack_recpt) && (result == COM_OK))
-	{
-		Serial_PutByte(EOT);
-
-		/* Wait for Ack */
-		if (HAL_UART_Receive(g_huart, &a_rx_ctrl[0], 1, NAK_TIMEOUT) == HAL_OK)
-		{
-			if (a_rx_ctrl[0] == ACK)
-			{
-				ack_recpt = 1;
-			}
-			else if (a_rx_ctrl[0] == CA)
-			{
-				if ((HAL_UART_Receive(g_huart, &a_rx_ctrl[0], 1, NAK_TIMEOUT) == HAL_OK) && (a_rx_ctrl[0] == CA))
-				{
-					HAL_Delay(2);
-#if defined(STM32F103xE)
-					__HAL_UART_FLUSH_DRREGISTER(g_huart);
-#endif /* STM32F103xE */
-					result = COM_ABORT;
-				}
-			}
-		}
-		else
-		{
-			errors++;
-		}
-
-		if (errors >= MAX_ERRORS)
-		{
-			result = COM_ERROR;
-		}
-	}
-
-	/* Empty packet sent - some terminal emulators need this to close session */
-	if (result == COM_OK)
-	{
-		/* Preparing an empty packet */
-		aPacketData[PACKET_START_INDEX] = SOH;
-		aPacketData[PACKET_NUMBER_INDEX] = 0;
-		aPacketData[PACKET_CNUMBER_INDEX] = 0xFF;
-		for (i = PACKET_DATA_INDEX; i < (PACKET_SIZE + PACKET_DATA_INDEX); i++)
-		{
-			aPacketData[i] = 0x00;
-		}
-
-		/* Send Packet */
-		HAL_UART_Transmit(g_huart, &aPacketData[PACKET_START_INDEX], PACKET_SIZE + PACKET_HEADER_SIZE, NAK_TIMEOUT);
-
-		/* Send CRC or Check Sum based on CRC16_F */
-#ifdef CRC16_F
-		temp_crc = Cal_CRC16(&aPacketData[PACKET_DATA_INDEX], PACKET_SIZE);
-		Serial_PutByte(temp_crc >> 8);
-		Serial_PutByte(temp_crc & 0xFF);
-#else	 /* CRC16_F */
-		temp_chksum = CalcChecksum(&aPacketData[PACKET_DATA_INDEX], PACKET_SIZE);
-		Serial_PutByte(temp_chksum);
-#endif /* CRC16_F */
-
-		/* Wait for Ack and 'C' */
-		if (HAL_UART_Receive(g_huart, &a_rx_ctrl[0], 1, NAK_TIMEOUT) == HAL_OK)
-		{
-			if (a_rx_ctrl[0] == CA)
-			{
-				HAL_Delay(2);
-#if defined(STM32F103xE)
-				__HAL_UART_FLUSH_DRREGISTER(g_huart);
-#endif /* STM32F103xE */
-				result = COM_ABORT;
-			}
-		}
-	}
-
-	return result; /* file transmitted successfully */
-}
-#endif
+#endif /* ENABLE_SERIAL_UPLOAD */
 
 #ifdef USING_DMA
 include "bsp_uart.h" 

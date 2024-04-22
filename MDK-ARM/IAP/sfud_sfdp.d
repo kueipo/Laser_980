@@ -1,0 +1,9 @@
+.\iap\sfud_sfdp.o: ..\sfud\src\sfud_sfdp.c
+.\iap\sfud_sfdp.o: ..\..\IAP\sfud/inc/sfud.h
+.\iap\sfud_sfdp.o: ..\..\IAP\sfud/inc/sfud_def.h
+.\iap\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\iap\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\iap\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\iap\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\iap\sfud_sfdp.o: ..\..\IAP\sfud/INC/sfud_cfg.h
+.\iap\sfud_sfdp.o: ..\..\IAP\sfud/INC/sfud_flash_def.h

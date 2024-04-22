@@ -30,7 +30,7 @@
 #define _SFUD_FLASH_DEF_H_
 
 #include <stdint.h>
-#include <sfud/inc/sfud_cfg.h>
+#include <sfud/INC/sfud_cfg.h>
 
 #ifdef __cplusplus
 extern "C" {

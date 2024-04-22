@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -83,9 +83,6 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Alternate = GPIO_AF1_USART2;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    /* USART2 interrupt Init */
-    HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(USART2_IRQn);
   /* USER CODE BEGIN USART2_MspInit 1 */
 
   /* USER CODE END USART2_MspInit 1 */
@@ -109,8 +106,6 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2|GPIO_PIN_3);
 
-    /* USART2 interrupt Deinit */
-    HAL_NVIC_DisableIRQ(USART2_IRQn);
   /* USER CODE BEGIN USART2_MspDeInit 1 */
 
   /* USER CODE END USART2_MspDeInit 1 */
@@ -118,4 +113,44 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+#define PRINTF_PORT &huart2
+#if 1/* 半主机模式 */
+	#include "stdio.h"
+	#pragma import(__use_no_semihosting)  // 确保没有从 C 库链接使用半主机的函数
+	void _sys_exit(int  x) //定义 _sys_exit() 以避免使用半主机模式
+	{
+		x = x;
+	}
+	struct __FILE  // 标准库需要的支持函数
+	{
+		int handle;
+	};
+	/* FILE is typedef ’ d in stdio.h. */
+	FILE __stdout;
+	int fputc(int ch, FILE *f){
+		HAL_UART_Transmit(PRINTF_PORT, (uint8_t *)&ch, 1, 0xFFFF);
+		return ch;
+	}
+#else
+  /* 使用MicroLIB库 */
+	// 添加的代码如下，进行函数重构
+	#ifdef __GNUC__            //gcc编译器宏定义
+		/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+	 set to 'Yes') calls __io_putchar() */
+			#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+	#else
+			#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+	#endif /* __GNUC__ */
+
+	/*上面的意思是：
+	如果定义了宏__GNUC__，即使用GCC编译器，则定义宏#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+	如果没有定义宏__GNUC__，即不使用GCC编译器，则定义宏#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)  */
+
+	//添加printf重构函数的实现部分
+	PUTCHAR_PROTOTYPE
+	{
+		HAL_UART_Transmit(PRINTF_PORT, (uint8_t *)&ch, 1, 0xFFFF);
+		return ch;
+	}
+#endif
 /* USER CODE END 1 */

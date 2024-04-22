@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//#define SFUD_DEMO
+
 #ifdef SFUD_DEMO
 
 #define SFUD_DEMO_TEST_BUFFER_SIZE                     1024

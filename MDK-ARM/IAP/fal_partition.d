@@ -1,0 +1,9 @@
+.\iap\fal_partition.o: ..\Fal\src\fal_partition.c
+.\iap\fal_partition.o: ..\..\IAP\fal/inc/fal.h
+.\iap\fal_partition.o: ..\..\IAP\fal/porting/fal_cfg.h
+.\iap\fal_partition.o: ../Inc/../UI/UI_Img_Map.h
+.\iap\fal_partition.o: ..\..\IAP\fal/inc/fal_def.h
+.\iap\fal_partition.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\iap\fal_partition.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\iap\fal_partition.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\iap\fal_partition.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

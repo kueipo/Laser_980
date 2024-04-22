@@ -29,22 +29,21 @@
 #ifndef _SFUD_CFG_H_
 #define _SFUD_CFG_H_
 
-//#define ENABLE_SFUD_SUPPORT
+/* #define SFUD_DEBUG_MODE */
 
-//#define SFUD_DEBUG_MODE
 //#define SFUD_LOG_INFO
-//#define SFUD_DEMO
 
 #define SFUD_USING_SFDP
-//#define SFUD_USING_QSPI
+
+/* #define SFUD_USING_QSPI */
 
 enum {
-	SFUD_W25_DEVICE_INDEX = 0,
+    SFUD_W25_DEVICE_INDEX = 0,
 };
 
-#define SFUD_FLASH_DEVICE_TABLE                                             \
-{                                                                           \
-	[SFUD_W25_DEVICE_INDEX] = {.name = "W25Q128JV", .spi.name = "SPI2"},      \
+#define SFUD_FLASH_DEVICE_TABLE                                               \
+{                                                                             \
+    [SFUD_W25_DEVICE_INDEX] = {.name = "W25Q128JV", .spi.name = "SPI2"},      \
 }
 
 

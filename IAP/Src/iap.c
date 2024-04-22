@@ -1,8 +1,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "iap/INC/iap.h"
-#include "usart.h"
-#include "tim.h"
 
 /* Global variables ----------------------------------------------------------*/
 uint8_t aFileName[FILE_NAME_LENGTH];
@@ -35,52 +33,13 @@ COM_StatusTypeDef SerialDownload(void)
   COM_StatusTypeDef result;
 
 #if ENABLE_BOOT_MODE
-  aFileName[0] = 0xA5;
-  aFileName[1] = 0x5A;
-  aFileName[2] = 0x06;
-  aFileName[3] = 0x83;
-  aFileName[4] = DEV_TYPE;
-  aFileName[5] = 0xFC;
-  aFileName[6] = 0x01;
-  aFileName[7] = 0x00;
-  aFileName[8] = 0xA0;
-  HAL_UART_Transmit(g_huart, aFileName, 9, TX_TIMEOUT);
+	Send_UpdataCMD(DEV_TYPE);
 
   HAL_UART_Receive(g_huart, aFileName, FILE_NAME_LENGTH, 1500);
   if (g_huart->RxXferCount != FILE_NAME_LENGTH)
   {
     return COM_ERROR;
   }
-#else
-	/* Abort TX and RX */
-  HAL_Delay(200);
-  HAL_UART_Abort(g_huart);
-  HAL_UART_Abort(&huart1);
-	HAL_UART_Abort(&huart2);
-//  HAL_UART_Abort(&huart3);
-//  HAL_UART_Abort(&huart4);
-//  HAL_UART_Abort(&huart5);
-
-  /* disable interrupt */
-  //	__disable_irq();
-//  HAL_TIM_Base_Stop(&htim1);
-//	HAL_TIM_Base_Stop(&htim2);
-//	HAL_TIM_Base_Stop(&htim3);
-//	HAL_TIM_Base_Stop(&htim4);
-//	HAL_TIM_Base_Stop(&htim5);
-	HAL_TIM_Base_Stop(&htim6);
-//	HAL_TIM_Base_Stop(&htim7);
-//	HAL_TIM_Base_Stop(&htim8);
-//	HAL_TIM_Base_Stop(&htim9);
-//	HAL_TIM_Base_Stop(&htim10);
-//	HAL_TIM_Base_Stop(&htim11);
-//	HAL_TIM_Base_Stop(&htim12);
-//	HAL_TIM_Base_Stop(&htim13);
-//	HAL_TIM_Base_Stop(&htim14);
-//	HAL_TIM_Base_Stop(&htim15);
-//	HAL_TIM_Base_Stop(&htim16);
-//	HAL_TIM_Base_Stop(&htim17);
-//	HAL_TIM_Base_Stop(&htim18);
 #endif
 
   HAL_UART_Abort(g_huart);
@@ -121,7 +80,11 @@ void SerialUpload(void)
     filesize <<= 8;
     filesize += buf[i];
   }
-
+	
+	/* Verify filesize */
+	if (filesize >= opt_area->len)
+		return;
+	
   /* wait'C' */
   while (1)
   {
@@ -264,10 +227,11 @@ void IAP_Menu(void)
 
 void Execute_Application(void)
 {
-
+#if ENABLE_PRINT_DEBUG /* Print debug message */
   Serial_PutString("\r\nExecute the loaded application\r\n");
-  HAL_Delay(20);
-
+  HAL_Delay(500);
+#endif /* ENABLE_PRINT_DEBUG */
+	
   /* Judge whether the stack address value is between 0x 2000 0000 - 0x 2000 2000 */
   if (((*(__IO uint32_t *)APP_ADDRESS) & 0x2FFE0000) == 0x20000000)
   {
@@ -295,9 +259,9 @@ void Execute_Application(void)
   }
   else
   {
-	/* Print debug message */
+#if ENABLE_PRINT_DEBUG /* Print debug message */
     Serial_PutString("\n\rAPPLICATION_ADDRESS error \n\r");
-
+#endif /* ENABLE_PRINT_DEBUG */
 		HAL_Delay(1000);
   }
 }
@@ -309,4 +273,41 @@ void Execute_Application(void)
  */
 void Execute_Updata(void)
 {	
+}
+
+/**
+ * @brief  Send_UpdataCMD
+ * @param  devtype
+ * @retval None
+ */
+void Send_UpdataCMD(uint8_t devtype)
+{
+	aFileName[0] = 0xA5;
+	aFileName[1] = 0x5A;
+	aFileName[2] = 0x05;
+	aFileName[3] = 0x82;
+	aFileName[4] = devtype;
+	aFileName[5] = 0xFC;
+	aFileName[6] = 0x00;
+	aFileName[7] = 0xAA;
+	HAL_UART_Transmit(g_huart, aFileName, 8, TX_TIMEOUT);
+}
+
+/**
+ * @brief  Send_DownloadCMD
+ * @param  devtype
+ * @retval None
+ */
+void Send_DownloadCMD(uint8_t devtype)
+{
+	aFileName[0] = 0xA5;
+	aFileName[1] = 0x5A;
+	aFileName[2] = 0x06;
+	aFileName[3] = 0x83;
+	aFileName[4] = devtype;
+	aFileName[5] = 0xFC;
+	aFileName[6] = 0x01;
+	aFileName[7] = 0x00;
+	aFileName[8] = 0xAA;
+	HAL_UART_Transmit(g_huart, aFileName, 9, TX_TIMEOUT);
 }

@@ -12,8 +12,8 @@
 #define _FAL_H_
 
 //#include <rtconfig.h>
-#include <porting/fal_cfg.h>
-#include "inc/fal_def.h"
+#include "fal/porting/fal_cfg.h"
+#include "fal/inc/fal_def.h"
 
 /**
  * FAL (Flash Abstraction Layer) initialization.

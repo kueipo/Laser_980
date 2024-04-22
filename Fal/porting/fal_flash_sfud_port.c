@@ -8,12 +8,13 @@
  * 2018-01-26     armink       the first version
  */
 
-#include <inc/fal.h>
-#include <sfud.h>
+#include <fal/inc/fal.h>
+#include <sfud/INC/sfud.h>
 
 #define FAL_USING_SFUD_PORT
 
 #ifdef FAL_USING_SFUD_PORT
+
 #ifdef RT_USING_SFUD
 #include <spi_flash_sfud.h>
 #endif
@@ -28,13 +29,14 @@ static int write(long offset, const uint8_t *buf, size_t size);
 static int erase(long offset, size_t size);
 
 static sfud_flash_t sfud_dev = NULL;
-struct fal_flash_dev nor_flash0 = {
-		.name = FAL_USING_NOR_FLASH_DEV_NAME,
-		.addr = 0,
-		.len = 16 * 1024 * 1024,
-		.blk_size = 4096,
-		.ops = {init, read, write, erase},
-		.write_gran = 1,
+struct fal_flash_dev nor_flash0 =
+{
+	.name = FAL_USING_NOR_FLASH_DEV_NAME,
+	.addr = 0,
+	.len = 16 * 1024 * 1024,
+	.blk_size = 4 * 1024,
+	.ops = {init, read, write, erase},
+	.write_gran = 1,
 };
 
 static int init(void)
@@ -42,12 +44,10 @@ static int init(void)
 #ifdef RT_USING_SFUD
 	/* RT-Thread RTOS platform */
 	sfud_dev = rt_sfud_flash_find_by_dev_name(FAL_USING_NOR_FLASH_DEV_NAME);
-
 #else
 	/* bare metal platform */
 	sfud_init();
 	sfud_dev = sfud_get_device(SFUD_W25_DEVICE_INDEX); /* 对接sfud中的设备 */
-
 #endif
 
 	if (NULL == sfud_dev)

@@ -8,7 +8,7 @@
  * 2018-05-17     armink       the first version
  */
 
-#include <inc/fal.h>
+#include <fal/inc/fal.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -20,7 +20,7 @@
 
 struct part_flash_info
 {
-    const struct fal_flash_dev *flash_dev;
+	const struct fal_flash_dev *flash_dev;
 };
 
 /**

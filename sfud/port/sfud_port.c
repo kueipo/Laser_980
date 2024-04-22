@@ -27,18 +27,16 @@
  */
 
 #include <sfud/INC/sfud.h>
-
-#ifdef ENABLE_SFUD_SUPPORT
-
 #include <stdarg.h>
 #include <stdio.h>
-#include "main.h"
+#include <stm32F0xx_hal.h>
+#include <stm32F0xx_hal_gpio.h>
 #include <string.h>
 #include "spi.h"
 
 #define ENABLE_DMA_MODE	0
 #define ENABLE_INTERRUPT_MODE	0
-#define	SFUD_FLASH_SPI_PORT 	&hspi1
+#define	SFUD_FLASH_SPI_PORT 	&hspi2
 #define DLY 2000
 
 void sfud_log_info(const char *format, ...);
@@ -269,12 +267,3 @@ void sfud_log_info(const char *format, ...)
 	va_end(args);
 #endif
 }
-
-#else
-
-sfud_err sfud_spi_port_init(sfud_flash *flash)
-{
-	return SFUD_SUCCESS;
-}
-
-#endif /* ENABLE_SFUD_SUPPORT */

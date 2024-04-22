@@ -6,29 +6,27 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2023 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "adc.h"
-#include "dma.h"
-#include "tim.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "Task/Task_Common.h"
-
+#include "stdbool.h"
+#include "fal/inc/fal.h"
+#include "iap/inc/iap.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -38,32 +36,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
-#define	USING_IAP
-#if defined(USING_IAP)
-	#define IAP_SIZE    	(20 * 1024)
-	#define VECTOR_SIZE		(0xC0)
-	void Remap_INT(void)
-	{
-	#if 0
-		uint8_t i;
-		uint32_t Data;
-		uint32_t Address;
-		for (i = 0; i < 48; i++)
-		{
-			Data =  *(__IO uint32_t*)(APP_ADDRESS + i * 4);
-			Address = 0x20000000 + (i * 4);
-			*(__IO uint32_t*)Address = (uint32_t)Data;
-		}
-	#else
-		memcpy((void*)SRAM_BASE, (void*)(FLASH_BASE + IAP_SIZE), VECTOR_SIZE);
-	#endif
-		__HAL_SYSCFG_REMAPMEMORY_SRAM();
-	}
-#else
-	#define Remap_INT(...)
-#endif
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -81,13 +53,32 @@
 void SystemClock_Config(void);
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
-static void Write_App_Flag(void);
-
+HAL_StatusTypeDef CopyApp(uint8_t flag);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint8_t flag;
+#define NO_APP			
+#define DOWN_TO_FAC		0xA0
+#define DOWN_TO_DWN		0XAA
+#define COPY_TO_DWN		0X55
+#define COPY_TO_APP		0X5A
+#define ENTER_APP			0XA5
 
+static bool Write_App_Flag(uint8_t flag)
+{
+	opt_area = fal_partition_find ("upd");
+	
+	if (opt_area == NULL)
+		return false;
+
+	fal_partition_erase(opt_area, 0, 1);
+	fal_partition_write(opt_area, 0, &flag, 1);
+	flag = 0;
+	return true;
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -97,7 +88,7 @@ static void Write_App_Flag(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	Remap_INT();
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -113,47 +104,78 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-	
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_TIM6_Init();
   MX_USART2_UART_Init();
-  MX_ADC_Init();
-  MX_TIM14_Init();
+  MX_SPI2_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-  
-#if defined(ENABLE_FAL_SUPPORT)
 	fal_init();
-	#if defined(ENABLE_EL_SUPPORT)
-		easyflash_init();
-	#endif /* ENABLE_EL_SUPPORT */
-#endif /* ENABLE_FAL_SUPPORT */
+	
+	opt_area = fal_partition_find("upd");
 
+	if (fal_partition_read(opt_area, 0, &flag, 1) >= 0)
+	{
+	//	flag = DOWN_TO_FAC;
+		/* successful read data */
+		switch (flag)
+		{
+		/* Lost APP, about to enter download mode */
+		case 00:
+		case 0xFF:
+		case DOWN_TO_FAC:
+			/* Download to default area */
+			opt_area = fal_partition_find("fac");
+			/* Download failed £¬ cpu reset*/
+			if (SerialDownload() != COM_OK)
+			{
+				break;
+			}
+		/* Update from factory */
+		default:
+		case COPY_TO_DWN:
+			Write_App_Flag(DOWN_TO_FAC);
+			if (CopyApp(COPY_TO_DWN) == HAL_OK)
+			{
+				goto __copy_area;
+			}
+			break;
+		case DOWN_TO_DWN:
+			Write_App_Flag(COPY_TO_DWN);
+			opt_area = fal_partition_find("dwn");
+			/* Download failed */
+			if (SerialDownload() != COM_OK)
+			{
+				break;
+			}
+__copy_area:
+		/* Update from download */
+		case COPY_TO_APP:	
+			Write_App_Flag(COPY_TO_DWN);			
+			if (CopyApp(COPY_TO_APP) != HAL_OK)
+			{				
+				break;
+			}
+		/* Enter the application */
+		case ENTER_APP:
+			Execute_Application();
+			break;
+		}
+	}
+	HAL_Delay(1000);
+	HAL_FLASH_OB_Launch();
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	Write_App_Flag();
-		
-//	printf("Ver %d.%d\r\n", BSP_VERSION / 10, BSP_VERSION % 10);
-	
-	BSP_Init();
-	APP_Init();
-	
-	HAL_TIM_Base_Start_IT(&htim6);
-
-	__HAL_TIM_CLEAR_IT(&htim14, TIM_IT_UPDATE);
-	__HAL_TIM_ENABLE_IT(&htim14, TIM_IT_UPDATE);
-		
   while (1)
   {
-		Task_Pro_Handler_Callback();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -173,10 +195,8 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI14|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
-  RCC_OscInitStruct.HSI14CalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
@@ -212,34 +232,92 @@ static void MX_NVIC_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-static void Write_App_Flag(void)
+#define MAX_ERASE_SIZE	(4 * FLASH_PAGE_SIZE)
+#define BUF_SIZE				(1 * 1024)
+
+#define APP_ADDR_OFFSET 4
+HAL_StatusTypeDef CopyApp(uint8_t flag)
 {
-	uint8_t flag;
-#if defined(ENABLE_FAL_SUPPORT)
-	const struct fal_partition *part = fal_partition_find ("upd");
+  uint8_t buf[BUF_SIZE];
+  uint32_t filesize = 0, size, erase_size;
+  uint32_t read_addr = 0, write_addr = 0, erase_addr = write_addr;
+  const struct fal_partition *destin;
+  const struct fal_partition *source;
+  int32_t res;
 
-	if (part == NULL)
-		return;
+  /* Select Update Source */
+  if (flag == COPY_TO_APP)
+  {
+    source = fal_partition_find("dwn");
+    destin = fal_partition_find("app");
+#if SUPPORT_MULTI_BIN
+    read_addr = APP_ADDR_OFFSET;
+#endif
+  }
+  /* Find Update Destinations */
+  else
+  {
+    source = fal_partition_find("fac");
+    destin = fal_partition_find("dwn");
+  }
+	
+  /* Read Size */
+  if (fal_partition_read(source, read_addr, buf, APP_ADDR_OFFSET) <= 0)
+    return HAL_ERROR;
 
-	if (fal_partition_read(part, 0, &flag, 1) >= 0)
-	{
-		if (flag != ENTER_APP)
-		{	
-			flag = ENTER_APP;
-			fal_partition_erase(part, 0, 1);
-			fal_partition_write(part, 0, &flag, 1);
-		}
-	}
-#else
-	FLASH_Read(UPD_FLAG_ADDRESS, &flag, 1);
-	if (flag != ENTER_APP)
-	{
-		flag = ENTER_APP;
-		FLASH_Init();
-		FLASH_Erase(UPD_FLAG_ADDRESS, 1);
-		FLASH_Write(UPD_FLAG_ADDRESS, &flag, 1);
-	}
-#endif	
+  /* Calculate size */
+  for (uint8_t i = 0; i < 4; i++)
+  {
+    filesize <<= 8;
+    filesize += buf[i];
+  }
+
+	/* Detection size */
+	if (filesize == 0 || filesize >= destin->len)
+		return HAL_ERROR;
+	
+	if (flag == COPY_TO_APP)
+    read_addr += APP_ADDR_OFFSET;
+	else
+		filesize += APP_ADDR_OFFSET;
+		
+  for (; filesize > 0;)
+  {
+    /* Limit single maximum read/write */
+    size = filesize;
+    if (size > BUF_SIZE)
+      size = BUF_SIZE;
+
+    /* Read Data */
+    if (fal_partition_read(source, read_addr, buf, size) != size)
+      return HAL_ERROR;
+
+    /* Check whether the erased space is enough to write data */
+    if (erase_addr < (write_addr + size))
+    {
+      /* Calculate Unerased Space Size */
+      erase_size = write_addr + filesize - erase_addr;
+      if (erase_size > MAX_ERASE_SIZE)
+        erase_size = MAX_ERASE_SIZE;
+
+      res = fal_partition_erase(destin, erase_addr, erase_size);
+      /* Erase successfully, record the location */
+      if (res >= 0)
+        erase_addr += res;
+      else
+        return HAL_ERROR;
+    }
+
+    /* Write Data */
+    if (fal_partition_write(destin, write_addr, buf, size) != size)
+      return HAL_ERROR;
+
+    read_addr += size;
+    write_addr += size;
+    filesize -= size;
+  }
+
+  return HAL_OK;
 }
 /* USER CODE END 4 */
 
@@ -251,8 +329,10 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-	Gol_log_err("Error_Handler\r\n");
-	while (1);
+  __disable_irq();
+  while (1)
+  {
+  }
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -268,9 +348,7 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-	Gol_log_err("Wrong parameters value: file %s on line %d\r\n", file, line);
-	while (1); 
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

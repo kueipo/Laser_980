@@ -11,7 +11,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* Constants used by Serial Command Line Mode */
 #define TX_TIMEOUT          ((uint32_t)100)
-#define RX_TIMEOUT          ((uint32_t)1000) //HAL_MAX_DELAY
+#define RX_TIMEOUT          ((uint32_t)1500) //HAL_MAX_DELAY
 
 /* Exported macro ------------------------------------------------------------*/
 #define IS_CAP_LETTER(c)    (((c) >= 'A') && ((c) <= 'F'))

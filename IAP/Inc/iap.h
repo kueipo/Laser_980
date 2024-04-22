@@ -9,22 +9,31 @@
 #include "iap/inc/common.h"
 #include "fal/inc/fal.h"
 #include "string.h"
-#include "main.h"
+#include "usart.h"
+#include "Stm32Flash/flash_stm32.h"
 
 /* Exported define -----------------------------------------------------------*/
-#define YMODEM_DOWNLOAD_PORT					(&huart2)
+#define YMODEM_DOWNLOAD_PORT	(&huart2)
+//#define YMODEM_UPLOAD_PORT		(&huart2)
+
+//#if SUPPORT_MULTI_BIN
 
 #ifndef APP_ADDRESS
-	#define APP_ADDRESS						(FLASH_BASE + (20 * 1024))
+	#define APP_ADDRESS					(FLASH_BASE + (20 * 1024))
 #endif
-#define DEV_TYPE							0x10 	/* Device types */
+
+#define DEV_TYPE							0x60 	/* Device types */
+
 #define ENABLE_SERIAL_UPLOAD	0		 	/* default Disabled */
 	#if ENABLE_SERIAL_UPLOAD
-		#define FILE_NAME "bin"
+		#define FILE_NAME 				"bin"
 	#endif /* ENABLE_SERIAL_UPLOAD */
+	
 #define ENABLE_MENU						0		 	/* default Disabled */
 #define ENABLE_PRINT_DEBUG		0		 	/* Print debug message, default Disabled */
-#define ENABLE_BOOT_MODE			0		 	/* enable boot mode, Modify as needed */
+#define ENABLE_BOOT_MODE			1		 	/* enable boot mode, Modify as needed */
+
+#define ENABLE_FAL_SUPPORT		1			/* enable FAL Driver Component */
 
 /* Exported variables --------------------------------------------------------*/
 typedef  void (*pFunction)(void);
@@ -41,5 +50,7 @@ void Execute_Application(void);
 void Execute_Updata(void);
 COM_StatusTypeDef SerialDownload(void);
 void SerialUpload(void);
+void Send_UpdataCMD(uint8_t devtype);
+void Send_DownloadCMD(uint8_t devtype);
 
 #endif  /* __IAP_H */

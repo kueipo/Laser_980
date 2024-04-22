@@ -8,7 +8,7 @@
  * 2018-01-26     armink       the first version
  */
 
-#include <inc/fal.h>
+#include <fal/inc/fal.h>
 
 #include "main.h"
 
@@ -20,10 +20,10 @@ static int init(void)
 {
 	/* Unlock the Program memory */
 	HAL_FLASH_Unlock();
-
+	
 	/* Clear all FLASH flags */
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
-
+	
 	/* Unlock the Program memory */
 	HAL_FLASH_Lock();
 	return 1;
@@ -31,39 +31,36 @@ static int init(void)
 
 static int read(long offset, uint8_t *buf, size_t size)
 {
-	size_t i;
-	uint32_t addr = stm32_onchip_flash.addr + offset;
-	
-	for (i = 0; i < size; i++, addr++, buf++)
-	{
-		*buf = *(uint8_t *)addr;
-	}
+    size_t i;
+    uint32_t addr = stm32_onchip_flash.addr + offset;
+    for (i = 0; i < size; i++, addr++, buf++)
+    {
+        *buf = *(uint8_t *) addr;
+    }
 
-	return size;
+    return size;
 }
 
 static int write(long offset, const uint8_t *buf, size_t size)
 {
 	uint32_t addr = stm32_onchip_flash.addr + offset;
 	size_t i;
-	
 	HAL_FLASH_Unlock();
 	
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
-
-	for (i = 0; i < size; i += 2, addr += 2, buf += 2)
+			
+	for (i=0; i<size; i+=2, addr+=2, buf += 2)
 	{
 		/* write data */
-		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, addr, *(uint16_t *)(buf));
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, addr, *(uint16_t*)(buf));
 		/* check data */
-		if (*(uint16_t *)addr != *(uint16_t *)(buf))
+		if (*(uint16_t*)addr != *(uint16_t*)(buf))
 		{
 			return -1;
 		}
 	}
-	
 	HAL_FLASH_Lock();
-
+		
 	return size;
 }
 
@@ -75,7 +72,7 @@ static int erase(long offset, size_t size)
 	FLASH_EraseInitTypeDef pEraseInit;
 	HAL_StatusTypeDef status = HAL_OK;
 
-	/* Unlock the Flash to enable the flash control register access *************/
+	/* Unlock the Flash to enable the flash control register access *************/ 
 	HAL_FLASH_Unlock();
 
 	/* Get the sector where start the user flash area */
@@ -83,14 +80,14 @@ static int erase(long offset, size_t size)
 
 	pEraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
 	pEraseInit.PageAddress = addr;
-#if defined(FLASH_BANK_1)
+#ifdef FLASH_BANK_1
 	pEraseInit.Banks = FLASH_BANK_1;
 #endif
 	pEraseInit.NbPages = NbrOfPages;
 	status = HAL_FLASHEx_Erase(&pEraseInit, &PageError);
 
 	/* Lock the Flash to disable the flash control register access (recommended
-		 to protect the FLASH memory against possible unwanted operation) *********/
+	   to protect the FLASH memory against possible unwanted operation) *********/
 	HAL_FLASH_Lock();
 
 	if (status != HAL_OK)
@@ -101,15 +98,20 @@ static int erase(long offset, size_t size)
 	return size;
 }
 
-const struct fal_flash_dev stm32_onchip_flash = {
-		.name = FAL_USING_STM_FLASH_DEV_NAME,
-		.addr = FLASH_BASE,
-		.len = 64 * 1024,
-		.blk_size = FLASH_PAGE_SIZE,
-		.ops = {init, read, write, erase},
+const struct fal_flash_dev stm32_onchip_flash =
+{
+	.name = FAL_USING_STM_FLASH_DEV_NAME,
+	.addr = FLASH_BASE,
+	.len = 64 * 1024,
 #if defined(STM32F030x8) || defined(STM32F103xE)
-		.write_gran = 16,
+	.blk_size = FLASH_PAGE_SIZE,
 #else
-		.write_gran = 8,
+	.blk_size = 4 * 1024,
+#endif
+	.ops = {init, read, write, erase},
+#if defined(STM32F030x8) || defined(STM32F103xE)
+	.write_gran = 16,
+#else
+	.write_gran = 8,
 #endif
 };
