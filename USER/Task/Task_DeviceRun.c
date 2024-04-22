@@ -1,6 +1,8 @@
 
 /* Includes ------------------------------------------------------------------*/
-#include "Task/Task_Common.h"
+#include "Task_DeviceRun.h"
+#include "DEV_Config.h"
+#include "APP_Common.h"
 
 /* Define --------------------------------------------------------------------*/
 

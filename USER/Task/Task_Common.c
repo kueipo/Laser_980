@@ -1,12 +1,13 @@
+
 #include "Task/Task_Common.h"
 
-//uint8_t g_Maintask;        //ÏµÍ³Ö÷ÈÎÎñ
-//uint8_t ga_Subtask[8];     //ÏµÍ³×ÓÈÎÎñ
+//uint8_t g_Maintask;        //ç³»ç»Ÿä¸»ä»»åŠ¡
+//uint8_t ga_Subtask[8];     //ç³»ç»Ÿå­ä»»åŠ¡
 
 //#define TASK_ALL    0xff
 
 //Task_Type  Task_Struct[8] = 
-//{       //ÈÎÎñÁĞ±í TASK0ÓÅÏÈ¼¶×î¸ß
+//{ //ä»»åŠ¡åˆ—è¡¨ TASK0ä¼˜å…ˆçº§æœ€é«˜
 //    TASK0,
 //    TASK1,
 //    TASK2,
@@ -72,10 +73,3 @@
 //   }
 //   return false;
 //}
-
-void Task_TimeProc(uint8_t ucPeriod)
-{
-	Task_Marks_Handler_Callback();
-	Task_FB_Marks_Handler_Callback();
-	Task_SysDete_Marks_Handler_Callback();
-}

@@ -1,85 +1,84 @@
+
 /******************** (C) COPYRIGHT 2015**************************************
-* ÎÄ¼şÃû³Æ         : MSG2233.c
-* ×÷Õß             : 
-* °æ±¾             : V1.1
-* ÈÕÆÚ             : 22/9/2015
-* ÃèÊö             : ×Ö·û´®´¦ÀíºÍÏÔÊ¾
+* æ–‡ä»¶åç§°         : MSG2233.c
+* ä½œè€…             : 
+* ç‰ˆæœ¬             : V1.1
+* æ—¥æœŸ             : 22/9/2015
+* æè¿°             : å­—ç¬¦ä¸²å¤„ç†å’Œæ˜¾ç¤º
 ********************************************************************************
-* ×¢ÒâÊÂÏî£º 
+* æ³¨æ„äº‹é¡¹ï¼š 
 *
 *
 *******************************************************************************/
 
 #include "FT6336.h"
-#include "delay.h"
 #include "ctiic.h"
-//#include "IIC_TP.h"
-//#include "sys_nvic.h"
-//#include "funcdata.h"
+#include "delay.h"
+// #include "IIC_TP.h"
+// #include "sys_nvic.h"
+// #include "funcdata.h"
 
 #define X_LENGTH 240
 #define Y_LENGTH 240
 
 static TP_POINT tpPoint;
-//tp¶ÁÈ¡°´ÏÂ×´Ì¬
+// tpè¯»å–æŒ‰ä¸‹çŠ¶æ€
 unsigned char Tp_PressStaus = 0;
-//°´ÏÂ×´Ì¬ÏÂµÄÍ¨Ñ¶ÊıÄ¿
+// æŒ‰ä¸‹çŠ¶æ€ä¸‹çš„é€šè®¯æ•°ç›®
 static unsigned int TpComOutCount;
 static unsigned int TpComOutFlag;
 
 void FT6336_Init(void)
 {
-//	GPIO_InitTypeDef  GPIO_InitStructure;
-//	EXTI_InitTypeDef EXTI_InitStructure;
-//	NVIC_InitTypeDef NVIC_InitStructure;
-//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);//Ê¹ÄÜGPIOCÊ±ÖÓ
+	//	GPIO_InitTypeDef  GPIO_InitStructure;
+	//	EXTI_InitTypeDef EXTI_InitStructure;
+	//	NVIC_InitTypeDef NVIC_InitStructure;
+	//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);//ä½¿èƒ½GPIOCæ—¶é’Ÿ
 
-//	/*-------------------------------------------------------------*/
-////	#define MSG_INT PBin(2)
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;// 
-//	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IPU;
-//	GPIO_Init(GPIOB, &GPIO_InitStructure);//³õÊ¼»¯GPIO
-//	
+	//	/*-------------------------------------------------------------*/
+	////	#define MSG_INT PBin(2)
+	//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;//
+	//	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IPU;
+	//	GPIO_Init(GPIOB, &GPIO_InitStructure);//åˆå§‹åŒ–GPIO
+	//
 
-//	EXTI_InitStructure.EXTI_Line=EXTI_Line14 ;	//Ñ¡ÔñÖĞ¶ÏÏßÂ·
-//	EXTI_InitStructure.EXTI_Mode=EXTI_Mode_Interrupt;  //ÉèÖÃÎªÖĞ¶ÏÇëÇó
-//	EXTI_InitStructure.EXTI_Trigger=EXTI_Trigger_Falling;//EXTI_Trigger_Rising; //ÉèÖÃÖĞ¶Ï´¥·¢·½Ê½ÎªÏÂ½µÑØ´¥·¢
-//	EXTI_InitStructure.EXTI_LineCmd=ENABLE;
-//	EXTI_Init(&EXTI_InitStructure);	
-//	
+	//	EXTI_InitStructure.EXTI_Line=EXTI_Line14 ;	//é€‰æ‹©ä¸­æ–­çº¿è·¯
+	//	EXTI_InitStructure.EXTI_Mode=EXTI_Mode_Interrupt;  //è®¾ç½®ä¸ºä¸­æ–­è¯·æ±‚
+	//	EXTI_InitStructure.EXTI_Trigger=EXTI_Trigger_Falling;//EXTI_Trigger_Rising; //è®¾ç½®ä¸­æ–­è§¦å‘æ–¹å¼ä¸ºä¸‹é™æ²¿è§¦å‘
+	//	EXTI_InitStructure.EXTI_LineCmd=ENABLE;
+	//	EXTI_Init(&EXTI_InitStructure);
+	//
 
-//	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource14);	    //Ñ¡ÔñÖĞ¶Ï¹Ü½Å
-//	
-//	
-//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-//	NVIC_InitStructure.NVIC_IRQChannel=EXTI15_10_IRQn;
-//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0x02;
-//	NVIC_InitStructure.NVIC_IRQChannelSubPriority=0x02;
-//	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
-//	NVIC_Init(&NVIC_InitStructure);
+	//	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource14);	    //é€‰æ‹©ä¸­æ–­ç®¡è„š
+	//
+	//
+	//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	//	NVIC_InitStructure.NVIC_IRQChannel=EXTI15_10_IRQn;
+	//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0x02;
+	//	NVIC_InitStructure.NVIC_IRQChannelSubPriority=0x02;
+	//	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
+	//	NVIC_Init(&NVIC_InitStructure);
 
-	
-		/*-------------------------------------------------------------*/
-//	#define MSG_RST PBout(7)
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;// 
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;//ÆÕÍ¨Êä³öÄ£Ê½
-//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//100MHz
-//	GPIO_Init(GPIOB, &GPIO_InitStructure);//³õÊ¼»¯GPIO
-	
-//	MSG_RST=1;
+	/*-------------------------------------------------------------*/
+	//	#define MSG_RST PBout(7)
+	//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;//
+	//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;//æ™®é€šè¾“å‡ºæ¨¡å¼
+	//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//100MHz
+	//	GPIO_Init(GPIOB, &GPIO_InitStructure);//åˆå§‹åŒ–GPIO
+
+	//	MSG_RST=1;
 	MSG_RST(1);
-//	delay_ms(1);
-//	MSG_RST=0;
-//	delay_ms(10);
-//	MSG_RST=1;
+	//	delay_ms(1);
+	//	MSG_RST=0;
+	//	delay_ms(10);
+	//	MSG_RST=1;
 
 	TpComOutCount = 0;
-		
 }
 
-#define CTP_WRITE             				0x70
-#define CTP_READ             					0x71
-#define CTP_ACK_COUNTER        				10//150
+#define CTP_WRITE 0x70
+#define CTP_READ 0x71
+#define CTP_ACK_COUNTER 10 // 150
 
 #define TD_STAT_ADDR 0x2
 #define TT_MODE_BUFFER_INVALID 0x08
@@ -90,78 +89,78 @@ void CTP_I2C_delay()
 	delay_us(1);
 }
 
-unsigned char CTP_I2C_READ(unsigned char reg, unsigned char *value, unsigned char len) 
+unsigned char CTP_I2C_READ(unsigned char reg, unsigned char *value, unsigned char len)
 {
 	unsigned char i;
-	CT_IIC_Start();  
+	CT_IIC_Start();
 	CTP_I2C_delay();
 	CT_IIC_Send_Byte(CTP_WRITE);
-	if(CT_IIC_Wait_Ack()!=0)			//µÈ´ıÓ¦´ğ
+	if (CT_IIC_Wait_Ack() != 0) // ç­‰å¾…åº”ç­”
 	{
 		CT_IIC_Stop();
-		return  0;						//Ó¦´ğÊ§°Ü
+		return 0; // åº”ç­”å¤±è´¥
 	}
 	CTP_I2C_delay();
 	CT_IIC_Send_Byte(reg);
-	if(CT_IIC_Wait_Ack()!=0)			//µÈ´ıÓ¦´ğ
+	if (CT_IIC_Wait_Ack() != 0) // ç­‰å¾…åº”ç­”
 	{
 		CT_IIC_Stop();
-		return  0;						//Ó¦´ğÊ§°Ü
+		return 0; // åº”ç­”å¤±è´¥
 	}
 	CTP_I2C_delay();
 	CT_IIC_Stop();
 	CTP_I2C_delay();
 	CT_IIC_Start();
 	CT_IIC_Send_Byte(CTP_READ);
-	if(CT_IIC_Wait_Ack()!=0)			//µÈ´ıÓ¦´ğ
+	if (CT_IIC_Wait_Ack() != 0) // ç­‰å¾…åº”ç­”
 	{
 		CT_IIC_Stop();
-		return  0;						//Ó¦´ğÊ§°Ü
+		return 0; // åº”ç­”å¤±è´¥
 	}
 	CTP_I2C_delay();
 	if (len <= 1)
-    {
-        *value =CT_IIC_Read_Byte(0);
-		CTP_I2C_delay();
-    }
-	else
 	{
-	    for (i = 0; i< len - 1; i++)
-	    {
-	        *value++ =CT_IIC_Read_Byte(1);
-			CTP_I2C_delay();
-	    }
-		*value =CT_IIC_Read_Byte(0);
+		*value = CT_IIC_Read_Byte(0);
 		CTP_I2C_delay();
 	}
-    CT_IIC_Stop();
- 	 
-    return 1;
+	else
+	{
+		for (i = 0; i < len - 1; i++)
+		{
+			*value++ = CT_IIC_Read_Byte(1);
+			CTP_I2C_delay();
+		}
+		*value = CT_IIC_Read_Byte(0);
+		CTP_I2C_delay();
+	}
+	CT_IIC_Stop();
+
+	return 1;
 }
 
 unsigned char CTP_I2C_Write(unsigned char reg, unsigned char value)
 {
-	CT_IIC_Start();  
+	CT_IIC_Start();
 	CTP_I2C_delay();
 	CT_IIC_Send_Byte(CTP_WRITE);
-	if(CT_IIC_Wait_Ack()!=0)			//µÈ´ıÓ¦´ğ
+	if (CT_IIC_Wait_Ack() != 0) // ç­‰å¾…åº”ç­”
 	{
 		CT_IIC_Stop();
-		return  0;						//Ó¦´ğÊ§°Ü
+		return 0; // åº”ç­”å¤±è´¥
 	}
 	CTP_I2C_delay();
 	CT_IIC_Send_Byte(reg);
-	if(CT_IIC_Wait_Ack()!=0)			//µÈ´ıÓ¦´ğ
+	if (CT_IIC_Wait_Ack() != 0) // ç­‰å¾…åº”ç­”
 	{
 		CT_IIC_Stop();
-		return  0;						//Ó¦´ğÊ§°Ü
+		return 0; // åº”ç­”å¤±è´¥
 	}
 	CTP_I2C_delay();
 	CT_IIC_Send_Byte(value);
-	if(CT_IIC_Wait_Ack()!=0)			//µÈ´ıÓ¦´ğ
+	if (CT_IIC_Wait_Ack() != 0) // ç­‰å¾…åº”ç­”
 	{
 		CT_IIC_Stop();
-		return  0;						//Ó¦´ğÊ§°Ü
+		return 0; // åº”ç­”å¤±è´¥
 	}
 	CTP_I2C_delay();
 	CT_IIC_Stop();
@@ -173,24 +172,23 @@ void CTP_Init(void)
 	unsigned char i;
 	unsigned char lvalue;
 
-	//¼æÈİCTP zhouwei
-//	CTP_I2C_Write(0x80, 0x1e); 
-//	CTP_I2C_READ(0x80, &lvalue, 1);
-	
-	do{
-		 CTP_I2C_READ(0xa3, &lvalue, 1);
-		 i++;
-		 delay_ms(50);
-		 if((lvalue==0x06)||(lvalue==0x36)||(lvalue==0x64))
-		 	break;
-	  }
-	while(i<20);
-	if((lvalue==0x06)||(lvalue==0x36)||(lvalue==0x64))
-	{
+	// å…¼å®¹CTP zhouwei
+	//	CTP_I2C_Write(0x80, 0x1e);
+	//	CTP_I2C_READ(0x80, &lvalue, 1);
 
+	do
+	{
+		CTP_I2C_READ(0xa3, &lvalue, 1);
+		i++;
+		delay_ms(50);
+		if ((lvalue == 0x06) || (lvalue == 0x36) || (lvalue == 0x64))
+			break;
+	} while (i < 20);
+	if ((lvalue == 0x06) || (lvalue == 0x36) || (lvalue == 0x64))
+	{
 	}
 	delay_ms(10);
-//	CTP_I2C_Write(0x1B, 2);
+	//	CTP_I2C_Write(0x1B, 2);
 }
 
 #define TOUCH1_XH_ADDR 0x03
@@ -198,197 +196,196 @@ void CTP_Init(void)
 #define TOUCH3_XH_ADDR 0x0F
 #define TOUCH4_XH_ADDR 0x15
 unsigned char values[4];
-void CTP_GetTpOnePoint(const unsigned char x_base,TP_POINT *point,unsigned char *tpStu)
+void CTP_GetTpOnePoint(const unsigned char x_base, TP_POINT *point, unsigned char *tpStu)
 {
-	
+
 	CTP_I2C_READ(x_base, values, 4);
-	if(x_base == 0x3)
-	*tpStu = (values[0]>>6)&0x3;//(values[0]&0xC0);//
-	point->x = (((unsigned int)(values[0]&0x0f))<<8) | values[1];
-	point->y =   (((unsigned int)(values[2]&0x0f))<<8) | values[3];
+	if (x_base == 0x3)
+		*tpStu = (values[0] >> 6) & 0x3; //(values[0]&0xC0);//
+	point->x = (((unsigned int)(values[0] & 0x0f)) << 8) | values[1];
+	point->y = (((unsigned int)(values[2] & 0x0f)) << 8) | values[3];
 }
-unsigned char CTP_GetTpPoint(TP_POINT *Tmp_point,unsigned char *TpStu)
+unsigned char CTP_GetTpPoint(TP_POINT *Tmp_point, unsigned char *TpStu)
 {
-	unsigned char counter = 0,i;
+	unsigned char counter = 0, i;
 	unsigned char lvalue;
 	unsigned char PointsNum;
 	TP_POINT tpPoint;
-	int Tp_Point_x=0;
-	int Tp_Point_y=0;
+	int Tp_Point_x = 0;
+	int Tp_Point_y = 0;
 	const unsigned char x_base[] = {TOUCH1_XH_ADDR, TOUCH2_XH_ADDR, TOUCH3_XH_ADDR, TOUCH4_XH_ADDR};
-	do{ //make sure data in buffer is valid
+	do
+	{ // make sure data in buffer is valid
 		CTP_I2C_READ(TD_STAT_ADDR, &lvalue, 1);
-		if(counter++ == 0x30)
+		if (counter++ == 0x30)
 		{
-		return 0;
+			return 0;
 		}
-	}while(lvalue & TT_MODE_BUFFER_INVALID); 	
+	} while (lvalue & TT_MODE_BUFFER_INVALID);
 
-	CTP_I2C_READ(TD_STAT_ADDR, &lvalue, 1); 
+	CTP_I2C_READ(TD_STAT_ADDR, &lvalue, 1);
 	PointsNum = (unsigned char)(lvalue & TD_STAT_NUMBER_TOUCH);
-	if((PointsNum == 0) || (PointsNum > 5))
+	if ((PointsNum == 0) || (PointsNum > 5))
 		PointsNum = 1;
-	for(i=0;i<PointsNum;i++)//
+	for (i = 0; i < PointsNum; i++) //
 	{
-		CTP_GetTpOnePoint(x_base[i], &tpPoint,TpStu);
+		CTP_GetTpOnePoint(x_base[i], &tpPoint, TpStu);
 		Tp_Point_x += tpPoint.x;
 		Tp_Point_y += tpPoint.y;
 	}
-	Tmp_point->x = Tp_Point_x/PointsNum;
-	Tmp_point->y = Tp_Point_y/PointsNum;
+	Tmp_point->x = Tp_Point_x / PointsNum;
+	Tmp_point->y = Tp_Point_y / PointsNum;
 	return 1;
 }
 
 /***********************************************************************
-* º¯ÊıÃû³Æ    : TP_SpeedAdd
-* ÃèÊö        : Í¨Ñ¶³¬Ê±¼ÆÊı×Ô¼Ó
-* ÊäÈëĞÎ²Î    :
-* ·µ»ØÖµ      :
-************************************************************************/
+ * å‡½æ•°åç§°    : TP_SpeedAdd
+ * æè¿°        : é€šè®¯è¶…æ—¶è®¡æ•°è‡ªåŠ 
+ * è¾“å…¥å½¢å‚    :
+ * è¿”å›å€¼      :
+ ************************************************************************/
 void TP_ComCountAdd(void)
 {
-	if(TpComOutCount >0)
+	if (TpComOutCount > 0)
 	{
-		TpComOutCount--;	
-		if(TpComOutCount == 0)
+		TpComOutCount--;
+		if (TpComOutCount == 0)
 		{
 			TpComOutFlag = 1;
-			//´¥Ãş´¥·¢
-	//		Touch_Int();
+			// è§¦æ‘¸è§¦å‘
+			// Touch_Int();
 		}
 	}
 }
 
 /***********************************************************************
-* º¯ÊıÃû³Æ    : ReadTpComOutFlag
-* ÃèÊö        : Í¨Ñ¶³¬Ê±±êÊ¶
-* ÊäÈëĞÎ²Î    : ÎŞ
-* ·µ»ØÖµ      : ÎŞ
-************************************************************************/
+ * å‡½æ•°åç§°    : ReadTpComOutFlag
+ * æè¿°        : é€šè®¯è¶…æ—¶æ ‡è¯†
+ * è¾“å…¥å½¢å‚    : æ— 
+ * è¿”å›å€¼      : æ— 
+ ************************************************************************/
 unsigned int ReadTpComOutFlag(void)
 {
 	return TpComOutFlag;
 }
 /***********************************************************************
-* º¯ÊıÃû³Æ    : ClearTpComOutFlag
-* ÃèÊö        : Çå³ıÍ¨Ñ¶³¬Ê±±êÊ¶
-* ÊäÈëĞÎ²Î    : ÎŞ
-* ·µ»ØÖµ      : ÎŞ
-************************************************************************/
+ * å‡½æ•°åç§°    : ClearTpComOutFlag
+ * æè¿°        : æ¸…é™¤é€šè®¯è¶…æ—¶æ ‡è¯†
+ * è¾“å…¥å½¢å‚    : æ— 
+ * è¿”å›å€¼      : æ— 
+ ************************************************************************/
 void ClearTpComOutFlag(void)
 {
 	TpComOutFlag = 0;
 }
 unsigned char TpStuV = 0;
-//¶ÁÈ¡´¥Ãş
-unsigned char  ReadTpPoint(void)
+// è¯»å–è§¦æ‘¸
+unsigned char ReadTpPoint(void)
 {
-	int Tp_Point_x=0;
-	int Tp_Point_y=0;
+	int Tp_Point_x = 0;
+	int Tp_Point_y = 0;
 
-	TP_POINT tptmpPoint;	
+	TP_POINT tptmpPoint;
 	TpStuV = 0;
-	if(CTP_GetTpPoint(&tptmpPoint,&TpStuV))
+	if (CTP_GetTpPoint(&tptmpPoint, &TpStuV))
 	{
-			if(TpStuV == 1)
+		if (TpStuV == 1)
+		{
+			// æ­¤å¤„ä»£è¡¨æ‰‹æŒ‡æ¾å¼€
+			if (Tp_PressStaus == TP_Stu_Press)
 			{
-				//´Ë´¦´ú±íÊÖÖ¸ËÉ¿ª
-				if(Tp_PressStaus ==TP_Stu_Press)
-				{
 				Tp_PressStaus = TP_Stu_DoPress;
-				}
-				TpComOutCount = 0;
-				return 1;
 			}
-			Tp_Point_x=tptmpPoint.x;//µÃµ½X
-			Tp_Point_y=tptmpPoint.y;//µÃµ½y				
-			
-			if(Tp_PressStaus == TP_Stu_NoPress)
-			{
-				//»»Ëã³É´¥Ãşµã
-				tpPoint.x=Tp_Point_y;
-				tpPoint.y=Tp_Point_x;
-			}
-			
-			Tp_PressStaus = TP_Stu_Press;
-
+			TpComOutCount = 0;
 			return 1;
+		}
+		Tp_Point_x = tptmpPoint.x; // å¾—åˆ°X
+		Tp_Point_y = tptmpPoint.y; // å¾—åˆ°y
+
+		if (Tp_PressStaus == TP_Stu_NoPress)
+		{
+			// æ¢ç®—æˆè§¦æ‘¸ç‚¹
+			tpPoint.x = Tp_Point_y;
+			tpPoint.y = Tp_Point_x;
+		}
+
+		Tp_PressStaus = TP_Stu_Press;
+
+		return 1;
 	}
 	else
 	{
-			//Ğ£ÑéÊ§°Ü
-			Tp_Point_x=-1;
-			Tp_Point_y=-1;
-			return 0;
+		// æ ¡éªŒå¤±è´¥
+		Tp_Point_x = -1;
+		Tp_Point_y = -1;
+		return 0;
 	}
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-	if(GPIO_Pin ==GPIO_PIN_8)
-	{
-		TpComOutCount = 35;
-	//	ReadTpPoint();
-	}
-}
-//void  EXTI4_15_IRQHandler(void)
+//void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 //{
-//	#ifdef OS_TICKS_PER_SEC	 	//Èç¹ûÊ±ÖÓ½ÚÅÄÊı¶¨ÒåÁË,ËµÃ÷ÒªÊ¹ÓÃucosIIÁË.
-//		OSIntEnter();	 
+//	if (GPIO_Pin == GPIO_PIN_8)
+//	{
+//		TpComOutCount = 35;
+//		//	ReadTpPoint();
+//	}
+//}
+// void  EXTI4_15_IRQHandler(void)
+//{
+//	#ifdef OS_TICKS_PER_SEC	 	//å¦‚æœæ—¶é’ŸèŠ‚æ‹æ•°å®šä¹‰äº†,è¯´æ˜è¦ä½¿ç”¨ucosIIäº†.
+//		OSIntEnter();
 //	#endif
 ////	if(EXTI_GetITStatus(EXTI_Line14)!=RESET)
 ////	{
 ////		TpComOutCount = 35;
-////		//´¥Ãş´¥·¢
+////		//è§¦æ‘¸è§¦å‘
 ////		Touch_Int();
 ////		EXTI_ClearITPendingBit(EXTI_Line4);
 ////	}
-////	
+////
 ////	if(__HAL_GPIO_EXTI_GET_IT(GPIO_Pin) != 0x00u)
-////  { 
+////  {
 ////    __HAL_GPIO_EXTI_CLEAR_IT(GPIO_Pin);
 ////    HAL_GPIO_EXTI_Callback(GPIO_Pin);
 ////  }
-//	
-//	#ifdef OS_TICKS_PER_SEC	 	//Èç¹ûÊ±ÖÓ½ÚÅÄÊı¶¨ÒåÁË,ËµÃ÷ÒªÊ¹ÓÃucosIIÁË.
-//		OSIntExit();											 
+//
+//	#ifdef OS_TICKS_PER_SEC	 	//å¦‚æœæ—¶é’ŸèŠ‚æ‹æ•°å®šä¹‰äº†,è¯´æ˜è¦ä½¿ç”¨ucosIIäº†.
+//		OSIntExit();
 //	#endif
 //}
 
-
 /***********************************************************************
-* º¯ÊıÃû³Æ    : ReadTpPressStu
-* ÃèÊö        : ¶ÁÈ¡Tp×´Ì¬
-* ÊäÈëĞÎ²Î    : ÎŞ
-* ·µ»ØÖµ      : ÎŞ
-************************************************************************/
+ * å‡½æ•°åç§°    : ReadTpPressStu
+ * æè¿°        : è¯»å–TpçŠ¶æ€
+ * è¾“å…¥å½¢å‚    : æ— 
+ * è¿”å›å€¼      : æ— 
+ ************************************************************************/
 unsigned char ReadTpPressStu(void)
 {
 	return Tp_PressStaus;
 }
 /***********************************************************************
-* º¯ÊıÃû³Æ    : SetTpPressStu
-* ÃèÊö        : ÉèÖÃ°´ÏÂ×´Ì¬
-* ÊäÈëĞÎ²Î    : ÎŞ
-* ·µ»ØÖµ      : ÎŞ
-************************************************************************/
+ * å‡½æ•°åç§°    : SetTpPressStu
+ * æè¿°        : è®¾ç½®æŒ‰ä¸‹çŠ¶æ€
+ * è¾“å…¥å½¢å‚    : æ— 
+ * è¿”å›å€¼      : æ— 
+ ************************************************************************/
 void ClearTpPressStu(void)
 {
-	Tp_PressStaus = TP_Stu_NoPress ;
+	Tp_PressStaus = TP_Stu_NoPress;
 }
 /***********************************************************************
-* º¯ÊıÃû³Æ    : getTPPoint
-* ÃèÊö        : »ñÈ¡×ø±ê
-* ÊäÈëĞÎ²Î    : ÎŞ
-* ·µ»ØÖµ      : ÎŞ
-************************************************************************/
+ * å‡½æ•°åç§°    : getTPPoint
+ * æè¿°        : è·å–åæ ‡
+ * è¾“å…¥å½¢å‚    : æ— 
+ * è¿”å›å€¼      : æ— 
+ ************************************************************************/
 void getTPPoint(TP_POINT *point)
 {
 
-		point->x = tpPoint.x;
-		point->y = tpPoint.y;
+	point->x = tpPoint.x;
+	point->y = tpPoint.y;
 
-//	point->x = tpPoint.x;
-//	point->y = tpPoint.y;
+	//	point->x = tpPoint.x;
+	//	point->y = tpPoint.y;
 }
-

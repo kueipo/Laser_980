@@ -2,104 +2,90 @@
 #include "Task/Task_Common.h"
 
 #if USING_LINK
-#include <stdio.h>
-#include <stdlib.h>
+	#include <stdio.h>
+	#include <stdlib.h>
 
-//节点结构
-typedef struct link {
-	struct link * prior;
-	uint8_t index;
-	struct link * next;
-}link;
-//双链表的创建函数
-link* InitLink(link * head);
+	// 节点结构
+	typedef struct link
+	{
+		struct link *prior;
+		uint8_t index;
+		struct link *next;
+	} link;
+	// 双链表的创建函数
+	link *InitLink(link *head);
 
-static link * head=NULL;
-#endif
+	static link *head = NULL;
 
-#if USING_LINK
 /* 放置高优先级 */
 void Test_Polity_High(void)
 {
 	printf("Test High Polity !!!\r\n");
 	DelCurrentNode();
 }
-#endif
+#endif /* USING_LINK */
 
-//========================================================================
-//========================================================================
 Task_Typedef Task[]=
-{	
-	//State		RunTime	Period  current_operation	unit:10ms
-	{ READY,	100,		100,		(*Task_Heartbeat_Message)	},
-	{ READY,	10,			1,			(*Task_SystemDetection)	},
-	{ READY,	20,			0,			(*Task_Console)	},
-	{ READY,	30,			0,			(*Task_FB_Pro_Handler_Callback)	},
-	{ READY,	40,			1,			(*Task_SystemRun)	},
-	{ READY,	50,			50,			(*Task_Protect)	},
-	{ READY,	60,			100,		(*APP_Fan_Task)	},
-	{ READY,	70,			100,		(*APP_Protect_Task)	},
-#if USING_LINK
-	{ READY,	0,			0,			(*Test_Polity_High)	},
-#endif
+{
+/*	State		RunTime		Period   	current_operation	unit:5ms */
+	{ READY,	200,		200,		(*Task_Heartbeat_Message)		},
+//	{ READY,	0,			1,			(*Task_SystemDetection)		},
+	{ READY,	0,			0,			(*Task_Console)	},
+	{ READY,	0,			1,			(*Task_FB_Pro_Handler_Callback)	},
+//	{ READY,	0,			1,			(*APP_DC24V_Task)	},
+//	{ READY,	0,			2,			(*APP_Motor_Task)	},
 	/* Add new task here */
-	{ READY,	0,			1,			(*Task_PolityHigh)	},
+	
+#if USING_LINK
+	{ READY,	0,			0,			(*Test_Polity_High)				},	/* task 5 Period： 0ms 	 */
+#endif /* USING_LINK */
 };
+volatile unsigned char TaskQty = sizeof(Task) / sizeof(Task[0]);
 
-volatile uint8_t TaskQty = sizeof(Task) / sizeof(Task[0]);
-
-//========================================================================
-//========================================================================
-
-//========================================================================
-// 函数: Task_Handler_Callback
-// 描述: 任务标记回调函数.
-// 参数: None.
-// 返回: None.
-// 版本: V1.0, 2012-10-22
-//========================================================================
+/**
+ * @brief  Task_Marks_Handler_Callback.
+ * @note   None.
+ * @param  None.
+ * @retval None.
+ */
 void Task_Marks_Handler_Callback(void)
 {
-	static unsigned char i;
-	
-	for (i=0;i<TaskQty;i++)
+	uint8_t i;
+
+	for (i = 0; i < TaskQty; i++)
 	{
-		if(Task[i].RunTime)
+		if (Task[i].RunTime)
 			Task[i].RunTime--;
 	}
 }
 
-struct task *nodelist;
-
-//========================================================================
-// 函数: Task_Pro_Handler_Callback
-// 描述: 任务处理回调函数. 
-// 参数: None.
-// 返回: None.
-// 版本: V1.0, 2012-10-22
-//========================================================================
+/**
+ * @brief  Task_Pro_Handler_Callback.
+ * @note   None.
+ * @param  None.
+ * @retval None.
+ */
 void Task_Pro_Handler_Callback(void)
 {
 #if USING_LINK
 	uint8_t i = head->index;
-	if (i >= TaskQty);
-	else if( Task[i].RunTime == 0 && (Task[i].State == READY) )
+	if (i >= TaskQty)
+		;
+	else if (Task[i].RunTime == 0 && (Task[i].State == READY))
 	{
 		Task[i].TaskHook();
 	}
 	head = head->next;
 #else
-	static uint8_t i = 0;
-	
-	Task_PolityHigh();
-	
-	if( Task[i].RunTime == 0 && (Task[i].State == READY) )
-	{						
-		Task[i].TaskHook();
-		Task[i].RunTime = Task[i].Period;
+	static uint8_t index = 0;
+
+	if (Task[index].RunTime == 0 && (Task[index].State == READY))
+	{
+		Task[index].TaskHook();
+		Task[index].RunTime = Task[index].Period;
 	}
-	i = (i + 1) % TaskQty;
-#endif
+	index = (index + 1) % TaskQty;
+#endif /* USING_LINK */
 }
 
 #if USING_LINK
@@ -107,12 +93,13 @@ link *InitLink(link *head)
 {
 	link *P;
 
-	//创建一个首元节点，链表的头指针为head
+	// 创建一个首元节点，链表的头指针为head
 	head = (link *)malloc(sizeof(link));
 	// 对节点进行初始化
 	head->prior = head;
 	head->next = head;
 	head->index = 0;
+
 	// 声明一个指向首元节点的指针，方便后期向链表中添加新创建的节点
 	link *list = head;
 	for (int i = 1; i < TaskQty; i++)
@@ -150,9 +137,7 @@ void InsertNode(uint8_t index)
 	do
 	{
 		if (temp->index == index)
-		{
 			return;
-		}
 		temp = temp->next;
 	} while (temp != list);
 
@@ -181,7 +166,7 @@ void DelCurrentNode(void)
 
 	free(list);
 }
-#endif
+#endif /* USING_LINK */
 
 int Link_Init(void)
 {
@@ -189,6 +174,34 @@ int Link_Init(void)
 	head = InitLink(head);
 #else
 	;
-#endif
+#endif /* USING_LINK */
 	return 0;
+}
+
+/**
+ * @brief  Enable_PHTask.
+ * @note   None.
+ * @param  index.
+ * @retval None.
+ */
+void Enable_Task(uint8_t index)
+{
+	if (index >= TaskQty)
+		return;
+
+	Task[index].State = READY;
+}
+
+/**
+ * @brief  Disable_Task.
+ * @note   None.
+ * @param  index.
+ * @retval None.
+ */
+void Disable_Task(uint8_t index)
+{
+	if (index >= TaskQty)
+		return;
+
+	Task[index].State = SUSPEND;
 }

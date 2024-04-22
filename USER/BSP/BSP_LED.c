@@ -1,25 +1,38 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "BSP_Common.h"
-								   
+					   
 /* Configuration table -------------------------------------------------------*/
-const BSP_LED_CONFIG g_stLedCfg[LED_ID_MAX] = 
+#ifdef USING_LED_TIMER
+const BSP_LED_CONFIG g_stLedCfg[LED_ID_MAX] =
+#else
+const BSP_GPIO_CONFIG g_stLedCfg[LED_ID_MAX] = 
+#endif
 {
-  /******* LED_0 ***********/
-  {
-		.htim = &htim8,
-		.Channel = TIM_CHANNEL_3,
-  },
+	/******* LED_0 ***********/
+	{
+#ifdef USING_LED_TIMER
+		.htim = &htim1,
+		.Channel = TIM_CHANNEL_1,
+#else
+		.GpioPort = LED_R_PORT,
+		.GpioPin = LED_R_PIN,
+		.OutputLogic = GPIO_PIN_SET, /* Default LED OFF*/
+#endif
+	},
 	/******* LED_1 ***********/
-  {
-		.htim = &htim8,
-		.Channel = TIM_CHANNEL_4,
-  },
+	{
+#ifdef USING_LED_TIMER
+		.htim = &htim1,
+		.Channel = TIM_CHANNEL_1,
+#else
+		.GpioPort = LED_B_PORT,
+		.GpioPin = LED_B_PIN,
+		.OutputLogic = GPIO_PIN_SET, /* Default LED OFF*/
+#endif
+	},
 	/******* LED_2 ***********/
-  {
-		.htim = &htim8,
-		.Channel = TIM_CHANNEL_2,
-  },
+
 };
 
 /**
@@ -31,82 +44,110 @@ const BSP_LED_CONFIG g_stLedCfg[LED_ID_MAX] =
 void BSP_Led_Init(void)
 {
 	for (uint8_t index = 0; index < LED_ID_MAX; index++)
+	{
 		BSP_Led_Operate(index, LED_OFF);
-}
-
-/**
- * @brief  BSP_Led_DeInit.
- * @note   None.
- * @param  None.
- * @retval None.
- */
-void BSP_Led_DeInit(void)
-{
+	}
 }
 
 /**
  * @brief  BSP_Led_Operate.
  * @note   None.
- * @param  id;
- *		   		mode:
+ * @param  LedId;
+ *		  LedOpMode:
  *					LED_HOLD:
  *					LED_ON:
  *					LED_OFF:
  *					LED_TOGGLE:
  * @retval None.
  */
-void BSP_Led_Operate(uint8_t id, uint8_t mode)
+void BSP_Led_Operate(uint8_t LedId, uint8_t LedOpMode)
 {
+#ifdef USING_LED_TIMER
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
+#else
+	GPIO_TypeDef *GPIOx;
+	uint32_t GPIO_Pin;
+	GPIO_PinState PinState;
+#endif
 
-	if (id >= LED_ID_MAX)
+	if (LedId >= LED_ID_MAX)
 		return;
 
-	htim = g_stLedCfg[id].htim;
-	Channel = g_stLedCfg[id].Channel;
+#ifdef USING_LED_TIMER
+	htim = g_stLedCfg[LedId].htim;
+	Channel = g_stLedCfg[LedId].Channel;
+#else
+	GPIOx = g_stLedCfg[LedId].GpioPort;
+	GPIO_Pin = g_stLedCfg[LedId].GpioPin;
+	PinState = g_stLedCfg[LedId].OutputLogic;
+#endif
 
-	switch (mode)
+	switch (LedOpMode)
 	{
 	case LED_OFF:
-		/* Check the TIM complementary channel state */
+#ifdef USING_LED_TIMER
+/* Check the TIM complementary channel state */
 #if 0
-			if (TIM_CHANNEL_N_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
-				HAL_TIMEx_PWMN_Stop(htim, Channel);
+		if (TIM_CHANNEL_N_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
+		{
+			HAL_TIMEx_PWMN_Stop(htim, Channel);	
+		}
 #else
 		if (TIM_CHANNEL_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
+		{
 			HAL_TIM_PWM_Stop(htim, Channel);
+		}
+#endif
+#else
+		HAL_GPIO_WritePin(GPIOx, GPIO_Pin, (GPIO_PinState)(1 - PinState));
 #endif
 		break;
-
 	case LED_ON:
+#ifdef USING_LED_TIMER
+#if 0
+		if (TIM_CHANNEL_N_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
+		{
+			HAL_TIMEx_PWMN_Start(htim, Channel);
+		}
+#else
 		/* Check the TIM complementary channel state */
-#if 0
-			if (TIM_CHANNEL_N_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
-				HAL_TIMEx_PWMN_Start(htim, Channel);
-#else
 		if (TIM_CHANNEL_STATE_GET(htim, Channel) == HAL_TIM_CHANNEL_STATE_READY)
+		{
 			HAL_TIM_PWM_Start(htim, Channel);
+		}
+#endif
+#else
+		HAL_GPIO_WritePin(GPIOx, GPIO_Pin, PinState);
 #endif
 		break;
-
 	case LED_TOGGLE:
+#ifdef USING_LED_TIMER
 #if 0
-			if (TIM_CHANNEL_N_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
-				HAL_TIMEx_PWMN_Start(htim, Channel);
-			else
-				HAL_TIMEx_PWMN_Stop(htim, Channel);
+		if (TIM_CHANNEL_N_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
+		{
+			HAL_TIMEx_PWMN_Start(htim, Channel);
+		}
+		else
+		{
+			HAL_TIMEx_PWMN_Stop(htim, Channel);
+		}
 #else
 		if (TIM_CHANNEL_STATE_GET(htim, Channel) == HAL_TIM_CHANNEL_STATE_READY)
+		{
 			HAL_TIM_PWM_Start(htim, Channel);
+		}
 		else
+		{
 			HAL_TIM_PWM_Stop(htim, Channel);
+		}
+#endif
+#else
+		HAL_GPIO_TogglePin(GPIOx, GPIO_Pin);
 #endif
 		break;
-
 	case LED_HOLD:
 		break;
-
 	default:
 		break;
 	}
@@ -115,22 +156,26 @@ void BSP_Led_Operate(uint8_t id, uint8_t mode)
 /**
  * @brief  BSP_Led_Config.
  * @note   None.
- * @param  id, uiPwmOut.
+ * @param  LedId, uiPwmOut.
  * @retval None.
  */
-void BSP_Led_Config(uint8_t id, uint16_t pwmout)
+void BSP_Led_Config(uint8_t LedId, uint16_t uiPwmOut)
 {
+#ifdef USING_LED_TIMER
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
+#else
 
-	if (id >= LED_ID_MAX)
+#endif
+	if (LedId >= LED_ID_MAX)
 		return;
 
-	htim = g_stLedCfg[id].htim;
-	Channel = g_stLedCfg[id].Channel;
-	
-	/* Set duty cycle */
-	__HAL_TIM_SET_COMPARE(htim, Channel, pwmout);
-	/* Set period  */
-	/*	__HAL_TIM_SET_AUTORELOAD(htim, Period); */
+#ifdef USING_LED_TIMER
+	htim = g_stLedCfg[LedId].htim;
+	Channel = g_stLedCfg[LedId].Channel;
+	__HAL_TIM_SET_COMPARE(htim, Channel, uiPwmOut);
+/*	__HAL_TIM_SET_AUTORELOAD(htim, Period); */
+#else
+
+#endif
 }

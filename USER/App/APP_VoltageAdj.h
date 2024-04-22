@@ -1,9 +1,9 @@
+
 #ifndef __APP_VOLTAGEADJ_H
 #define __APP_VOLTAGEADJ_H
 
 #ifdef __cplusplus
-extern "C"
-{
+ extern "C" {
 #endif
 
 void APP_Voltage_Init(void);
@@ -16,5 +16,5 @@ uint8_t APP_Voltage_OptBarNum(Data_OPT opt, uint8_t num);
 #ifdef __cplusplus
 }
 #endif
-
-#endif
+  
+#endif /* __APP_VOLTAGEADJ_H */

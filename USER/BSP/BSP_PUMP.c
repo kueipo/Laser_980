@@ -33,9 +33,8 @@ void BSP_Pump_DeInit(void)
 {
 	GPIO_TypeDef	*GpioPort;
     uint32_t		GpioPin;
-    uint8_t 		index;
     
-    for (index = 0; index < PUMP_ID_MAX; index++)
+    for (uint8_t index = 0; index < PUMP_ID_MAX; index++)
     {
 		GpioPort = s_stPumpCfg[index].GpioPort;
 		GpioPin = s_stPumpCfg[index].GpioPin;
@@ -48,7 +47,7 @@ void BSP_Pump_DeInit(void)
  * @brief  BSP_Pump_Operate.
  * @note   None.
  * @param  PumpId.
- *		  PumpOpMode:
+ *		   PumpOpMode:
  *					 PUMP_OFF;
  *					 PUMP_ON;
  * @retval None.
@@ -71,15 +70,10 @@ void BSP_Pump_Operate(uint8_t PumpId, uint8_t PumpOpMode)
 		default:
 			break;
 		case PUMP_OFF:
-        {
 			BSP_Digital_Write(GpioPort, GpioPin, PinState);
 			break;
-        }
-		
         case PUMP_ON:
-        {
             BSP_Digital_Write(GpioPort, GpioPin, (GPIO_PinState)(1 - PinState));
 			break;
-        }
     }
 }

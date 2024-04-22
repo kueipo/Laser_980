@@ -10,8 +10,8 @@ typedef struct
 {
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
-}BSP_FREQUENCY_CONFIG;
-	 
+} BSP_FREQUENCY_CONFIG;
+
 void BSP_Frequency_Init(void);	 
 void BSP_Frenquency_DeInit(void);
 void BSP_Frenquency_Enable(void);

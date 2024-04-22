@@ -21,22 +21,22 @@
 #include <stdio.h>
 
 
-#define LCD_1IN54_HEIGHT 240
-#define LCD_1IN54_WIDTH 240
+#define LCD_1IN54_HEIGHT	240
+#define LCD_1IN54_WIDTH		240
 
 #define LCD_1IN54_WIDTH_Byte 240
 
 #define HORIZONTAL 0
 #define VERTICAL   1
 
-#define LCD_1IN54_CS_0	DEV_Digital_Write(DEV_CS_PIN, 0)	 
+#define LCD_1IN54_CS_0	DEV_Digital_Write(DEV_CS_PIN, 0)
 #define LCD_1IN54_CS_1	DEV_Digital_Write(DEV_CS_PIN, 1)
 	                    
 #define LCD_1IN54_RST_0	DEV_Digital_Write(DEV_RST_PIN, 0)
 #define LCD_1IN54_RST_1	DEV_Digital_Write(DEV_RST_PIN, 1)
 	                    
-#define LCD_1IN54_DC_0	DEV_Digital_Write(DEV_DC_PIN, 0);	
-#define LCD_1IN54_DC_1	DEV_Digital_Write(DEV_DC_PIN, 1);	
+#define LCD_1IN54_DC_0	DEV_Digital_Write(DEV_DC_PIN, 0);
+#define LCD_1IN54_DC_1	DEV_Digital_Write(DEV_DC_PIN, 1);
 
 
 	

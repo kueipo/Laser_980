@@ -35,6 +35,8 @@
 #define LCD_2IN_WIDTH   240 //LCD width
 #define LCD_2IN_HEIGHT  240 //LCD height
 
+#define X_SHIFT 0
+#define Y_SHIFT (320 - 240) //80
 
 #define LCD_2IN_CS_0	DEV_Digital_Write(DEV_CS_PIN, 0) 
 #define LCD_2IN_CS_1	DEV_Digital_Write(DEV_CS_PIN, 1)
@@ -47,15 +49,12 @@
 	                  
 
 void LCD_2IN_Init(void); 
-void LCD_2IN_Clear(UWORD Color);
-void LCD_2IN_Display(UBYTE *image);
-void LCD_2IN_DrawPaint(UWORD x, UWORD y, UWORD Color);
-void LCD_2IN_SetBackLight(UWORD Value);
+void LCD_2IN_Clear(uint16_t Color);
+void LCD_2IN_Display(uint8_t *image);
+void LCD_2IN_DrawPaint(uint16_t x, uint16_t y, uint16_t Color);
+void LCD_2IN_SetBackLight(uint16_t Value);
 
-void LCD_2IN_WriteData_Word(UWORD da);
-void LCD_2IN_SetCursor(UWORD X, UWORD Y);
-void LCD_2IN_SetWindow(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD  Yend);
-void LCD_2IN_ClearWindow(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend,UWORD color);
-void LCD_2IN_Write_Command(UBYTE data);
+void LCD_2IN_SetWindow(uint16_t Xstart, uint16_t Ystart, uint16_t Xend, uint16_t  Yend);
+void LCD_2IN_ClearWindow(uint16_t Xstart, uint16_t Ystart, uint16_t Xend, uint16_t Yend,uint16_t color);
 
 #endif

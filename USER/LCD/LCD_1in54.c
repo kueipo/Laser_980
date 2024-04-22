@@ -265,11 +265,13 @@ void LCD_1IN54_DisplayWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend
     UWORD i,j;
     LCD_1IN54_SetWindows(Xstart, Ystart, Xend-1 , Yend-1);
     LCD_1IN54_DC_1;
-    for (i = Ystart; i < Yend - 1; i++) {
+    for (i = Ystart; i < Yend - 1; i++) 
+	{
         Addr = Xstart + i * LCD_1IN54_WIDTH ;
-        for(j=Xstart;j<Xend-1;j++){
-          DEV_SPI_WRITE((*(Image+Addr+j)>>8)&0xff);
-          DEV_SPI_WRITE(*(Image+Addr+j));
+        for (j = Xstart; j < Xend-1; j++)
+		{
+          DEV_SPI_WRITE( (*(Image+Addr+j) >> 8) & 0xff );
+          DEV_SPI_WRITE( *(Image+Addr+j) );
         }
     }
 }

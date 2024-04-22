@@ -12,7 +12,7 @@ enum TASK_LOCAL_INDEX{
 };
 
 void Task_PolityHigh(void);
-void Enable_PHTask(uint8_t index);
+void Enable_PHTask(uint8_t index );
 
 #ifdef __cplusplus
 }

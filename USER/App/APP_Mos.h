@@ -4,13 +4,13 @@
 #ifdef __cplusplus
  extern "C" {
 #endif
-
-typedef struct
-{
-	volatile uint8_t ucTemperature;
-	volatile uint8_t ucTemperatureTH;
-	volatile bool bOverTempProtect;
-} Mos_Struct;
+ 
+typedef struct 
+{	
+	volatile uint8_t	ucTemperature;
+	volatile uint8_t	ucTemperatureTH;
+	volatile bool       bOverTempProtect;
+}Mos_Struct;
 
 void APP_Mos_Init(void);
 void APP_Mos_Task(void);
@@ -20,7 +20,8 @@ void APP_WriteMosOverTemperaturePROT(bool state);
 bool APP_IsMosTemperatureOver(void);
 
 #ifdef __cplusplus
- }
+}
 #endif
-
+  
+   
 #endif

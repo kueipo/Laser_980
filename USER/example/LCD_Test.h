@@ -6,7 +6,7 @@
 *----------------
 * |	This version:   V1.0
 * | Date        :   2020-06-09
-* | Info        :   
+* | Info        :
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documnetation files (the "Software"), to deal
@@ -49,88 +49,98 @@ void LCD_2in_test(void);
 
 void LCD_2in4_test(void);
 
-
 #ifdef __cplusplus
 #if __cplusplus
-extern "C"{
+extern "C"
+{
 #endif
 #endif /* __cplusplus */
 
-#define LCD_DEBUG    		0
-#define LCD_LOG_ERR			1
-#define LCD_LOG_INFO		0
+#define LCD_DEBUG 		0
+#define LCD_LOG_ERR 	0
+#define LCD_LOG_INFO 	0
 
 #ifndef LCD_DEBUG
-#define LCD_DEBUG    0
+	#define LCD_DEBUG 0
 #endif
 
 #ifndef LCD_LOG_PRINTF
-#ifdef RT_VER_NUM
-/* for RT-Thread platform */
-extern void rt_kprintf(const char *fmt, ...);
-#define LCD_LOG_PRINTF rt_kprintf
-#else
-#define LCD_LOG_PRINTF printf
-#endif /* RT_VER_NUM */
+	#ifdef RT_VER_NUM
+		/* for RT-Thread platform */
+		extern void rt_kprintf(const char *fmt, ...);
+		#define LCD_LOG_PRINTF rt_kprintf
+	#else
+		#define LCD_LOG_PRINTF printf
+	#endif /* RT_VER_NUM */
 #endif /* LCD_LOG_PRINTF */
 
 #if LCD_DEBUG
 	#ifdef LCD_assert
-		#undef LCD_assert
+	#undef LCD_assert
 	#endif
-	#define LCD_assert(EXPR)                                                           \
-	if (!(EXPR))                                                                   \
-	{                                                                              \
-			LCD_LOG_PRINTF("(%s) has assert failed at %s.\n", #EXPR, __FUNCTION__);        \
-			while (1);                                                                 \
-	}
+	#define LCD_assert(EXPR)                                                        \
+		if (!(EXPR))                                                                \
+		{                                                                           \
+			LCD_LOG_PRINTF("(%s) has assert failed at %s.\n", #EXPR, __FUNCTION__); \
+			while (1)                                                               \
+				;                                                                   \
+		}
 	/* debug level log */
-	#ifdef  LCD_log_d
-		#undef  LCD_log_d
+	#ifdef LCD_log_d
+	#undef LCD_log_d
 	#endif
-	#define LCD_log_d(...)           LCD_LOG_PRINTF("[D][LCD] (%s:%d) ", __FUNCTION__, __LINE__);LCD_LOG_PRINTF(__VA_ARGS__);LCD_LOG_PRINTF("\n")
+	#define LCD_log_d(...)                                           \
+		LCD_LOG_PRINTF("[D][LCD] (%s:%d) ", __FUNCTION__, __LINE__); \
+		LCD_LOG_PRINTF(__VA_ARGS__);                                 \
+		LCD_LOG_PRINTF("\n")
 #else
 	#ifdef LCD_assert
-		#undef LCD_assert
+	#undef LCD_assert
 	#endif
-	#define LCD_assert(EXPR)                   ((void)0);
+	#define LCD_assert(EXPR) ((void)0);
 
 	/* debug level log */
-	#ifdef  LCD_log_d
-		#undef  LCD_log_d
+	#ifdef LCD_log_d
+		#undef LCD_log_d
 	#endif
 	#define LCD_log_d(...)
 #endif /* LCD_DEBUG */
 
 #ifndef LCD_LOG_ERR
-	#define LCD_LOG_ERR    0
+	#define LCD_LOG_ERR 0
 #endif
 #if LCD_LOG_ERR
 	/* error level log */
-	#ifdef  LCD_log_err
-		#undef  LCD_log_err
+	#ifdef LCD_log_err
+	#undef LCD_log_err
 	#endif
-	#define LCD_log_err(...)          LCD_LOG_PRINTF("\033[31;22m[E][LCD] (%s:%d) ", __FUNCTION__, __LINE__);LCD_LOG_PRINTF(__VA_ARGS__);LCD_LOG_PRINTF("\033[0m\n")
+	#define LCD_log_err(...)                                                    \
+		LCD_LOG_PRINTF("\033[31;22m[E][LCD] (%s:%d) ", __FUNCTION__, __LINE__); \
+		LCD_LOG_PRINTF(__VA_ARGS__);                                            \
+		LCD_LOG_PRINTF("\033[0m\n")
 #else
 	/* error level log */
-	#ifdef  LCD_log_err
-		#undef  LCD_log_err
+	#ifdef LCD_log_err
+	#undef LCD_log_err
 	#endif
 	#define LCD_log_err(...)
 #endif
 
 #ifndef LCD_LOG_INFO
-	#define LCD_LOG_INFO    0
+	#define LCD_LOG_INFO 0
 #endif
 #if LCD_LOG_INFO
 	/* info level log */
-	#ifdef  LCD_log_info
-		#undef  LCD_log_info
+	#ifdef LCD_log_info
+		#undef LCD_log_info
 	#endif
-	#define LCD_log_info(...)         LCD_LOG_PRINTF("\033[32;22m[I][LCD] ");LCD_LOG_PRINTF(__VA_ARGS__);LCD_LOG_PRINTF("\033[0m\n")
+	#define LCD_log_info(...)                   \
+		LCD_LOG_PRINTF("\033[32;22m[I][LCD] "); \
+		LCD_LOG_PRINTF(__VA_ARGS__);            \
+		LCD_LOG_PRINTF("\033[0m\n")
 #else
-	#ifdef  LCD_log_info
-		#undef  LCD_log_info
+	#ifdef LCD_log_info
+		#undef LCD_log_info
 	#endif
 	#define LCD_log_info(...)
 #endif

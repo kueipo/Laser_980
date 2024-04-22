@@ -1,53 +1,37 @@
 #include "sys.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//±¾³ÌÐòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßÐí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
-//ALIENTEK STM32F429¿ª·¢°å
-//ÏµÍ³Ê±ÖÓ³õÊ¼»¯	
-//°üÀ¨Ê±ÖÓÉèÖÃ/ÖÐ¶Ï¹ÜÀí/GPIOÉèÖÃµÈ
-//ÕýµãÔ­×Ó@ALIENTEK
-//¼¼ÊõÂÛÌ³:www.openedv.com
-//´´½¨ÈÕÆÚ:2016/1/5
-//°æ±¾£ºV1.0
-//°æÈ¨ËùÓÐ£¬µÁ°æ±Ø¾¿¡£
-//Copyright(C) ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾ 2014-2024
-//All rights reserved
-//********************************************************************************
-//ÐÞ¸ÄËµÃ÷
-//ÎÞ
-////////////////////////////////////////////////////////////////////////////////// 
 
-#ifdef  USE_FULL_ASSERT
-//µ±±àÒëÌáÊ¾³ö´íµÄÊ±ºò´Ëº¯ÊýÓÃÀ´±¨¸æ´íÎóµÄÎÄ¼þºÍËùÔÚÐÐ
-//file£ºÖ¸ÏòÔ´ÎÄ¼þ
-//line£ºÖ¸ÏòÔÚÎÄ¼þÖÐµÄÐÐÊý
-//void assert_failed(uint8_t* file, uint32_t line)
-//{ 
+#ifdef USE_FULL_ASSERT
+// å½“ç¼–è¯‘æç¤ºå‡ºé”™çš„æ—¶å€™æ­¤å‡½æ•°ç”¨æ¥æŠ¥å‘Šé”™è¯¯çš„æ–‡ä»¶å’Œæ‰€åœ¨è¡Œ
+// fileï¼šæŒ‡å‘æºæ–‡ä»¶
+// lineï¼šæŒ‡å‘åœ¨æ–‡ä»¶ä¸­çš„è¡Œæ•°
+// void assert_failed(uint8_t* file, uint32_t line)
+//{
 //	while (1)
 //	{
 //	}
-//}
+// }
 #endif
 
-//THUMBÖ¸Áî²»Ö§³Ö»ã±àÄÚÁª
-//²ÉÓÃÈçÏÂ·½·¨ÊµÏÖÖ´ÐÐ»ã±àÖ¸ÁîWFI  
+//THUMBæŒ‡ä»¤ä¸æ”¯æŒæ±‡ç¼–å†…è”
+//é‡‡ç”¨å¦‚ä¸‹æ–¹æ³•å®žçŽ°æ‰§è¡Œæ±‡ç¼–æŒ‡ä»¤WFI  
 __asm void WFI_SET(void)
 {
 	WFI;		  
 }
-//¹Ø±ÕËùÓÐÖÐ¶Ï(µ«ÊÇ²»°üÀ¨faultºÍNMIÖÐ¶Ï)
+//å…³é—­æ‰€æœ‰ä¸­æ–­(ä½†æ˜¯ä¸åŒ…æ‹¬faultå’ŒNMIä¸­æ–­)
 __asm void INTX_DISABLE(void)
 {
 	CPSID   I
 	BX      LR	  
 }
-//¿ªÆôËùÓÐÖÐ¶Ï
+//å¼€å¯æ‰€æœ‰ä¸­æ–­
 __asm void INTX_ENABLE(void)
 {
 	CPSIE   I
 	BX      LR  
 }
-//ÉèÖÃÕ»¶¥µØÖ·
-//addr:Õ»¶¥µØÖ·
+//è®¾ç½®æ ˆé¡¶åœ°å€
+//addr:æ ˆé¡¶åœ°å€
 __asm void MSR_MSP(u32 addr) 
 {
 	MSR MSP, r0 			//set Main Stack value

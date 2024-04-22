@@ -1,3 +1,4 @@
+
 #ifndef __APP_PUMP_H
 #define __APP_PUMP_H
 
@@ -7,9 +8,9 @@
 
 typedef enum
 {
-    PUMP_CURRENT   = 0x00,
+  PUMP_CURRENT   = 0x00,
 	PUMP_VOLTAGE,
-    PUMP_TASK_MAX,
+  PUMP_TASK_MAX,
 }ENUM_PUMP_MODLE_BSP;
 
 typedef struct 
@@ -29,7 +30,5 @@ uint8_t APP_ReadPumpCurrent(void);
 #ifdef __cplusplus
 }
 #endif
-  
-   
-#endif
 
+#endif /* __APP_PUMP_H */

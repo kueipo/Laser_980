@@ -1,17 +1,21 @@
 #ifndef __COMMON_TASK_H
 #define __COMMON_TASK_H
 
-#include "APP/APP_Common.h"
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
+#include "APP/APP_Common.h"
 #include "Task/Task_FanFB.h"
 #include "Task/Task_Console.h"
+#include "Task/Task_Display.h"
+#include "Task/Task_PolityHigh.h"
+//#include "Task/Task_SendData.h"
 #include "Task/Task_FeedBack.h"
-#include "Task/Task_FB_Protect.h"
-#include "Task/Task_Protect.h"
+#include "Task/Task.h"
 #include "Task/Task_HeartbeatMessage.h"
 #include "Task/Task_DeviceDetection.h"
-#include "Task/Task_DeviceRun.h"
-
+	 
 //#include "Task_Safeguard.h"
 //#include "Task_Control.h"
 //#include "Task_Mem.h"
@@ -21,7 +25,7 @@
 //#include "Task_GPRS.h"
 //#include "Task_COM.h"
 //#include "Task_HCI.h"
-
+//
 //#define TASK0                         SG_Task
 //#define TASK1                         Contrl_Task
 //#define TASK2                         Mem_Task
@@ -31,47 +35,47 @@
 //#define TASK6                         HCI_Task
 //#define TASK7                         Idle_Task
 //
-///////////////////ÏµÍ³Ö÷ÈÎÎñ///////////////////
+///////////////////ç³»ç»Ÿä¸»ä»»åŠ¡///////////////////
 //#define SG                            0    
 //#define SG_LOW_VOLT_DETECT            0
-///////////////////¿ØÖÆÖ÷ÈÎÎñ///////////////////
+///////////////////æ§åˆ¶ä¸»ä»»åŠ¡///////////////////
 //#define CONTROL                       1
 //#define CONTROL_CHARGE_OPEN           0
 //#define CONTROL_CHARGE_CLOSE          1
-///////////////////´æ´¢Ö÷ÈÎÎñ///////////////////
+///////////////////å­˜å‚¨ä¸»ä»»åŠ¡///////////////////
 //#define MEM                           2      
 //#define MEM_WRITE_SOLID               0
 //#define MEM_WRITE_SUBSOLID            1
 //#define MEM_READ_SOLID                2
 //#define MEM_READ_SUBSOLID             3
 
-///////////////////´«¸ĞÆ÷Ö÷ÈÎÎñ///////////////////
+///////////////////ä¼ æ„Ÿå™¨ä¸»ä»»åŠ¡///////////////////
 //#define SENSOR                        3   
 //#define SENSOR_NTC                    0
-///////////////////GPRSÖ÷ÈÎÎñ///////////////////
+///////////////////GPRSä¸»ä»»åŠ¡///////////////////
 //#define GPRS                          4  
 //#define GPRS_CMD_PROC                 0
 //#define GPRS_STATE_PROC               1
 //#define GPRS_DECODE                   2
-///////////////////COMÖ÷ÈÎÎñ///////////////////
+///////////////////COMä¸»ä»»åŠ¡///////////////////
 //#define COM                           5  
 //#define COM_STATE_PROC                0
-///////////////////HCIÖ÷ÈÎÎñ///////////////////
+///////////////////HCIä¸»ä»»åŠ¡///////////////////
 //#define HCI                           6 
 //#define HCI_KEY                       0
 //#define HCI_LED                       1
 //#define HCI_BEEP                      2
-///////////////////IDLEÖ÷ÈÎÎñ///////////////////
+///////////////////IDLEä¸»ä»»åŠ¡///////////////////
 //#define IDLE                          7
 //#define IDLE_SUBTASK0                 0
 
 //typedef struct
 //{
-//    uint8_t (*function)(uint8_t m_Event);//´ø²ÎÊıµÄº¯ÊıÖ¸Õë ÓÃÓÚÖ´ĞĞÈÎÎñº¯Êı
+//    uint8_t (*function)(uint8_t m_Event);//å¸¦å‚æ•°çš„å‡½æ•°æŒ‡é’ˆ ç”¨äºæ‰§è¡Œä»»åŠ¡å‡½æ•°
 //}Task_Type;
 
-//extern uint8_t g_Maintask;        //ÏµÍ³Ö÷ÈÎÎñ
-//extern uint8_t ga_Subtask[8];     //ÏµÍ³×ÓÈÎÎñ
+//extern uint8_t g_Maintask;        //ç³»ç»Ÿä¸»ä»»åŠ¡
+//extern uint8_t ga_Subtask[8];     //ç³»ç»Ÿå­ä»»åŠ¡
 
 
 //extern Task_Type  Task_Struct[8];
@@ -80,6 +84,8 @@
 //void Set_Task(uint8_t main_task,uint8_t sub_task);
 //void Clr_Task(uint8_t main_task,uint8_t sub_task);
 //uint8_t clear_task(uint8_t prio , uint8_t m_SYS_SubTask_prio);
-void Task_TimeProc(uint8_t ucPeriod);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

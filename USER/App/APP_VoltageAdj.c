@@ -10,19 +10,20 @@
 /* Function prototypes -------------------------------------------------------*/
 
 /* Variables -----------------------------------------------------------------*/
+
 /*
- *	V = (2.5/4095)*N*(8.2/108.2)
+ *	V = (2.5/4095)*N*(108.2/8.2)
  *	VoltageADC = V/8
  *	-0.3V
  */
 const uint16_t VoltageADC[] = 
 {
 /*	1900V		 */
-	2412, 2437, 15, \
+	2480, 2510, 15, \
 /*	2300V		 */	
-	2850, 2870, 35, \
+	2850, 2880, 35, \
 /*	2700V		 */	
-	3350, 3370, 40,
+	3326, 3356, 255,
 };
 static const uint8_t VoltageAdcNumber = sizeof(VoltageADC) / sizeof(VoltageADC[0]);
 
@@ -32,8 +33,9 @@ typedef struct
 	__IO uint16_t	usTH_H;
 	__IO uint16_t	usSetVal;
 	__IO uint16_t	usMaxVal;
+	__IO uint16_t	usAdc;
 	__IO uint8_t	ucBarNum;
-	__IO bool		bError;
+	__IO bool	bError;
 	
 }VolAdj_Struct;
 
@@ -49,9 +51,9 @@ VolAdj_Struct s_stVolAdjTcb = {0};
 void APP_Voltage_Init(void)
 {
 	uint8_t tmp;
-//	s_stVolAdjTcb.usTH_L = VoltageADC[0];
-//	s_stVolAdjTcb.usTH_H = VoltageADC[1];
-//	s_stVolAdjTcb.usMaxVal = VoltageADC[2];
+	s_stVolAdjTcb.usTH_L = VoltageADC[0];
+	s_stVolAdjTcb.usTH_H = VoltageADC[1];
+	s_stVolAdjTcb.usMaxVal = VoltageADC[2];
 	s_stVolAdjTcb.usSetVal = 0;
 	s_stVolAdjTcb.bError = true;
 
@@ -66,7 +68,7 @@ void APP_Voltage_Init(void)
 	}
 	else
 	{
-		tmp = 12;
+		tmp = 14;
 		s_stVolAdjTcb.ucBarNum = tmp;
 		ef_set_env_blob(BAR_FLAG, &tmp, sizeof(tmp));
 	}
@@ -145,51 +147,66 @@ void APP_VoltageConfig(uint8_t num)
  */
 void APP_Voltage_Task(void)
 {
-	uint16_t PumpVolADC = BSP_ReadADCVal(V27_VOL_CHNL);
+	static bool delayflag = false;
+	uint16_t volADC = BSP_ReadADCVal(V27_VOL_CHNL);
 	uint16_t threshold_H = s_stVolAdjTcb.usTH_H;
 	uint16_t threshold_L = s_stVolAdjTcb.usTH_L;
 
 	/* Laser is Running, return */
 	if (APP_IsLaserRunning())
-		return;
+	{
+		delayflag = false;
+		goto __exit;
+	}
+
+	if (delayflag == false)
+	{
+		delayflag = true;
+		goto __exit;
+	}
 
 	s_stVolAdjTcb.bError = true;
 
-	/* voltage over */
-	if (PumpVolADC > threshold_H)
+	s_stVolAdjTcb.usAdc += volADC;
+	s_stVolAdjTcb.usAdc >>= 1;
+
+	/* Voltage Over */
+	if (s_stVolAdjTcb.usAdc > threshold_H)
 	{
 		if (s_stVolAdjTcb.usSetVal)
 		{
 			s_stVolAdjTcb.usSetVal--;
-			goto refreshVoltage;
+			goto __refreshVoltage;
 		}
 		else
 		{
-			/* error:voltage over */
+			/* Error:Voltage Over */
 		}
 	}
-	/* voltage low */
-	else if (PumpVolADC < threshold_L)
+	/* Voltage Low */
+	else if (s_stVolAdjTcb.usAdc < threshold_L)
 	{
 		if (s_stVolAdjTcb.usSetVal < s_stVolAdjTcb.usMaxVal)
 		{
 			s_stVolAdjTcb.usSetVal++;
-			goto refreshVoltage;
+			goto __refreshVoltage;
 		}
 		else
 		{
-			/* error:voltage low */
+			/* Error:Voltage Low */
 		}
 	}
-	/* voltage OK */
+	/* Voltage OK */
 	else
 	{
 		s_stVolAdjTcb.bError = false;
 	}
-	return;
+	goto __exit;
 
-refreshVoltage:
+__refreshVoltage:
 	APP_VoltageAdj(s_stVolAdjTcb.usSetVal);
+__exit:
+	return;
 }
 
 /**

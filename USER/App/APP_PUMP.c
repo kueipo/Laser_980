@@ -22,6 +22,7 @@ __IOM PumpModel_Struct s_stPumpTcb;
 void APP_Pump_Init(void)
 {
 	memset((uint8_t*)&s_stPumpTcb, 0, sizeof(s_stPumpTcb));
+	s_stPumpTcb.bState = false;
 }
 
 /**
@@ -35,14 +36,12 @@ void APP_Pump_Init(void)
 	switch (index)
 	{
 		case PUMP_CURRENT:   
-		{
 			s_stPumpTcb.ucCurrent = PumpCurrent_Detection();
-		}break; 
+			break; 
             
 		case PUMP_VOLTAGE:   
-		{
 			s_stPumpTcb.uiVoltage = PumpVoltage_Detection();
-		}break; 
+			break; 
            
 		default:
 			break;
@@ -109,7 +108,7 @@ void APP_Pump_Config(bool bState)
 		if (s_stPumpTcb.bState == false)
 		{
 			/* delay */
-			APP_WaterSpeedSetDelay(2);
+			APP_WaterSpeedInit(5);
 			
 			BSP_Pump_Operate(PUMP_0, PUMP_ON);
 		}

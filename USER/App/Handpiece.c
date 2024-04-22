@@ -9,7 +9,7 @@
 //========================================================================
 typedef struct {
 	uint8_t spot;
-	bool redlight;
+	bool	redlight;
 } Handpiece_TypeDef;
 Handpiece_TypeDef Handpiece;
 //========================================================================

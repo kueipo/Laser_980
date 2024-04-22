@@ -2,22 +2,22 @@
 
 /*****************************************************************************
 Function name : 
-Description:    ∂® ±∆˜÷–∂œªÿµ˜∫Ø ˝
+Description:    ÂÆöÊó∂Âô®‰∏≠Êñ≠ÂõûË∞ÉÂáΩÊï∞
 Author:
 Input:
 Return:
 ******************************************************************************/
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //{
-//	if(htim->Instance == g_stTimCfg[TIM_CHNL_TIME_BASE].huart.Instance)
-//	{
-//		APP_TimeProc(1);
-//	}
+//    if(htim->Instance == g_stTimCfg[TIM_CHNL_TIME_BASE].huart.Instance)
+//    {
+//        APP_TimeProc(1);
+//    }
 //}
 
 /*****************************************************************************
 Function name : 
-Description:    key¥¶¿Ìªÿµ˜∫Ø ˝
+Description:    keyÂ§ÑÁêÜÂõûË∞ÉÂáΩÊï∞
 Author:
 Input:
 Return:
@@ -25,29 +25,26 @@ Return:
 void HCI_KeyProcCallback(uint8_t trigger)
 {
 #if 0
-	switch (trigger)
-	{
-	case SHOURT_PRO:
-	{
-		printf("short");
-	}
-	break;
+    switch(trigger)
+    {
+    	case SHOURT_PRO:
+        {
+			printf("short");
+        }break;
 
-	case LONG_PRO:
-	{
-		printf("long");
-	}
-	break;
-
-	case DOUBLE_PRO:
-	{
-		printf("double");
-	}
-	break;
-
-	case NO_PRO:
-	default:
-		break;
+		case LONG_PRO:
+		{
+			printf("long");
+		}break;
+			 			 
+        case DOUBLE_PRO:
+        {
+			printf("double");
+        }break;
+		
+        case NO_PRO:
+	    default:
+			 break;
 	}
 #else
 	UNUSED(trigger);

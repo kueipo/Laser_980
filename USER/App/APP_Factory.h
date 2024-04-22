@@ -6,7 +6,7 @@
 #endif
 
 void APP_Factory_Init(void);
-void APP_FactoryLaser(bool state);
+void APP_FactoryLaser(bool bState);
 bool APP_IsFactory(void);
 
 #ifdef __cplusplus

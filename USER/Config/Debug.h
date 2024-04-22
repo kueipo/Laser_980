@@ -1,7 +1,7 @@
 /*****************************************************************************
 * | File      	:	Debug.h
 * | Author      :   Waveshare team
-* | Function    :	debug with prntf
+* | Function    :	debug with printf
 * | Info        :
 *   Image scanning
 *      Please use progressive scanning to generate images or fonts
@@ -16,11 +16,11 @@
 
 #include "stdio.h"
 
-#define DEV_DEBUG 1
+#define DEV_DEBUG 0
 #if DEV_DEBUG
 	#define Debug(__info,...) printf("Debug : " __info,##__VA_ARGS__)
 #else
-	#define DEBUG(__info,...)  
+	#define Debug(...) 
 #endif
 
 #endif

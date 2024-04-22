@@ -5,7 +5,7 @@
 /* Private variables ---------------------------------------------------------*/
 enum
 {
-	STATE_REG = 0,/* Status register */
+	STATE_REG = 0,	/* Status register */
 	CHECK_REG,		/* Detection register */
 	VOL_P_REG_1,	/* Voltage parameter register */
 	VOL_P_REG_2,
@@ -26,9 +26,9 @@ enum
 	POW_REG_2,
 	POW_REG_3,
 	DAT_UPD_REG,	/* Data update register */
-	PF_REG_1,			/* Number of PF pulses，Used with status register */
+	PF_REG_1,		/* Number of PF pulses，Used with status register */
 	PF_REG_2,
-	CHK_REG,			/* Checksum */
+	CHK_REG,		/* Checksum */
 };
 
 typedef struct
@@ -74,7 +74,7 @@ void Voltage_Extract(void* arg, uint8_t size)
 			/* Status bit */
 			if (data[STATE_REG] != 0xAA)
 			{					
-				if (data[STATE_REG] == 0x55 || (data[STATE_REG] & 0xF9) == 0xf0)
+				if (data[STATE_REG] == 0x55 || (data[STATE_REG]&0xF9) == 0xf0)
 				{
 					/* Updated */
 					if ( (data[DAT_UPD_REG]&0x40) )

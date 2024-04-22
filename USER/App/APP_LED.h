@@ -1,13 +1,20 @@
 #ifndef __APP_LED_H
 #define __APP_LED_H
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#define LED_RED				LED_0
+#define LED_BLUE			LED_1
+
 /*****************************************************************************
 Function name : APP_LED_LightDarkConfig
-Description: APP LEDƒ£øÈ≈‰÷√∫Ø ˝£¨Õ®π˝µ˜”√∏√∫Ø ˝¿¥≤Ÿ◊˜LED µœ÷∏˜÷÷π¶ƒ‹°£
+Description: APP LEDÊ®°ÂùóÈÖçÁΩÆÂáΩÊï∞ÔºåÈÄöËøáË∞ÉÁî®ËØ•ÂáΩÊï∞Êù•Êìç‰ΩúLEDÂÆûÁé∞ÂêÑÁßçÂäüËÉΩ„ÄÇ
 Input: 
-       LedId->LEDµƒ±‡∫≈;
-       OpMode->≤Ÿ◊˜ƒ£ Ω APP_LED_OFF/APP_LED_ON;
-       usTimeOut->µ±OpMode—°‘ÒAPP_LED_ON ±£¨¡¡µ∆µƒ ±º‰ ~0±Ì æ“ª÷±¡¡µ∆;
+       LedId->LEDÁöÑÁºñÂè∑;
+       OpMode->Êìç‰ΩúÊ®°Âºè APP_LED_OFF/APP_LED_ON;
+       usTimeOut->ÂΩìOpModeÈÄâÊã©APP_LED_ONÊó∂Ôºå‰∫ÆÁÅØÁöÑÊó∂Èó¥ ~0Ë°®Á§∫‰∏ÄÁõ¥‰∫ÆÁÅØ;
 Return: NONE     
 Notes:
 ******************************************************************************/
@@ -16,46 +23,54 @@ Notes:
 
 /*****************************************************************************
 Function name : APP_LED_FlickerConfig
-Description: APP LEDƒ£øÈ≈‰÷√∫Ø ˝£¨Õ®π˝µ˜”√∏√∫Ø ˝¿¥≤Ÿ◊˜LED µœ÷∏˜÷÷π¶ƒ‹°£
+Description: APP LEDÊ®°ÂùóÈÖçÁΩÆÂáΩÊï∞ÔºåÈÄöËøáË∞ÉÁî®ËØ•ÂáΩÊï∞Êù•Êìç‰ΩúLEDÂÆûÁé∞ÂêÑÁßçÂäüËÉΩ„ÄÇ
 Input:
-       LedId->LEDµƒ±‡∫≈;
-       usPeriod->µ±OpMode—°‘ÒAPP_LED_FLASH ±£¨…¡À∏µƒ÷‹∆⁄;
-       ucTime->µ±OpMode—°‘ÒAPP_LED_FLASH ±£¨…¡À∏µƒ¥Œ ˝ucTimeŒ™uint8_t¿‡–Õ£¨»°÷µ255±Ì æ“ª÷±…¡À∏;
+       LedId->LEDÁöÑÁºñÂè∑;
+       usPeriod->ÂΩìOpModeÈÄâÊã©APP_LED_FLASHÊó∂ÔºåÈó™ÁÉÅÁöÑÂë®Êúü;
+       ucTime->ÂΩìOpModeÈÄâÊã©APP_LED_FLASHÊó∂ÔºåÈó™ÁÉÅÁöÑÊ¨°Êï∞ucTime‰∏∫uint8_tÁ±ªÂûãÔºåÂèñÂÄº255Ë°®Á§∫‰∏ÄÁõ¥Èó™ÁÉÅ;
 Return: NONE     
 Notes:
 ******************************************************************************/
 
 #define APP_LED_FlickerConfig(LedId, usPeriod, ucTime)      APP_LED_Config(LedId, APP_LED_FLASH, 0, usPeriod, ucTime)
 
-#define APP_LED_GREEN	LED_0   
+
+#define APP_LED_RED		LED_0   
 #define APP_LED_BLUE	LED_1 
-#define APP_LED_RED		LED_2 
+//#define APP_LED_GREEN		LED_2
 
 /* LED Option Tag */
-typedef enum
+typedef enum 
 {
-	APP_LED_OFF = 0,
-	APP_LED_ON,
-	APP_LED_FLASH,
-} APP_LED_OpMode_Tag;
+    APP_LED_OFF = 0,
+    APP_LED_ON,
+    APP_LED_FLASH,
 
-/* LED tcb */
+}APP_LED_OpMode_Tag;
+    
+
+/* LED tcb */     
 typedef struct
 {
-	volatile uint8_t OpMode;
-	volatile uint16_t usTimeCnt;
-	volatile uint16_t usTimeOut;
-	volatile uint16_t usPeriod;
-	volatile uint16_t usDelayCnt;
-	volatile uint8_t ucTimes;
-	volatile uint8_t HWState; /* LED status */
-} APP_LED_TB;
+    volatile uint8_t  OpMode;
+    volatile uint16_t usTimeCnt;
+    volatile uint16_t usTimeOut;
+    volatile uint16_t usPeriod;
+    volatile uint16_t usDelayCnt;
+    volatile uint8_t  ucTimes;
+    volatile uint8_t  HWState; /* LED status */
 
-void APP_LED_TimeProc(uint16_t period);
+}APP_LED_TB;
+
+void APP_LED_TimeProc(uint16_t usPeriod);
 void APP_LED_Init(void);
-void APP_LED_Task(void);
-void APP_LED_Config(uint8_t id, uint8_t mode, uint16_t timeout, uint16_t period, uint8_t times);
-void APP_LED_AllConfig(uint8_t OpMode, uint16_t usTimeOut, uint16_t usPeriod, uint8_t ucTimes);
-void APP_LED_ConfigColor(uint8_t red, uint8_t green, uint8_t blue);
+void APP_LED_Task(void);  
+void APP_LED_Config(uint8_t LedId, uint8_t OpMode, uint16_t usTimeOut, uint16_t usPeriod, uint8_t ucTime);
 
+#ifdef __cplusplus
+}
 #endif
+  
+   
+#endif
+

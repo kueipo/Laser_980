@@ -1,13 +1,17 @@
 #ifndef __BSP_KEY_H__
 #define __BSP_KEY_H__
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 /* KEY Num */
 typedef enum
 {
-	KEY_0,
+    KEY_0    = 0x00,
 	KEY_1,
-	
-	KEY_ID_MAX,
+    KEY_ID_MAX,
+
 }ENUM_KEY_CHNL_BSP;
 
 /*************KEY ****************/	   
@@ -19,6 +23,12 @@ typedef enum
 
 void BSP_Key_Init(void);
 void BSP_Key_DeInit(void);
-uint8_t BSP_ReadKeyValue(uint8_t id);
+uint8_t BSP_ReadKeyValue(uint8_t KeyId);
+
+#ifdef __cplusplus
+}
+#endif 
 
 #endif
+
+

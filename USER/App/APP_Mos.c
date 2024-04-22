@@ -2,13 +2,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "APP/APP_Common.h"
 
-/* Private variables ---------------------------------------------------------*/
 __IOM Mos_Struct s_stMosTcb;
 
-/* Private function prototypes -----------------------------------------------*/
 static uint8_t MosTemperature_Detection(void);
 
-/* Code ----------------------------------------------------------------------*/
 /**
  * @brief  APP_Mos_Init.
  * @note   None.
@@ -50,10 +47,8 @@ static uint8_t MosTemperature_Detection(void)
 	temperature = Vref * temperature;	
 #endif
 	
-	static uint16_t Data[4] = {0};
 	uint8_t index = 0xFF;
 	uint16_t temp = BSP_ReadADCVal(MOS_TEMP_CHL);
-	temp = MiddleAverageValueFilter(temp, Data, 4);
 	
 	for (index = 0; index < TEMP_TABLES_LENGTH; index++)
 	{
@@ -110,4 +105,3 @@ bool APP_IsMosTemperatureOver(void)
 	else
 		return false;
 }
-

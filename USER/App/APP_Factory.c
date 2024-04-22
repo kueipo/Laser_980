@@ -1,14 +1,10 @@
 
 #include "APP/APP_Common.h"
 
-#define LASER_TEST_ID		DAC_1
-
 typedef struct 
 {
 	__IO bool	bLaserRun;
-
 }FactoryMDL_Struct;
-
 FactoryMDL_Struct s_stFactoryTcb =
 {
 	.bLaserRun = false,
@@ -22,7 +18,7 @@ FactoryMDL_Struct s_stFactoryTcb =
  */
 void APP_Factory_Init(void)
 {
-	s_stFactoryTcb.bLaserRun = false;
+  s_stFactoryTcb.bLaserRun = false;
 }
 
 /**
@@ -31,23 +27,19 @@ void APP_Factory_Init(void)
  * @param  bState.
  * @retval None.
  */
-void APP_FactoryLaser(bool state)
+void APP_FactoryLaser(bool bState)
 {
-	if (state)
-	{
-//	BSP_DAC_Config(LASER_TEST_ID, 5);
-		
-		APP_Laser_WriteMode(false);
-		
-		s_stFactoryTcb.bLaserRun = true;
-	}
-	else
-	{
-		
-		APP_Laser_WriteMode(true);
-		
-		s_stFactoryTcb.bLaserRun = false;
-	}
+  if (bState)
+  {
+    BSP_Power_Config(5);
+    s_stFactoryTcb.bLaserRun = true;
+
+    BSP_Frenquency_Config(10000, 10000 + 1);
+  }
+  else
+  {
+    s_stFactoryTcb.bLaserRun = false;
+  }
 }
 
 /**
@@ -58,5 +50,5 @@ void APP_FactoryLaser(bool state)
  */
 bool APP_IsFactory(void)
 {
-	return s_stFactoryTcb.bLaserRun;
+  return s_stFactoryTcb.bLaserRun;
 }

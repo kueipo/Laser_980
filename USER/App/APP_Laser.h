@@ -1,22 +1,19 @@
 #ifndef __APP_LASER_H
 #define __APP_LASER_H
 
+typedef struct 
+{
+	volatile uint16_t high;
+	volatile uint16_t low;
+} ThresholdTypeDef;
+
 void APP_Laser_Init(void);
-void APP_Laser_WriteFrequency(uint8_t fenquency);
-uint8_t APP_Laser_ReadFrequency(void);
-bool APP_Laser_WritePulse(uint8_t level);
-uint8_t APP_LaserReadPulse(void);
-bool APP_Laser_WriteEnergy(uint8_t energy);
-uint8_t APP_Laser_ReadEnergy(void);
-void APP_Laser_WriteMode(bool state);
-bool APP_Laser_ReadPulseMode(void);
-void APP_Laser_EnergyReady(bool state);
-void APP_Laser_OutEnable(bool state);
-
-bool APP_Laser_WritePulseWidth(uint16_t pulsewidth);
-uint16_t APP_LaserReadPulseWidth(void);
-
-bool APP_Laser_IndicatorWriteEnergy(uint8_t energy);
-uint8_t APP_Laser_IndicatorReadEnergy(void);
+void APP_LaserOutEnable(bool bState);
+void APP_Laser_WritePulseWidth(uint16_t width);
+uint16_t APP_Laser_ReadPulseWidth(void);
+void APP_Laser_WriteCurThreshold(uint16_t high, uint16_t low);
+ThresholdTypeDef * APP_Laser_ReadCurThreshold(void);
+void APP_Laser_WriteVolThreshold(uint16_t high, uint16_t low);
+ThresholdTypeDef * APP_Laser_ReadVolThreshold(void);
 
 #endif

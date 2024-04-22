@@ -1,3 +1,4 @@
+
 #ifndef __APP_POWER_H
 #define __APP_POWER_H
 
@@ -11,4 +12,4 @@ void APP_PowerConfig(uint8_t powerval);
 }
 #endif
   
-#endif
+#endif /* __APP_POWER_H */

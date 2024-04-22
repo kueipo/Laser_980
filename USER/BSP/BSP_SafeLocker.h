@@ -8,8 +8,8 @@
 /* SAFE LOCKER Num */
 typedef enum
 {
-	LOCKER_0    = 0x00,
-	LOCKER_ID_MAX,
+    LOCKER_0    = 0x00,
+    LOCKER_ID_MAX,
 
 }ENUM_LOCK_CHNL_BSP;
 
@@ -19,10 +19,12 @@ typedef enum
      
 void BSP_SafeLocker_Init(void);
 void BSP_SafeLocker_DeInit(void);
-uint8_t BSP_SafeLockerValue(uint8_t id);
+uint8_t BSP_SafeLockerValue(uint8_t LockerId);
 
 #ifdef __cplusplus
 }
 #endif 
 
 #endif
+
+

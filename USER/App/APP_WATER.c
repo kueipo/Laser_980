@@ -2,16 +2,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "APP/APP_Common.h"
 
+/* Define --------------------------------------------------------------------*/
+#define WATER_SPEED_TH	20
+
 __IOM WaterModel_Struct s_stWaterTcb;
 
 static uint8_t WaterTemperature_Detection(void);
 
-/**
- * @brief  APP_Water_Init.
- * @note   None.
- * @param  None.
- * @retval None.
- */
 void APP_Water_Init(void)
 {
 	memset((uint8_t *)&s_stWaterTcb, 0, sizeof(s_stWaterTcb));
@@ -26,36 +23,36 @@ void APP_Water_Init(void)
 	s_stWaterTcb.bLevelProtect = true;
 }
 
-/**
- * @brief  APP_Water_Task.
- * @note   None.
- * @param  None.
- * @retval None.
- */
 void APP_Water_Task(void)
 {
 	static uint8_t index = 0;
 	switch (index)
 	{
 	case WATER_LEVEL:
+	{
 		s_stWaterTcb.ucLevel = BSP_ReadWaterLevel();
-		break;
+	}
+	break;
 
 	case WATER_TEMPERATURE:
+	{
 		s_stWaterTcb.ucTemperature = WaterTemperature_Detection();
-		break;
+	}
+	break;
 
 	case WATER_SPEED:
+	{
 		if (s_stWaterTcb.ucSpeedDelay)
 		{
 			s_stWaterTcb.ucSpeedDelay--;
-			s_stWaterTcb.uiSpeed = 25;
+			s_stWaterTcb.uiSpeed = WATER_SPEED_TH;
 		}
 		else
 		{
 			s_stWaterTcb.uiSpeed = BSP_ReadWaterSpeed();
 		}
-		break;
+	}
+	break;
 
 	default:
 		break;
@@ -191,7 +188,7 @@ bool APP_IsWaterFlowErr(void)
 {
 	if (s_stWaterTcb.bFlowProtect)
 	{
-		if (s_stWaterTcb.uiSpeed < 20)
+		if (s_stWaterTcb.uiSpeed < WATER_SPEED_TH)
 		{
 			return true;
 		}
@@ -216,12 +213,13 @@ bool APP_IsWaterLevelErr(void)
 }
 
 /**
- * @brief  APP_WaterSpeedSetDelay.
+ * @brief  APP_WaterSpeedInit.
  * @note   None.
  * @param  ucDelay.
  * @retval None.
  */
-void APP_WaterSpeedSetDelay(uint8_t ucDelay)
+void APP_WaterSpeedInit(uint8_t ucDelay)
 {
 	s_stWaterTcb.ucSpeedDelay = ucDelay;
+	s_stWaterTcb.uiSpeed = WATER_SPEED_TH;
 }

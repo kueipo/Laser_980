@@ -3,14 +3,13 @@
 #include "BSP/BSP_Common.h"
 								   
 /* Configuration table -------------------------------------------------------*/
-const BSP_ADC_CONFIG g_stAdcCfg = {
-	.hadc = &hadc1,
-	.IRQn = DMA1_Channel1_IRQn,
+BSP_ADC_CONFIG const g_stAdcCfg = {
+	.hadc = ADC_0,
+	.IRQn = ADC_0_DMA_IRQN,
 };
 
 #if 0
-const uint16_t NTC50K3950[TEMP_TABLES_LENGTH] = 
-{  
+const uint16_t NTC50K3950[TEMP_TABLES_LENGTH] = {  
 	 119,  125,  132,  138,  145,  152,  160,  168,  176,  184, \
 	 193,  202,  211,  221,  231,  241,  252,  263,  275,  286, \
 	 299,  312,  325,  338,  352,  367,  382,  397,  413,  429, \
@@ -22,8 +21,9 @@ const uint16_t NTC50K3950[TEMP_TABLES_LENGTH] =
 	1793, 1826, 1858, 1890, 1920, 1954, 1986, 2018, 2050, 2081, \
 	2113, 2144, 2175, 2205, 2236, 2266, 2296, 2326, 2355, 2384, \
 };
-#else
-const uint16_t NTC50K3950[TEMP_TABLES_LENGTH] = {  
+#endif
+#if 0
+const uint16_t NTC50K3950[TEMP_TABLES_LENGTH] = {
 	 159,  167,  175,  184,  193,  202,  212,  222,  232,  243, \
 	 255,  267,  279,  292,  305,  318,  332,  347,  362,  378, \
 	 394,  411,  428,  446,  464,  483,  502,  522,  543,  564, \
@@ -36,8 +36,8 @@ const uint16_t NTC50K3950[TEMP_TABLES_LENGTH] = {
 	2813, 2855, 2897, 2939, 2980, 3021, 3062, 3102, 3142, 3182, \
 };
 #endif
-
-const uint16_t NTC10K3950[TEMP_TABLES_LENGTH] = {  
+#if 0
+const uint16_t NTC10K3950[TEMP_TABLES_LENGTH] = {
 	 706,  738,  771,  818,  852,  887,  923,  960,  998, 1037, \
 	1077, 1118, 1160, 1203, 1247, 1291, 1337, 1383, 1430, 1478, \
 	1526, 1576, 1626, 1676, 1728, 1779, 1831, 1884, 1937, 1991, \
@@ -49,8 +49,9 @@ const uint16_t NTC10K3950[TEMP_TABLES_LENGTH] = {
 	4314, 4342, 4370, 4396, 4422, 4448, 4473, 4497, 4521, 4544, \
 	4566, 4588, 4610, 4630, 4650, 4670, 4689, 4708, 4726, 4743, \
 };
+#endif
 
-__IOM uint16_t AdcValueTab[ADC_CHNL_MAX] = {0}; /* DMA BUFF */
+volatile uint16_t AdcValueTab[ADC_CHNL_MAX] = {0}; /* DMA BUFF */
 // float temperature;
 // float Vref;
 
@@ -82,10 +83,41 @@ void BSP_Adc_Init(void)
  * @param  ucIndex.
  * @retval AdcValueTab.
  */
-uint16_t BSP_ReadADCVal(uint8_t channel)
+uint16_t BSP_ReadADCVal(uint8_t id)
 {
-	if (channel > ADC_CHNL_MAX)
+	if (id > ADC_CHNL_MAX)
 		return 0xFFFF;
 
-	return AdcValueTab[channel];
+	return AdcValueTab[id];
+}
+
+/**
+ * @brief  BSP_Adc_Enable.
+ * @note   None.
+ * @param  None.
+ * @retval None.
+ */
+void BSP_Adc_Enable(void)
+{
+	ADC_HandleTypeDef *hadc;
+	
+	hadc = g_stAdcCfg.hadc;
+	
+	/* Start DMA conversion */
+	HAL_ADC_Start_DMA(hadc, (uint32_t *)AdcValueTab, ADC_CHNL_MAX);
+}
+
+/**
+ * @brief  BSP_Adc_Disable.
+ * @note   None.
+ * @param  None.
+ * @retval None.
+ */
+void BSP_Adc_Disable(void)
+{
+	ADC_HandleTypeDef *hadc;
+	
+	hadc = g_stAdcCfg.hadc;
+	
+	HAL_ADC_Stop_DMA(hadc);
 }

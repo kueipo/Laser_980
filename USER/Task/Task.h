@@ -6,16 +6,14 @@
 #define	USING_LINK	0
 
 //========================================================================
-//                             Íâ²¿º¯ÊıºÍ±äÁ¿ÉùÃ÷
+//                             å¤–éƒ¨å‡½æ•°å’Œå˜é‡å£°æ˜
 //========================================================================
 
-/* APPĞòºÅ */
+/* APPåºå· */
 enum TASK_INDEX{
-	TASK_HEARTBEAT_MESSAGE = 0,
-	TASK_SYSTEMDETECTION,
-	TASK_CONSOLE,
-	TASK_FB_PRO_HANDLER_CALLBACK,
-	TASK_SYSTEMRUM,
+	CTP_HANDLE = 0,
+	REFRESH_POWER,
+	REFRESH_TIME,
 #if USING_LINK
 	TEST_POLITY_HIGH,
 #endif
@@ -23,23 +21,23 @@ enum TASK_INDEX{
 };
 
 //========================================================================
-//                               ±¾µØ±äÁ¿ÉùÃ÷
+//                               æœ¬åœ°å˜é‡å£°æ˜
 //========================================================================
-/* APP×´Ì¬½á¹¹Ìå */
-enum TASK_STATE{
-	SUSPEND = 0,
-	READY,
-};
+/* APPçŠ¶æ€ç»“æ„ä½“ */
+//enum TASK_STATE{
+//	SUSPEND = 0,
+//	READY,
+//};
 
 struct task
 {
-	/* APP×´Ì¬   0:¹ÒÆğ£»1:×¼±¸¾ÍĞ÷ */
-	enum TASK_STATE State;
-	/* ÔËĞĞÊ±¼ä */
+	/* APPçŠ¶æ€   0:æŒ‚èµ·ï¼›1:å‡†å¤‡å°±ç»ª */
+	enum APP_STAT State;
+	/* è¿è¡Œæ—¶é—´ */
 	unsigned char RunTime;
-	/* ÔËÓÃÖÜÆÚ */
+	/* è¿ç”¨å‘¨æœŸ */
 	unsigned char Period;
-	/* ²Ù×÷º¯Êı */
+	/* æ“ä½œå‡½æ•° */
 	void (*TaskHook)(void);
 };
 
@@ -57,4 +55,7 @@ int Link_Init(void);
 void InsertNode(uint8_t index);
 void DelCurrentNode(void);
 #endif
+
+void Enable_Task(uint8_t index);
+void Disable_Task(uint8_t index);
 #endif
