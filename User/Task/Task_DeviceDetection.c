@@ -4,6 +4,7 @@
 
 /* Define --------------------------------------------------------------------*/
 #define ENABLE_WATER_TASK 0
+#define ENABLE_HANDPIECE_TASK 0
 #define ENABLE_COOLER_TASK 0
 #define ENABLE_PUMP_TASK 0
 #define ENABLE_27V_TASK 0
@@ -16,21 +17,23 @@ static volatile Task_Typedef TaskLocal[] = {
 #if ENABLE_WATER_TASK
 	{READY, 102, 	100, 	(*APP_Water_Task)},
 #endif /* ENABLE_WATER_TASK */
-	
-	{READY, 110, 	100, 	(*APP_Handpiece_Task)},
+
+#if ENABLE_HANDPIECE_TASK	
+	{READY, 102, 	100, 	(*APP_Handpiece_Task)},
+#endif /* ENABLE_HANDPIECE_TASK */
 	
 #if ENABLE_COOLER_TASK
-	{READY, 101, 	100, 	(*APP_Cooler_Task)},
+	{READY, 103, 	100, 	(*APP_Cooler_Task)},
 #endif /* ENABLE_COOLER_TASK */
 	
 #if ENABLE_PUMP_TASK
-	{READY, 102, 	100, 	(*APP_Pump_Task)},
+	{READY, 104, 	100, 	(*APP_Pump_Task)},
 #endif /* ENABLE_PUMP_TASK */
 	
-	{READY, 110, 	100, 	(*APP_SafeLocker_Task)},
+	{READY, 105, 	100, 	(*APP_SafeLocker_Task)},
 	
 #if ENABLE_27V_TASK
-	{READY, 250, 	50, 	(*APP_Voltage_Task)},
+	{READY, 106, 	50, 	(*APP_Voltage_Task)},
 #endif /* ENABLE_27V_TASK */
 	
 	{READY, 150, 	100, 	(*APP_Mos_Task)},

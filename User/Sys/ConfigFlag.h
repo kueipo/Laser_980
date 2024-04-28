@@ -15,10 +15,9 @@
 #endif
 
 #if defined(ENABLE_FAL_SUPPORT)
-#define cf_UPD_FLAG_ADDR   0x00 //customize
+#define cf_UPD_FLAG_ADDR   IAP_FLAG_ADDR_SETOFF //customize
 #else
-#define cf_UPD_FLAG_ADDR   UPD_FLAG_ADDR //customize
-#define cf_UPD_FLAG_ADDR   UPD_FLAG_ADDR //customize
+#define cf_UPD_FLAG_ADDR   UPD_FLAG_ADDR + IAP_FLAG_ADDR_SETOFF//customize
 #define cf_FLASH_Init      FLASH_Init//customize
 #define cf_FLASH_Read      FLASH_Read//customize
 #define cf_FLASH_Write     FLASH_Write//customize

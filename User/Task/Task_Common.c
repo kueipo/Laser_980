@@ -78,4 +78,5 @@ void Task_TimeProc(uint8_t ucPeriod)
 	Task_Marks_Handler_Callback();
 	Task_FB_Marks_Handler_Callback();
 	Task_SysDete_Marks_Handler_Callback();
+	Task_FB_Protect_Marks_Handler_Callback();
 }

@@ -115,7 +115,7 @@ int main(void)
 #endif /* ENABLE_FAL_SUPPORT */
 
 /* Print version information */
-	printf("Ver %d.%d\r\n", BSP_VERSION / 10, BSP_VERSION % 10);
+//	printf("Ver %d.%d\r\n", BSP_VERSION / 10, BSP_VERSION % 10);
 
 	BSP_Init();
 	APP_Init();
@@ -202,12 +202,12 @@ static void Write_App_Flag(void)
 
   if (fal_partition_read(part, addr, &flag, 1) >= 0)
   {
-    if (flag != ENTER_APP)
-    {
+//    if (flag != ENTER_APP)
+//    {
       flag = ENTER_APP;
       fal_partition_erase(part, addr, 1);
       fal_partition_write(part, addr, &flag, 1);
-    }
+//    }
   }
 }
 

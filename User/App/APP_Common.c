@@ -119,7 +119,10 @@ bool APP_Send_Data(uint8_t DevID, uint8_t Type, uint8_t Targe, uint8_t Length, u
 
 #if defined(PROT_CONSOLE_PORT)
 	case DEV_INDEX_PORTECT:
-		uartid = PROT_CONSOLE_PORT;
+		if (INDEX_TARGET_VERSION == Targe && INDEX_TYPE_HEARTBEAT == Type)
+			uartid = MAIN_CONSOLE_PORT;
+		else
+			uartid = PROT_CONSOLE_PORT;
 		break;
 #endif /* PROT_CONSOLE_PORT */
 	}

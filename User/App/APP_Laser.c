@@ -3,23 +3,25 @@
 #include "APP_Common.h"
 #include "DEV_Config.h"
 
-/* Define --------------------------------------------------------------------*/
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
 #define PULSE_WIDTH_MAX		LASER_WIDTH * 10
 #define PULSE_LEVEL_MAX		10U
 #define PULSE_LEVEL_MIN		1U
 #define LASER_FR_MAX			5U
 #define LASER_FR_MIM			1U
-#define LASER_ENERGY_MAX	25U
+#define LASER_ENERGY_MAX	30U
 #define INDICATOR_ENERGY_MAX	10U
 
-
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 uint16_t ENERGY[LASER_ENERGY_MAX] = 
 {  
-	 250,  365,  500,  620, 750,  880,  1010,  1140,  1275,  1410, 
-	 1540, 1680, 1820, 1960, 2100, 2240,  2380,  2520,  2660,  2800,
-	 2940, 3080, 3220, 3360, 3500
+	  250,  365,  500,  620,  740,  850,  970, 1090, 1230, 1340, 
+	 1440, 1540, 1660, 1780, 1880, 2000, 2120, 2240, 2360, 2480,
+	 2600, 2720, 2840, 2960, 3080, 3200, 3320, 3440, 3560, 3680
 };
-/* Function prototypes -------------------------------------------------------*/
+
 typedef enum
 {
 	LASER_980	= 0x00,
@@ -38,7 +40,6 @@ typedef struct
 	volatile bool bRun;
 	volatile bool bMode;
 }Laser_Struct;
-
 Laser_Struct s_stLaserTcb[LASER_ID_MAX] =
 {
 	{
@@ -59,10 +60,11 @@ Laser_Struct s_stLaserTcb[LASER_ID_MAX] =
 	},
 };
 
+/* Private function prototypes -----------------------------------------------*/
 static void APP_LaserRefresh(void);
 static void APP_LaserRefreshMedical(void);
 
-/* Function prototypes -------------------------------------------------------*/
+/* Exported functions --------------------------------------------------------*/
 /**
  * @brief  FanPowerVal.
  * @note   None.
@@ -355,7 +357,7 @@ static void APP_LaserRefreshMedical(void)
 		Pulse = s_stLaserTcb[index].usPulseWidth * 10;
 	}
 
-	BSP_Frenquency_Config(Period, Pulse + 100);
+	BSP_Frenquency_Config(Period, Pulse + 20);
 	
 	/* Refresh pulse width (protect) */
 	APP_Protect_RefreshPulseWidth();
@@ -437,7 +439,7 @@ uint16_t APP_LaserReadPulseWidth(void)
 /* 630nm -------------------------------------------------------------------- */
 #define LEVEL_630_MAX	5
 uint16_t const LaserIndicator[LEVEL_630_MAX] = {
-	0, 1200, 1966, 2130, 2293};
+	0, 1200, 1474, 1802, 2129};
 /**
  * @brief  APP_Laser_IndicatorWriteEnergy.
  * @note   None.

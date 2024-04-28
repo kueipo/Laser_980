@@ -181,6 +181,7 @@ void APP_LaserRunning(void)
 #define ERROR_CODE_WATERFL0W				(uint8_t)0X03
 #define ERROR_CODE_WATERLEVEL				(uint8_t)0X04
 #define ERROR_CODE_SAFELOCKER				(uint8_t)0X05
+#define ERROR_CODE_VOLTAGE					(uint8_t)0X06
 
 /**
  * @brief  APP_SafeGuard.
@@ -219,7 +220,7 @@ void APP_SafeGuard(void)
 	}
 #endif
 
-#if 0
+#if 1
 	/* SafeLocker disconnect */
 	if ( APP_IsSafeLockErr() )
 	{
@@ -242,16 +243,28 @@ void APP_SafeGuard(void)
 	if ( APP_IsMosTemperatureOver())
 		goto _stopRun;
 #endif
+
+#if 1
+	/* Voltage */
+	if (APP_VoltageDetection_IsError())
+	{
+		errorcode |= ERROR_CODE_WATERLEVEL;
+		goto _stopRun;
+	}
+#endif
+
 	/* not error */
 	goto _exit;
-	
-//_stopPump:
-	/*	APP_Pump_Config(false); */
 
+#if 0
+_stopPump:
+	APP_Pump_Config(false);
+#endif
+	
 _stopRun:
 	APP_SystemReady(false);
 
-	/* Updata Err Code */	
+	/* Updata Err Code */
 _exit:
 	if (s_stSystemParametser.ucErr != errorcode)
 	{

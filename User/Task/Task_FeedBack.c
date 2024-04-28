@@ -6,6 +6,8 @@
 #define ENABLE_PUMP_FUNCTION		0
 
 /* Local function prototypes -------------------------------------------------*/
+static bool Check_Fac(void);
+
 static void App_SetSystemReady(void *arg);
 static void Task_FB_SetSystemReady(void);
 
@@ -110,7 +112,7 @@ static volatile LOCAL_APP_TABLE AppTable[] = {
 	/* Add new variables here */
 	{INDEX_TYPE_OPERATE,	INDEX_TARGET_UPDATA, 			(*App_Updata)			},
 	{INDEX_TYPE_OPERATE,	INDEX_TARGET_PRODUCT_DATE,(*App_ProductDate)		},
-	{INDEX_TYPE_OPERATE,	GET_VERSION_MS_A_J, 			(*App_GetVersion)			},
+	{INDEX_TYPE_OPERATE,	INDEX_TARGET_VERSION, 		(*App_GetVersion)			},
 	{INDEX_TYPE_OPERATE,	INDEX_SYSTEMRESET, 				(*App_SystemReboot)		},
 };
 static volatile uint8_t s_ucAppQty = sizeof(AppTable) / sizeof(AppTable[0]);
@@ -896,12 +898,11 @@ static void App_Updata(void *arg)
 				case DOWN_TO_FAC:
 					buf = DOWN_TO_FAC;
 					break;
-				case DOWN_TO_DWN:					
-			#ifdef ENABLE_DOWNLOAD_FAC
-					buf = DOWN_TO_FAC;
-			#else
-					buf = DOWN_TO_DWN;
-			#endif
+				case DOWN_TO_DWN:
+					if (Check_Fac())
+						buf = DOWN_TO_FAC;
+					else
+						buf = DOWN_TO_DWN;
 					break;
 				default:
 					return;
@@ -949,10 +950,7 @@ static void App_Updata(void *arg)
 
 __Writefalg:
 	cf_Config_App_Flag(buf);
-
-	/* reboot */
-	HAL_Delay(10);
-	HAL_FLASH_OB_Launch();
+	
 #if 0
 	Enable_Feedback(TASK_FB_UPDATA, 0);
 #endif
@@ -1020,7 +1018,7 @@ static void Task_FB_ProductDate(void)
 	uint8_t temp;
 	uint8_t index;
 	flash_read(PRODUCT_DATE_ADDR, number, 4);
-
+	
 	/* Before transferring to 16bit data transmission,
 		big-endian must be adjusted, otherwise the transmission order is reversed
 	*/
@@ -1217,4 +1215,41 @@ void App_Matching(void *buf)
 			break;
 		}
 	}
+}
+
+/* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
+static bool Check_Fac(void)
+{
+#if defined(ENABLE_FAL_SUPPORT)
+	#define FILE_LENGTH 4
+	
+	/* Read Size */
+	uint32_t filesize = 0;
+	uint8_t buff[FILE_LENGTH];
+
+	const struct fal_partition *part = fal_partition_find("fac");
+	if (part == NULL)
+		return false;
+
+	if (fal_partition_read(part, 0, buff, FILE_LENGTH) < FILE_LENGTH)
+		return false;
+
+	/* Calculate size */
+	for (uint8_t i = 0; i < FILE_LENGTH; i++)
+	{
+		filesize <<= 8;
+		filesize += buff[i];
+	}
+
+	/*  */
+	if (filesize == 0 || filesize == 0xFFFFFFFF)
+		return true;
+	else
+		return false;
+#else
+		return false;
+#endif /* ENABLE_FAL_SUPPORT */
 }

@@ -16,14 +16,14 @@ static uint8_t Read_LockerPinState(uint8_t id);
  */
 void APP_SafeLocker_Init(void)
 {
-	uint8_t index;
+	uint8_t id;
 
 	memset((uint8_t *)&s_stSafeLockerTcb, 0, sizeof(s_stSafeLockerTcb));
 
-	for (index = 0; index < LOCKER_ID_MAX; index++)
+	for (id = 0; id < LOCKER_ID_MAX; id++)
 	{
-		s_stSafeLockerTcb[index].bState = false;
-		s_stSafeLockerTcb[index].bProtect = true;
+		s_stSafeLockerTcb[id].bState = false;
+		s_stSafeLockerTcb[id].bProtect = true;
 	}
 }
 
@@ -35,13 +35,13 @@ void APP_SafeLocker_Init(void)
  */
 void APP_SafeLocker_Task(void)
 {	
-	uint8_t index;
-	for (index = 0; index < LOCKER_ID_MAX; index++)
+	uint8_t id;
+	for (id = 0; id < LOCKER_ID_MAX; id++)
 	{
-		if (Read_LockerPinState(index) == true)
-			s_stSafeLockerTcb[index].bState = true;
+		if (Read_LockerPinState(id) == true)
+			s_stSafeLockerTcb[id].bState = true;
 		else
-			s_stSafeLockerTcb[index].bState = false;
+			s_stSafeLockerTcb[id].bState = false;
 	}
 }
 
@@ -110,11 +110,11 @@ bool APP_ReadSafeLockerPROT(uint8_t id)
  */
 bool APP_IsSafeLockErr(void)
 {
-	for (uint8_t index = 0; index < LOCKER_ID_MAX; index++)
+	for (uint8_t id = 0; id < LOCKER_ID_MAX; id++)
 	{
-		if (s_stSafeLockerTcb[index].bProtect)
+		if (s_stSafeLockerTcb[id].bProtect)
 		{
-			if (s_stSafeLockerTcb[index].bState == false)
+			if (s_stSafeLockerTcb[id].bState == false)
 				return true;
 		}
 	}

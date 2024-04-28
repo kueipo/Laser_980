@@ -9,8 +9,8 @@
 #define RX_LENGTH_1				32
 #define TX_LENGTH_1				32
 
-#define RX_LENGTH_2				32
-#define TX_LENGTH_2				32
+#define RX_LENGTH_2				512
+#define TX_LENGTH_2				512
 
 #define RX_LENGTH_3				32
 #define TX_LENGTH_3				32

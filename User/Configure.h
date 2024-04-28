@@ -8,8 +8,8 @@
 #define IAP_FLAG_808_ADDR_OFFSET					0X0000	//0X0000
 #define IAP_FLAG_808_PROTECT_ADDR_OFFSET	0X0000	//0X0004
 
-#define IAP_FLAG_MASSAGER_ADDR_OFFSET							0X0000	//0X0008
-#define IAP_FLAG_MASSAGER_PROTECT_ADDR_OFFSET			0X0000	//0X000C
+#define IAP_FLAG_MASSAGER_ADDR_OFFSET							0X0008
+#define IAP_FLAG_MASSAGER_PROTECT_ADDR_OFFSET			0X000C
 
 #define IAP_FLAG_980_ADDR_OFFSET					0X0010					//0X0010
 #define IAP_FLAG_980_PROTECT_ADDR_OFFSET	IAP_FLAG_980_ADDR_OFFSET + 4	//0X0014
@@ -51,18 +51,18 @@
 	// <o>Current Select
 	// <i>Current Select
 	//  <0=> 5A
-	//  <1=> 10A
+	//  <1=> 13A
 	//  <2=> 53A
 	//  <3=> 55A
 	//  <4=> 75A
 	//  <5=> 80A
 	//  <6=> 100A
 	//  <7=> G Series
-		#define CURRENT_SELECT		0
+		#define CURRENT_SELECT		1
 		#if   (CURRENT_SELECT == 0)
 			#define LASER_CURRENT	5
 		#elif (CURRENT_SELECT == 1)
-			#define LASER_CURRENT 10
+			#define LASER_CURRENT 13
 		#elif (CURRENT_SELECT == 2)
 			#define LASER_CURRENT 53
 		#elif (CURRENT_SELECT == 3)
@@ -100,10 +100,10 @@
 			#define LASER_WIDTH 300
 		#endif
 		
-	// <o>Pulse Power Config (unit: MW)
+	// <o>Pulse Power Config (unit: W)
 	// <1-65535>
-	// <i>Enter Power rang <1 - 65535> (unit: MW)
-	#define LASER_POWER		100
+	// <i>Enter Power rang <1 - 65535> (unit: W)
+	#define LASER_POWER		30
 	
 	// <o>Pulse Energy Config (unit: MJ)
 	// <1-999>

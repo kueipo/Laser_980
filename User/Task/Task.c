@@ -39,6 +39,7 @@ Task_Typedef Task[]=
 	{ READY,	50,			50,			(*Task_Protect)	},
 	{ READY,	60,			100,		(*APP_Fan_Task)	},
 	{ READY,	70,			100,		(*APP_Protect_Task)	},
+	{ READY,	80,			1,			(*Task_FB_Protect_Handler_Callback)	},
 #if USING_LINK
 	{ READY,	0,			0,			(*Test_Polity_High)	},
 #endif

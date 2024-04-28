@@ -2,38 +2,41 @@
 /* Includes ------------------------------------------------------------------*/
 #include "APP/APP_Common.h"
 
-__IOM VoltegeDetection_Struct s_stVoltageDeteTcb[VOLTAGEDETECTION_MAX] = {
+/* variables -----------------------------------------------------------------*/
+VoltegeDetection_Struct s_stVoltageDeteTcb[VOLTAGEDETECTION_MAX] = {
 	/* DC12V */
 	{
 		.ucThreshold_H = 125,
 		.ucThreshold_L = 115,
-		.ucActual = 0,
+		.usVoltage = 0,
 		.ucRatio = 150, /* 25 * ((100 + 20) / 20) */
 		.channel = V12_VOL_CHNL,
 		.bProtect = true,
 	},
 	/* DC5V */
 	{
-		.ucThreshold_H = 45,
-		.ucThreshold_L = 55,
-		.ucActual = 0,
+		.ucThreshold_H = 55,
+		.ucThreshold_L = 45,
+		.usVoltage = 0,
 		.ucRatio = 75, /* 25 * ((20 + 10) / 10) */
 		.channel = V05_VOL_CHNL,
 		.bProtect = true,
 	},
 	/* DCLD */
 	{
-		.ucThreshold_H = 100,
-		.ucThreshold_L = 10,
-		.ucActual = 0,
-		.ucRatio = 74, /* 25 * ((100 + 51) / 51) */
+		.ucThreshold_H = 60,
+		.ucThreshold_L = 40,
+		.usVoltage = 0,
+		.ucRatio = 150, /* 25 * ((100 + 20) / 20) */
 		.channel = VLD_VOL_CHNL,
 		.bProtect = true,
 	},	
 };
 
- uint8_t Voltage_Detection(uint8_t unIndex);
+/* function prototypes -------------------------------------------------------*/
+static uint16_t Voltage_Detection(uint8_t id);
 
+/* Exported functions --------------------------------------------------------*/
 /**
  * @brief  APP_VoltageDetection_Init.
  * @note   None.
@@ -45,53 +48,71 @@ void APP_VoltageDetection_Init(void)
 }
 
 /**
- * @brief  APP_Water_Task.
+ * @brief  APP_VoltageDetection_Task.
  * @note   None.
  * @param  None.
  * @retval None.
  */
 void APP_VoltageDetection_Task(void)
 {
-	static uint8_t index = 0;
+	static uint8_t id = 0;
 	
-	s_stVoltageDeteTcb[index].ucActual = Voltage_Detection(index);
+	s_stVoltageDeteTcb[id].usVoltage = Voltage_Detection(id);
 	
-	if (++index >= VOLTAGEDETECTION_MAX)
-		index = 0;
+	if (++id >= VOLTAGEDETECTION_MAX)
+		id = 0;
 }
 
 /**
-  * @brief  PumpVoltage_Detection.
+  * @brief  APP_VoltageDetection_Read.
+  * @note   None.
+  * @param  id.
+  * @retval Voltage.
+  */
+uint16_t APP_VoltageDetection_Read(uint8_t id)
+{
+	if (id >= VOLTAGEDETECTION_MAX)
+		return 0xFF;
+
+	return s_stVoltageDeteTcb[id].usVoltage;
+}
+
+/**
+  * @brief  APP_VoltageDetection_IsError.
   * @note   None.
   * @param  None.
-  * @retval PumpVolADC.
+  * @retval Result.
   */
- uint8_t Voltage_Detection(uint8_t unIndex)
+bool APP_VoltageDetection_IsError(void)
 {
-	uint8_t channel = s_stVoltageDeteTcb[unIndex].channel;
-	uint32_t VolADC = (uint32_t)BSP_ReadADCVal(channel);
-	uint16_t Ratio = s_stVoltageDeteTcb[unIndex].ucRatio;
-#if 0	/* Use internal reference voltage */
-	VolADC *= 1320;
-	VolADC /=  BSP_ReadADCVal(channel);
-#else	/* Use external reference voltage */
-	VolADC *= Ratio;
-	VolADC >>= 12;
-
-#endif
-	return (uint8_t)VolADC;
+	for (uint8_t i = 0; i < VOLTAGEDETECTION_MAX; i++)
+	{
+		if (s_stVoltageDeteTcb[i].usVoltage > s_stVoltageDeteTcb[i].ucThreshold_H ||
+			  s_stVoltageDeteTcb[i].usVoltage < s_stVoltageDeteTcb[i].ucThreshold_L)
+			return true;
+	}
+	return false;
 }
 
 /**
-  * @brief  APP_VoltageDetectionRead.
+  * @brief  Voltage_Detection.
   * @note   None.
-  * @param  unIndex.
-  * @retval Actual.
+  * @param  id.
+  * @retval volAdc.
   */
-uint8_t APP_VoltageDetectionRead(uint8_t unIndex)
+static uint16_t Voltage_Detection(uint8_t id)
 {
-	if (unIndex >= VOLTAGEDETECTION_MAX)
-		return 0xFF;
+	uint8_t channel = s_stVoltageDeteTcb[id].channel;
+	uint32_t volAdc = (uint32_t)BSP_ReadADCVal(channel);
+	uint16_t ratio = s_stVoltageDeteTcb[id].ucRatio;
 	
-	return s_stVoltageDeteTcb[unIndex].ucActual;
+#if 0	/* Use internal reference voltage */
+	volAdc *= 1320;
+	volAdc /=  BSP_ReadADCVal(channel);
+#else	/* Use external reference voltage */
+	volAdc *= ratio;
+	volAdc >>= 12;
+#endif
+	
+	return (uint16_t)volAdc;
 }

@@ -32,7 +32,7 @@ typedef struct
 {
 	volatile uint32_t uiVersion;
 } Protect_Struct;
-static Protect_Struct s_stProtectTcb = {0};
+Protect_Struct s_stProtectTcb = {0};
 
 /* Function prototypes -------------------------------------------------------*/
 /**

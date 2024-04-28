@@ -74,9 +74,6 @@ static void Protect_FB_Error(void)
 }
 
 /* ---------------------------------------------------------------------------*/
-#ifndef FILE_SIZE_LENGTH
-#define FILE_SIZE_LENGTH 4
-#endif
 /**
  * @brief  Protect_Updata.
  * @note   None.
@@ -85,22 +82,22 @@ static void Protect_FB_Error(void)
  */
 static void Protect_Updata(void *arg)
 {
-	uint8_t buf = UPLOAD_APP_PRO;
+#define FILE_LENGTH		4
 
 #if defined(ENABLE_FAL_SUPPORT)
 	/* Read Size */
 	uint32_t filesize = 0;
-	uint8_t buff[FILE_SIZE_LENGTH];
+	uint8_t buff[FILE_LENGTH];
 
 	const struct fal_partition *part = fal_partition_find("APP0");
 	if (part == NULL)
 		return;
 
-	if (fal_partition_read(part, 0, buff, FILE_SIZE_LENGTH) < FILE_SIZE_LENGTH)
+	if (fal_partition_read(part, 0, buff, FILE_LENGTH) < FILE_LENGTH)
 		return;
 
 	/* Calculate size */
-	for (uint8_t i = 0; i < FILE_SIZE_LENGTH; i++)
+	for (uint8_t i = 0; i < FILE_LENGTH; i++)
 	{
 		filesize <<= 8;
 		filesize += buff[i];
@@ -110,21 +107,9 @@ static void Protect_Updata(void *arg)
 	if (filesize == 0 || filesize == 0xFFFFFFFF)
 		return;
 
-	part = fal_partition_find("upd");
-	if (part != NULL)
-	{
-		fal_partition_erase(part, 0, 1);
-		fal_partition_write(part, 0, &buf, 1);
-	}
 #endif /* ENABLE_FAL_SUPPORT */
 
-#if 0 /* opt flash */
-	FLASH_Init();
-	FLASH_Erase(UPD_FLAG_ADDR, 1);
-	FLASH_Write(UPD_FLAG_ADDR, &buf, 1);
-#endif
-
-	HAL_FLASH_OB_Launch();
+	cf_Config_App_Flag(UPLOAD_APP_PRO);
 
 #if 0	
 	Task_FB_Protect_Enable(TASK_FB_PROTECT_UPDATA, 0);

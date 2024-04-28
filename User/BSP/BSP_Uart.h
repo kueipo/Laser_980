@@ -53,8 +53,8 @@ typedef struct
 {
 	UART_HandleTypeDef *huart;
 	IRQn_Type DMAIRQn;
-	uint8_t Rx_size;
-	uint8_t Tx_size;
+	uint16_t Rx_size;
+	uint16_t Tx_size;
 	uint8_t *Rx_buffer;
 	uint8_t *Tx_buffer;
 	struct ring_buffer *Rx_ring_buffer_p;

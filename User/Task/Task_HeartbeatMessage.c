@@ -2,7 +2,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "Task/Task_Common.h"
 
-/* Define --------------------------------------------------------------------*/
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
 #define ENABLE_SEND_VERSION 1
 #define ENABLE_SEND_FAN_SPEED 0
 #define ENABLE_SEND_FAN_TEMPERATURE 0
@@ -11,11 +12,14 @@
 #define ENABLE_SEND_WATER_TEMPERATURE 0
 #define ENABLE_SEND_WATER_FLOW 0
 #define ENABLE_SEND_WATER_LEVEL 0
+#define ENABLE_SEND_HANDPICEC_CONN 0
 #define ENABLE_SEND_COOLER_INFO	0
 #define ENABLE_SEND_PUMP_INFO 0
 #define ENABLE_SEND_MOS_TEMPERATURE 1
 
-/* Function prototypes -------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
 static void SendErrorInfo(void);
 
 #if ENABLE_SEND_WATER_TEMPERATURE
@@ -30,7 +34,9 @@ static void SendWaterFlowSpeed(void);
 static void SendWaterLevel(void);
 #endif /* ENABLE_SEND_WATER_LEVEL */
 
+#if ENABLE_SEND_HANDPICEC_CONN
 static void SendHandPieceConn(void);
+#endif /* ENABLE_SEND_HANDPICEC_CONN */
 
 #if ENABLE_SEND_VERSION
 static void SendVersion(void);
@@ -47,35 +53,30 @@ static void SendPumpElInfor(void);
 static void SendSafeLockerInfor(void);
 
 #if ENABLE_SEND_FAN_SPEED
-void SendFanCurrentSpeedInfo(void);
+static void SendFanCurrentSpeedInfo(void);
 #endif /* ENABLE_SEND_FAN_SPEED */
 
 #if ENABLE_SEND_FAN_TEMPERATURE
-void SendFanCurrentTemperature(void);
+static void SendFanCurrentTemperature(void);
 #endif /* ENABLE_SEND_FAN_TEMPERATURE */
 
 #if ENABLE_SEND_ACVOLTAGE
-void SendACVoltage(void);
+static void SendACVoltage(void);
 #endif /* ENABLE_SEND_ACVOLTAGE */
 
 #if ENABLE_SEND_FAN_POWER
-void SendFanPower(void);
+static void SendFanPower(void);
 #endif /* ENABLE_SEND_FAN_POWER */
 
-void SendDC05Info(void);
-void SendDC12Info(void);
-void SendDCLdInfo(void);
+static void SendDC05Info(void);
+static void SendDC12Info(void);
+static void SendDCLdInfo(void);
 
 #if ENABLE_SEND_MOS_TEMPERATURE
 static void SendMosTemperature(void);
 #endif /* ENABLE_SEND_MOS_TEMPERATURE */
 
 /* Variables -----------------------------------------------------------------*/
-uint8_t heattest = 0;
-uint8_t Hz = 1;
-uint16_t J = 10;
-uint8_t power = 1;
-
 typedef struct
 {
 	void (*TaskHook)(void);
@@ -93,7 +94,9 @@ static TaskLocal_TypeDef TaskLocal[] = {
 #if ENABLE_SEND_WATER_LEVEL
 	{*SendWaterLevel},
 #endif /* ENABLE_SEND_WATER_LEVEL */
+#if ENABLE_SEND_HANDPICEC_CONN
 	{*SendHandPieceConn},
+#endif /* ENABLE_SEND_HANDPICEC_CONN */
 #if ENABLE_SEND_VERSION
 	{*SendVersion},
 #endif /* ENABLE_SEND_VERSION */
@@ -128,7 +131,7 @@ static TaskLocal_TypeDef TaskLocal[] = {
 
 static volatile uint8_t TaskLocal_Total = sizeof(TaskLocal) / sizeof(TaskLocal[0]);
 
-/* Function prototypes -------------------------------------------------------*/
+/* Exported functions --------------------------------------------------------*/
 /**
  * @brief  Task_Heartbeat_Message.
  * @note   None.
@@ -185,9 +188,9 @@ static void SendErrorInfo(void)
 #if ENABLE_SEND_WATER_TEMPERATURE
 static void SendWaterTemperature(void)
 {
-	uint16_t tmp = (uint16_t)APP_ReadWaterTemperature();
-//	uint16_t tmp = (uint16_t)APP_ReadMosTemperature();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_TEMPERATURE, 1, &tmp);
+	uint16_t temp = (uint16_t)APP_ReadWaterTemperature();
+//	uint16_t temp = (uint16_t)APP_ReadMosTemperature();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_TEMPERATURE, 1, &temp);
 }
 #endif /* ENABLE_SEND_WATER_TEMPERATURE */
 
@@ -200,8 +203,8 @@ static void SendWaterTemperature(void)
 #if ENABLE_SEND_WATER_FLOW
 static void SendWaterFlowSpeed(void)
 {
-	uint16_t tmp = (uint16_t)APP_ReadWaterFlow();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_SPEED, 1, &tmp);
+	uint16_t temp = (uint16_t)APP_ReadWaterFlow();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_SPEED, 1, &temp);
 }
 #endif /* ENABLE_SEND_WATER_FLOW */
 
@@ -214,8 +217,8 @@ static void SendWaterFlowSpeed(void)
 #if ENABLE_SEND_WATER_LEVEL
 static void SendWaterLevel(void)
 {
-	uint16_t tmp = (uint16_t)APP_ReadWaterLevel();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_LEVEL, 1, &tmp);
+	uint16_t temp = (uint16_t)APP_ReadWaterLevel();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_LEVEL, 1, &temp);
 }
 #endif /* ENABLE_SEND_WATER_LEVEL */
 
@@ -225,16 +228,18 @@ static void SendWaterLevel(void)
  * @param  None.
  * @retval None.
  */
+#if ENABLE_SEND_HANDPICEC_CONN
 static void SendHandPieceConn(void)
 {
-	uint16_t tmp[HANDPIECE_ID_MAX];
+	uint16_t temp[HANDPIECE_ID_MAX];
 	uint8_t index;
 	
 	for (index = 0; index < HANDPIECE_ID_MAX; index++)
-		tmp[index] = (uint16_t)APP_ReadHandpieceCONN(index);
+		temp[index] = (uint16_t)APP_ReadHandpieceCONN(index);
 	
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_HANDPIECE_CONN, HANDPIECE_ID_MAX, tmp);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_HANDPIECE_CONN, HANDPIECE_ID_MAX, temp);
 }
+#endif /* ENABLE_SEND_HANDPICEC_CONN */
 
 /**
  * @brief  SendVersion.
@@ -258,14 +263,13 @@ static void SendVersion(void)
 #if ENABLE_SEND_COOLER_INFO
 static void SendCoolerElInfor(void)
 {
+	uint16_t temp;
 
-	uint16_t tmp;
+	temp = APP_ReadCoolerVoltage(COOLER_0);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_COOLER_VOLTAGE, 1, &temp);
 
-	tmp = APP_ReadCoolerVoltage(COOLER_0);
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_COOLER_VOLTAGE, 1, &tmp);
-
-	tmp = (uint16_t)APP_ReadCoolerCurrent(COOLER_0);
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_COOLER_CURRENT, 1, &tmp);
+	temp = (uint16_t)APP_ReadCoolerCurrent(COOLER_0);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_COOLER_CURRENT, 1, &temp);
 }
 #endif /* ENABLE_SEND_COOLER_INFO */
 
@@ -278,14 +282,13 @@ static void SendCoolerElInfor(void)
 #if ENABLE_SEND_PUMP_INFO
 static void SendPumpElInfor(void)
 {
+	uint16_t temp;
 
-	uint16_t tmp;
+	temp = APP_ReadPumpVoltage();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_PUMP_VOLTAGE, 1, &temp);
 
-	tmp = APP_ReadPumpVoltage();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_PUMP_VOLTAGE, 1, &tmp);
-
-	tmp = (uint16_t)APP_ReadPumpCurrent();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_PUMP_CURRENT, 1, &tmp);
+	temp = (uint16_t)APP_ReadPumpCurrent();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_PUMP_CURRENT, 1, &temp);
 }
 #endif /* ENABLE_SEND_PUMP_INFO */
 
@@ -297,13 +300,13 @@ static void SendPumpElInfor(void)
  */
 static void SendSafeLockerInfor(void)
 {
-	uint16_t tmp[LOCKER_ID_MAX];
+	uint16_t temp[LOCKER_ID_MAX];
 
 	for (uint8_t index = 0; index < LOCKER_ID_MAX; index++)
 	{
-		tmp[index] = (uint16_t)APP_ReadSafeLockerConn(index);
+		temp[index] = (uint16_t)APP_ReadSafeLockerConn(index);
 	}
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_SAFELOCKER_STATE, LOCKER_ID_MAX, tmp);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_SAFELOCKER_STATE, LOCKER_ID_MAX, temp);
 }
 
 #if ENABLE_SEND_FAN_SPEED
@@ -313,7 +316,7 @@ static void SendSafeLockerInfor(void)
  * @param  None.
  * @retval None.
  */
-void SendFanCurrentSpeedInfo(void)
+static void SendFanCurrentSpeedInfo(void)
 {
 	uint16_t speed[IN_FAN_MAX_MUNBER + EX_FAN_MAX_MUNBER] = {0};
 	uint8_t index;
@@ -346,7 +349,7 @@ void SendFanCurrentSpeedInfo(void)
  * @retval None.
  */
 #if ENABLE_SEND_FAN_TEMPERATURE
-void SendFanCurrentTemperature(void)
+static void SendFanCurrentTemperature(void)
 {
 	FAN_MODULE_ENUM id;
 	uint16_t temperature[FAN_MODULE_ENUM];
@@ -365,7 +368,7 @@ void SendFanCurrentTemperature(void)
  * @retval None.
  */
 #if ENABLE_SEND_ACVOLTAGE
-void SendACVoltage(void)
+static void SendACVoltage(void)
 {
 	uint16_t AcVoltage = Voltage_Read();
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_AC_VOLTAGE, 1, &AcVoltage);
@@ -379,7 +382,7 @@ void SendACVoltage(void)
  * @retval None.
  */
 #if ENABLE_SEND_FAN_POWER
-void SendFanPower(void)
+static void SendFanPower(void)
 {
 	FAN_MODULE_ENUM id;
 	uint16_t power[FAN_MODULE_MAX_NUMBER];
@@ -397,9 +400,9 @@ void SendFanPower(void)
  * @param  None.
  * @retval None.
  */
-void SendDC05Info(void)
+static void SendDC05Info(void)
 {
-	uint16_t val = (uint16_t)APP_VoltageDetectionRead(INDEX_DC5V);
+	uint16_t val = (uint16_t)APP_VoltageDetection_Read(INDEX_DC5V);
 
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DC05_INFO, 1, &val);
 }
@@ -410,9 +413,9 @@ void SendDC05Info(void)
  * @param  None.
  * @retval None.
  */
-void SendDC12Info(void)
+static void SendDC12Info(void)
 {
-	uint16_t val = (uint16_t)APP_VoltageDetectionRead(INDEX_DC12V);
+	uint16_t val = (uint16_t)APP_VoltageDetection_Read(INDEX_DC12V);
 
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DC12_INFO, 1, &val);
 }
@@ -423,9 +426,9 @@ void SendDC12Info(void)
  * @param  None.
  * @retval None.
  */
-void SendDCLdInfo(void)
+static void SendDCLdInfo(void)
 {
-	uint16_t val = (uint16_t)APP_VoltageDetectionRead(INDEX_DCLD);
+	uint16_t val = (uint16_t)APP_VoltageDetection_Read(INDEX_DCLD);
 
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DCLD_INFO, 1, &val);
 }
@@ -439,7 +442,7 @@ void SendDCLdInfo(void)
  */
 static void SendMosTemperature(void)
 {
-	uint16_t tmp = (uint16_t)APP_ReadMosTemperature();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_MOS_TEMPERATURE, 1, &tmp);
+	uint16_t temp = (uint16_t)APP_ReadMosTemperature();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_MOS_TEMPERATURE, 1, &temp);
 }
 #endif /* ENABLE_SEND_FAN_POWER */
