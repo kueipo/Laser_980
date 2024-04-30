@@ -46,6 +46,12 @@ void APP_TimeProc(uint8_t ucPeriod)
 		APP_Buzzer_Task();
 }
 
+/**
+ * @brief  APP_Send_Data.
+ * @note   None.
+ * @param  DevID, Type, Targe, Length, pData.
+ * @retval None.
+ */
 #define SEND_LENGTH			0
 bool APP_Send_Data(uint8_t DevID, uint8_t Type, uint8_t Targe, uint8_t Length, uint16_t *pData)
 {
@@ -141,4 +147,35 @@ bool APP_Send_Data(uint8_t DevID, uint8_t Type, uint8_t Targe, uint8_t Length, u
 #endif
 	
 	return true;
+}
+
+/**
+ * @brief  APP_Common_SaveParameters.
+ * @note   None.
+ * @param  key, data, len.
+ * @retval None.
+ */
+void APP_Common_SaveParameters(const char *key, uint8_t* data, size_t len)
+{
+	ef_set_env_blob(key, (uint8_t *)(data), len);
+}
+
+#define MAX_SAVE_LENGTH	8
+/**
+ * @brief  APP_Common_GetParameters.
+ * @note   None.
+ * @param  key, data, len.
+ * @retval None.
+ */
+void APP_Common_GetParameters(const char *key, uint8_t* data, size_t len)
+{
+	uint8_t value[MAX_SAVE_LENGTH];
+	
+	if (len > MAX_SAVE_LENGTH)
+		len = MAX_SAVE_LENGTH;
+	
+	if (len == ef_get_env_blob(key, value, len, NULL))
+		memcpy((uint8_t *)(data), value, len);
+	else
+		memset((uint8_t *)(data), 0xFF, len);
 }

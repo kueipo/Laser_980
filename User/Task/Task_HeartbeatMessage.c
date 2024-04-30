@@ -189,7 +189,7 @@ static void SendErrorInfo(void)
 static void SendWaterTemperature(void)
 {
 	uint16_t temp = (uint16_t)APP_ReadWaterTemperature();
-//	uint16_t temp = (uint16_t)APP_ReadMosTemperature();
+//	uint16_t temp = (uint16_t)APP_Mos_ReadTemperature();
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_WATER_TEMPERATURE, 1, &temp);
 }
 #endif /* ENABLE_SEND_WATER_TEMPERATURE */
@@ -442,7 +442,7 @@ static void SendDCLdInfo(void)
  */
 static void SendMosTemperature(void)
 {
-	uint16_t temp = (uint16_t)APP_ReadMosTemperature();
+	uint16_t temp = (uint16_t)APP_Mos_ReadTemperature();
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_MOS_TEMPERATURE, 1, &temp);
 }
 #endif /* ENABLE_SEND_FAN_POWER */

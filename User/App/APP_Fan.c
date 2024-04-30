@@ -55,7 +55,7 @@ void APP_Fan_Task(void)
 	/* internal fan -------------------------*/
 #if IN_FAN_MAX_MUNBER
 	/* Read MOS temperature value */
-	s_stFanTcb[IN_FAN_MODULE].Temperature = APP_ReadMosTemperature();
+	s_stFanTcb[IN_FAN_MODULE].Temperature = APP_Mos_ReadTemperature();
 	/* Automatic speed regulation */
 	s_stFanTcb[IN_FAN_MODULE].Power = ( s_stFanTcb[IN_FAN_MODULE].Temperature <= WORKING_MIN_TEMPERTATURE ? \
 													0 : s_stFanTcb[IN_FAN_MODULE].Temperature >= (WORKING_MIN_TEMPERTATURE + 10) ? \

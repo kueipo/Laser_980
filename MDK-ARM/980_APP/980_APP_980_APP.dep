@@ -43,7 +43,7 @@ I (../Core/Inc/tim.h)(0x6620D725)
 I (../Core/Inc/usart.h)(0x642E3D41)
 I (../Core/Inc/gpio.h)(0x626E94A0)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../User/global.h)(0x625927DE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
@@ -85,7 +85,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -385,7 +385,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x6572B862)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x6572B862)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x6572B862)
 I (../Core/Inc/stm32f1xx_it.h)(0x6620DEC1)
-I (../User/App/APP_Common.h)(0x658B8584)
+I (../User/App/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/dma.h)(0x626E94A2)
 I (../Core/Inc/tim.h)(0x6620D725)
@@ -432,7 +432,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -1494,9 +1494,9 @@ I (../User/BSP/BSP_LED.h)(0x644B37EA)
 I (../User/BSP/BSP_FAN.h)(0x6621F16C)
 I (../User/BSP/BSP_Buzzer.h)(0x644B37B5)
 F (..\User\App\APP_COMMREQ.h)(0x6629D34F)()
-F (..\User\App\APP_Common.h)(0x658B8584)()
-F (..\User\App\APP_Common.c)(0x66262337)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_common.o --omf_browse .\980_app\app_common.crf --depend .\980_app\app_common.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+F (..\User\App\APP_Common.h)(0x662EFE7C)()
+F (..\User\App\APP_Common.c)(0x662EFE63)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_common.o --omf_browse .\980_app\app_common.crf --depend .\980_app\app_common.d)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -1576,7 +1576,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -1588,7 +1588,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\app.c)(0x642E9855)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app.o --omf_browse .\980_app\app.crf --depend .\980_app\app.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -1668,7 +1668,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -1680,7 +1680,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_ACvoltage.c)(0x644A3DFC)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_acvoltage.o --omf_browse .\980_app\app_acvoltage.crf --depend .\980_app\app_acvoltage.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -1760,7 +1760,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -1772,7 +1772,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_Handpiece.c)(0x6437C4AA)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_handpiece.o --omf_browse .\980_app\app_handpiece.crf --depend .\980_app\app_handpiece.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -1852,7 +1852,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -1864,7 +1864,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_KEY.c)(0x6476AC21)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_key.o --omf_browse .\980_app\app_key.crf --depend .\980_app\app_key.d)
-I (..\User\App\APP_Common.h)(0x658B8584)
+I (..\User\App\APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -1944,7 +1944,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -1956,7 +1956,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_Callback.c)(0x642E7CA3)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_callback.o --omf_browse .\980_app\app_callback.crf --depend .\980_app\app_callback.d)
-I (..\User\App\APP_Common.h)(0x658B8584)
+I (..\User\App\APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2036,7 +2036,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2048,7 +2048,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_SafeLocker.c)(0x662B79D6)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_safelocker.o --omf_browse .\980_app\app_safelocker.crf --depend .\980_app\app_safelocker.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2128,7 +2128,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2139,8 +2139,8 @@ I (../User/iap/inc/flash_if.h)(0x642FA2EE)
 I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
-F (..\User\App\APP_Operate.c)(0x6629D23A)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_operate.o --omf_browse .\980_app\app_operate.crf --depend .\980_app\app_operate.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+F (..\User\App\APP_Operate.c)(0x662F2A06)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_operate.o --omf_browse .\980_app\app_operate.crf --depend .\980_app\app_operate.d)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2220,7 +2220,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2234,7 +2234,7 @@ I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 I (../User/Task/Task_FeedBack.h)(0x660A604B)
 I (../User/Task/Task.h)(0x62592802)
 F (..\User\App\APP_Laser.c)(0x6629B4BD)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_laser.o --omf_browse .\980_app\app_laser.crf --depend .\980_app\app_laser.d)
-I (..\User\App\APP_Common.h)(0x658B8584)
+I (..\User\App\APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2314,7 +2314,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2326,7 +2326,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_LED.c)(0x658BBB44)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_led.o --omf_browse .\980_app\app_led.crf --depend .\980_app\app_led.d)
-I (..\User\App\APP_Common.h)(0x658B8584)
+I (..\User\App\APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2406,7 +2406,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2418,7 +2418,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_Factory.c)(0x66062403)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_factory.o --omf_browse .\980_app\app_factory.crf --depend .\980_app\app_factory.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2498,7 +2498,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2509,8 +2509,8 @@ I (../User/iap/inc/flash_if.h)(0x642FA2EE)
 I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
-F (..\User\App\APP_Fan.c)(0x6621F16E)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_fan.o --omf_browse .\980_app\app_fan.crf --depend .\980_app\app_fan.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+F (..\User\App\APP_Fan.c)(0x662F0183)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_fan.o --omf_browse .\980_app\app_fan.crf --depend .\980_app\app_fan.d)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2590,7 +2590,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2602,7 +2602,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_VoltageDetection.c)(0x662DA1BA)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_voltagedetection.o --omf_browse .\980_app\app_voltagedetection.crf --depend .\980_app\app_voltagedetection.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2682,7 +2682,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2693,8 +2693,8 @@ I (../User/iap/inc/flash_if.h)(0x642FA2EE)
 I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
-F (..\User\App\APP_Mos.c)(0x6621C5D3)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_mos.o --omf_browse .\980_app\app_mos.crf --depend .\980_app\app_mos.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+F (..\User\App\APP_Mos.c)(0x662F0790)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_mos.o --omf_browse .\980_app\app_mos.crf --depend .\980_app\app_mos.d)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2774,7 +2774,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2786,7 +2786,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_Protect.c)(0x66262165)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_protect.o --omf_browse .\980_app\app_protect.crf --depend .\980_app\app_protect.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2866,7 +2866,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2878,7 +2878,7 @@ I (../User/iap/inc/ymodem.h)(0x642FA2AB)
 I (../User/iap/inc/common.h)(0x64379AA7)
 I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\App\APP_Buzzer.c)(0x658BF84A)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\app_buzzer.o --omf_browse .\980_app\app_buzzer.crf --depend .\980_app\app_buzzer.d)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -2958,7 +2958,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -2972,7 +2972,7 @@ I (../User/Task/Task_PolityHigh.h)(0x6447413E)
 F (..\User\Task\Task_Common.h)(0x6476A981)()
 F (..\User\Task\Task_Common.c)(0x66262564)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_common.o --omf_browse .\980_app\task_common.crf --depend .\980_app\task_common.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3052,7 +3052,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3074,7 +3074,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_DeviceDetection.c)(0x6629B138)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_devicedetection.o --omf_browse .\980_app\task_devicedetection.crf --depend .\980_app\task_devicedetection.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3154,7 +3154,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3174,9 +3174,9 @@ I (../User/Task/Task_Protect.h)(0x64474AB9)
 I (../User/Task/Task_HeartbeatMessage.h)(0x623D57F0)
 I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
-F (..\User\Task\Task_HeartbeatMessage.c)(0x6629D32C)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_heartbeatmessage.o --omf_browse .\980_app\task_heartbeatmessage.crf --depend .\980_app\task_heartbeatmessage.d)
+F (..\User\Task\Task_HeartbeatMessage.c)(0x662F01C1)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_heartbeatmessage.o --omf_browse .\980_app\task_heartbeatmessage.crf --depend .\980_app\task_heartbeatmessage.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3256,7 +3256,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3278,7 +3278,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_FanFB.c)(0x654D8D35)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_fanfb.o --omf_browse .\980_app\task_fanfb.crf --depend .\980_app\task_fanfb.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3358,7 +3358,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3380,7 +3380,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_Console.c)(0x64474DF8)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_console.o --omf_browse .\980_app\task_console.crf --depend .\980_app\task_console.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3460,7 +3460,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3480,9 +3480,9 @@ I (../User/Task/Task_Protect.h)(0x64474AB9)
 I (../User/Task/Task_HeartbeatMessage.h)(0x623D57F0)
 I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
-F (..\User\Task\Task.c)(0x662628BE)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task.o --omf_browse .\980_app\task.crf --depend .\980_app\task.d)
+F (..\User\Task\Task.c)(0x662F0E84)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task.o --omf_browse .\980_app\task.crf --depend .\980_app\task.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3562,7 +3562,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3582,9 +3582,9 @@ I (../User/Task/Task_Protect.h)(0x64474AB9)
 I (../User/Task/Task_HeartbeatMessage.h)(0x623D57F0)
 I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
-F (..\User\Task\Task_FeedBack.c)(0x6629D35D)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_feedback.o --omf_browse .\980_app\task_feedback.crf --depend .\980_app\task_feedback.d)
+F (..\User\Task\Task_FeedBack.c)(0x662F6CDD)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_feedback.o --omf_browse .\980_app\task_feedback.crf --depend .\980_app\task_feedback.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3664,7 +3664,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3686,7 +3686,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_DeviceRun.c)(0x6448834E)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_devicerun.o --omf_browse .\980_app\task_devicerun.crf --depend .\980_app\task_devicerun.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3766,7 +3766,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3788,7 +3788,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_PolityHigh.c)(0x658B85DC)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_polityhigh.o --omf_browse .\980_app\task_polityhigh.crf --depend .\980_app\task_polityhigh.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3868,7 +3868,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3890,7 +3890,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_FB_Protect.c)(0x66262F89)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_fb_protect.o --omf_browse .\980_app\task_fb_protect.crf --depend .\980_app\task_fb_protect.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -3970,7 +3970,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)
@@ -3992,7 +3992,7 @@ I (../User/Task/Task_DeviceDetection.h)(0x642F82D3)
 I (../User/Task/Task_DeviceRun.h)(0x62592808)
 F (..\User\Task\Task_Protect.c)(0x644885FB)(--c99 -c --cpu Cortex-M3 -g -O2 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../User/Config -I ../User/App -I ../User/Task -I ../User/CRC -I ../User/74HC4051 -I ../User/Fal/inc -I ../User/easyflash/inc -I ../User/Fal/porting -I ../User-I.\RTE\_980_APP-IC:\Users\kueip\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\kueip\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE-o .\980_app\task_protect.o --omf_browse .\980_app\task_protect.crf --depend .\980_app\task_protect.d)
 I (../User/Task/Task_Common.h)(0x6476A981)
-I (../User/APP/APP_Common.h)(0x658B8584)
+I (../User/APP/APP_Common.h)(0x662EFE7C)
 I (../User/BSP/BSP_Common.h)(0x6621C456)
 I (../Core/Inc/main.h)(0x658B9FD2)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x6572B862)
@@ -4072,7 +4072,7 @@ I (../User/APP/APP_VoltageAdj.h)(0x642E6050)
 I (../User/APP/APP_LED.h)(0x658BBBF4)
 I (../User/APP/APP_Factory.h)(0x64474036)
 I (../User/APP/APP_Fan.h)(0x654D9AA5)
-I (../User/APP/APP_MOS.h)(0x644B376D)
+I (../User/APP/APP_MOS.h)(0x662F0301)
 I (../User/APP/APP_VoltageDetection.h)(0x6629D0D8)
 I (../User/APP/APP_Protect.h)(0x658D212D)
 I (../User/APP/APP.h)(0x642E982F)

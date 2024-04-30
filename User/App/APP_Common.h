@@ -43,5 +43,7 @@ typedef enum {
 void APP_TimeProc(uint8_t ucPeriod);
 void APP_Init(void);
 bool APP_Send_Data(uint8_t DevID, uint8_t Type, uint8_t Targe, uint8_t Length, uint16_t *pData);
+void APP_Common_SaveParameters(const char *key, uint8_t* data, size_t len);
+void APP_Common_GetParameters(const char *key, uint8_t* data, size_t len);
 
 #endif /* __APP_COMMON_H */

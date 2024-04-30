@@ -35,7 +35,7 @@ Task_Typedef Task[]=
 	{ READY,	10,			1,			(*Task_SystemDetection)	},
 	{ READY,	20,			0,			(*Task_Console)	},
 	{ READY,	30,			0,			(*Task_FB_Pro_Handler_Callback)	},
-	{ READY,	40,			1,			(*Task_SystemRun)	},
+	{ READY,	100,		1,			(*Task_SystemRun)	},
 	{ READY,	50,			50,			(*Task_Protect)	},
 	{ READY,	60,			100,		(*APP_Fan_Task)	},
 	{ READY,	70,			100,		(*APP_Protect_Task)	},

@@ -2,6 +2,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "APP/APP_Common.h"
 
+/* Private define ------------------------------------------------------------*/
+#define TEMPERATURE_FLAG 					"temp"
+#define MIN_TEMPERATURE						30
+#define MAX_TEMPERATURE						45
+#define TEMPERATURE_PROTECT_FLAG "protect"
+
 /* Private variables ---------------------------------------------------------*/
 __IOM Mos_Struct s_stMosTcb;
 
@@ -18,10 +24,20 @@ static uint8_t MosTemperature_Detection(void);
 void APP_Mos_Init(void)
 {
 	memset((uint8_t *)&s_stMosTcb, 0, sizeof(s_stMosTcb));
-
-	s_stMosTcb.ucTemperature = 0;
-	s_stMosTcb.ucTemperatureTH = 45;
-	s_stMosTcb.bOverTempProtect = true;
+	
+	uint8_t data = 0;
+	/* tempterature */
+	APP_Common_GetParameters(TEMPERATURE_FLAG, (uint8_t*)&data, sizeof(s_stMosTcb.ucTemperatureTH));
+	if (data > MAX_TEMPERATURE || data < MIN_TEMPERATURE)
+	{
+		APP_Mos_WriteTemperatrueTH(36);
+	}
+	else
+		s_stMosTcb.ucTemperatureTH = data;
+	
+	/* tempterature protect */
+	APP_Common_GetParameters(TEMPERATURE_PROTECT_FLAG, (uint8_t*)&data, sizeof(s_stMosTcb.bOverTempProtect));
+	s_stMosTcb.bOverTempProtect = (bool)data;
 }
 
 /**
@@ -69,20 +85,39 @@ static uint8_t MosTemperature_Detection(void)
  * @param  None.
  * @retval Temperature.
  */
-uint8_t APP_ReadMosTemperature(void)
+uint8_t APP_Mos_ReadTemperature(void)
 {
 	return s_stMosTcb.ucTemperature;
 }
 
 /**
-* @brief  APP_WriteMosTemperatrueTH.
+* @brief  APP_Mos_WriteTemperatrueTH.
 * @note   None.
 * @param  val.
 * @retval None.
 */
-void APP_WriteMosTemperatrueTH(uint8_t val)
+void APP_Mos_WriteTemperatrueTH(uint8_t val)
 {
+	if (s_stMosTcb.ucTemperatureTH == val)
+		return;
+	
+	if (val > MAX_TEMPERATURE || val < MIN_TEMPERATURE)
+		return;
+	
 	s_stMosTcb.ucTemperatureTH = val;
+	uint8_t temp = val;
+	APP_Common_SaveParameters(TEMPERATURE_FLAG, (uint8_t*)&temp, sizeof(temp));
+}
+
+/**
+ * @brief  APP_Water_ReadTemperatrueTH.
+ * @note   None.
+ * @param  None.
+ * @retval TemperatureTh.
+ */
+uint8_t APP_Water_ReadTemperatrueTH(void)
+{
+	return s_stMosTcb.ucTemperatureTH;
 }
 
 /**
@@ -91,23 +126,37 @@ void APP_WriteMosTemperatrueTH(uint8_t val)
 * @param  state.
 * @retval None.
 */
-void APP_WriteMosOverTemperaturePROT(bool state)
+void APP_Mos_WriteOverTemperaturePROT(bool state)
 {
+	if (s_stMosTcb.bOverTempProtect == state)
+		return;
+	
 	s_stMosTcb.bOverTempProtect = state;
+	uint8_t temp = state;
+	APP_Common_SaveParameters(TEMPERATURE_PROTECT_FLAG, (uint8_t*)&temp, sizeof(temp));
 }
 
+/**
+ * @brief  APP_Mos_ReadOverTemperaturePROT.
+ * @note   None.
+ * @param  None.
+ * @retval bOverTempProtect.
+ */
+bool APP_Mos_ReadOverTemperaturePROT(void)
+{
+	return s_stMosTcb.bOverTempProtect;
+}
 
 /**
- * @brief  APP_IsMosTemperatureOver.
+ * @brief  APP_Mos_IsTemperatureOver.
  * @note   None.
  * @param  None.
  * @retval true/false.
  */
-bool APP_IsMosTemperatureOver(void)
+bool APP_Mos_IsTemperatureOver(void)
 {
 	if (s_stMosTcb.ucTemperature > s_stMosTcb.ucTemperatureTH)
 		return true;
 	else
 		return false;
 }
-

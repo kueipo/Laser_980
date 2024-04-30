@@ -182,6 +182,10 @@ void APP_LaserRunning(void)
 #define ERROR_CODE_WATERLEVEL				(uint8_t)0X04
 #define ERROR_CODE_SAFELOCKER				(uint8_t)0X05
 #define ERROR_CODE_VOLTAGE					(uint8_t)0X06
+#define ERROR_CODE_MOS_TEMP					(uint8_t)0X07
+#define ERROR_CODE_SELF_CHECK				(uint8_t)0X08
+#define ERROR_CODE_PUMP							(uint8_t)0X09
+
 
 /**
  * @brief  APP_SafeGuard.
@@ -238,17 +242,20 @@ void APP_SafeGuard(void)
 		goto _stopRun;
 #endif
 
-#if 0
+#if 1
 	/* Mos overtemperature */
-	if ( APP_IsMosTemperatureOver())
+	if ( APP_Mos_IsTemperatureOver())
+	{
+		errorcode |= ERROR_CODE_MOS_TEMP;		
 		goto _stopRun;
+	}
 #endif
 
 #if 1
 	/* Voltage */
 	if (APP_VoltageDetection_IsError())
 	{
-		errorcode |= ERROR_CODE_WATERLEVEL;
+		errorcode |= ERROR_CODE_VOLTAGE;
 		goto _stopRun;
 	}
 #endif
@@ -306,7 +313,7 @@ void APP_SystemReady(bool bState)
 {
 	if (bState && APP_KEY_IsPress())	/* Release key */
 		return;
-	
+
 	if (bState == s_stSystemParametser.bReady)
 		return;
 

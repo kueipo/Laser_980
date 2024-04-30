@@ -11,11 +11,11 @@ static bool Check_Fac(void);
 static void App_SetSystemReady(void *arg);
 static void Task_FB_SetSystemReady(void);
 
-static void App_SetOverTempPROT(void *arg);
-static void Task_FB_SetOverTempPROT(void);
+static void App_WriteOverTempPROT(void *arg);
+static void Task_FB_WriteOverTempPROT(void);
 
-static void App_SetTempTH(void *arg);
-static void Task_FB_SetTempTH(void);
+static void App_WriteTempTH(void *arg);
+static void Task_FB_WriteTempTH(void);
 
 static void App_SetWaterFlowPROT(void *arg);
 static void Task_FB_SetWaterFlowPROT(void);
@@ -91,8 +91,8 @@ typedef struct
 
 static volatile LOCAL_APP_TABLE AppTable[] = {
 	{INDEX_TYPE_OPERATE,	INDEX_SYSTEM_READY,				(*App_SetSystemReady)		},
-	{INDEX_TYPE_OPERATE,	INDEX_OVERTEMP_PROTECT, 	(*App_SetOverTempPROT)},
-	{INDEX_TYPE_OPERATE,	INDEX_SET_TEMP_THRESHOLD, (*App_SetTempTH)			},
+	{INDEX_TYPE_OPERATE,	INDEX_OVERTEMP_PROTECT, 	(*App_WriteOverTempPROT)},
+	{INDEX_TYPE_OPERATE,	INDEX_SET_TEMP_THRESHOLD, (*App_WriteTempTH)			},
 	{INDEX_TYPE_OPERATE,	INDEX_WATER_FLOW_PORTECT, (*App_SetWaterFlowPROT)	},
 	{INDEX_TYPE_OPERATE,	INDEX_HANDPIECE_PROTECT, 	(*App_SetHandpiecePROT)	},
 	{INDEX_TYPE_OPERATE,	INDEX_SAFELOCKER_PROTECT, (*App_SetSafeLockerPROT)},
@@ -120,8 +120,8 @@ static volatile uint8_t s_ucAppQty = sizeof(AppTable) / sizeof(AppTable[0]);
 static volatile Task_Typedef TaskLocal[] = {	
 /* State		RunTime		Period   current_operation */
 	{ SUSPEND,	0,			1,		(*Task_FB_SetSystemReady)		},
-	{ SUSPEND,	0,			1,		(*Task_FB_SetOverTempPROT)	},
-	{ SUSPEND,	0,			1,		(*Task_FB_SetTempTH)		},
+	{ SUSPEND,	0,			1,		(*Task_FB_WriteOverTempPROT)	},
+	{ SUSPEND,	0,			1,		(*Task_FB_WriteTempTH)		},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetWaterFlowPROT)	},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetHandpiecePROT)	},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetSafeLockerPROT)},
@@ -190,61 +190,71 @@ static void Task_FB_SetSystemReady(void)
 
 /* ------------------------------------------------------------------------------ */
 /**
- * @brief  App_SetOverTempPROT.
+ * @brief  App_WriteOverTempPROT.
  * @note   None.
  * @param  arg.
  * @retval None.
  */
-static void App_SetOverTempPROT(void *arg)
+static void App_WriteOverTempPROT(void *arg)
 {
-#if 0
+#if 1
 	uint8_t *data = arg;
 	uint8_t temp;
 
-	temp = data[OFFSET_DATA_CONTENT_START+1];
-	APP_WriteWaterOverTemperaturePROT((bool)temp);
+	temp = data[OFFSET_DATA_CONTENT_START + 1];
+	APP_Mos_WriteOverTemperaturePROT((bool)temp);
 	
-/*	Enable_Feedback(TASK_FB_OVERTEMP_PROTECT, 0); */
+	Enable_Feedback(TASK_FB_OVERTEMP_PROTECT, 0);
 #else
 	UNUSED(arg);
 #endif
 }
 
 /**
- * @brief  Task_FB_SetOverTempPROT.
+ * @brief  Task_FB_WriteOverTempPROT.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-static void Task_FB_SetOverTempPROT(void)
+static void Task_FB_WriteOverTempPROT(void)
 {
+	uint16_t temp = APP_Mos_ReadOverTemperaturePROT();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_FEEDBACK, INDEX_OVERTEMP_PROTECT, 1, &temp);
 	TaskLocal[TASK_FB_OVERTEMP_PROTECT].State = SUSPEND;
 }
 
 /* ------------------------------------------------------------------------------ */
 /**
- * @brief  App_SetTempTH.
+ * @brief  App_WriteTempTH.
  * @note   None.
  * @param  arg.
  * @retval None.
  */
-static void App_SetTempTH(void *arg)
+static void App_WriteTempTH(void *arg)
 {
-#if 0
+#if 1
 	uint8_t *data = arg;
 	uint8_t temp;
 
 	temp = data[OFFSET_DATA_CONTENT_START + 1];
-	APP_WriteWaterTemperatrueTH(temp);
+	APP_Mos_WriteTemperatrueTH(temp);
 	
-/*	Enable_Feedback(TASK_FB_SET_TEMP_TH, 0); */
+	Enable_Feedback(TASK_FB_SET_TEMP_TH, 0);
 #else
 	UNUSED(arg);
 #endif
 }
 
-static void Task_FB_SetTempTH(void)
+/**
+ * @brief  Task_FB_WriteTempTH.
+ * @note   None.
+ * @param  arg.
+ * @retval None.
+ */
+static void Task_FB_WriteTempTH(void)
 {
+	uint16_t temp = APP_Water_ReadTemperatrueTH();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_FEEDBACK, INDEX_SET_TEMP_THRESHOLD, 1, &temp);
 	TaskLocal[TASK_FB_SET_TEMP_TH].State = SUSPEND;
 }
 
