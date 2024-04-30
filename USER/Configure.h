@@ -9,7 +9,7 @@
 	
 	//	<s.10>Name
 	//	<i>Board Name
-	#define BOARD_Name "980Por"
+	#define BOARD_Name "980Pro"
 	
 	// <o>Version
 	// <10000-999999>
@@ -38,6 +38,17 @@
 			#define DEVICE_TYPE		DEV_INDEX_MASTER
 		#endif
 
+	// <o>Hardware Version
+	// <i>Hardware Version Select
+	//  <0=> V1
+	//  <1=> V2
+		#define HARDWARE_SELECT		0
+		#if   (HARDWARE_SELECT == 0)
+			#define BSP_V01
+		#elif (HARDWARE_SELECT == 1)
+			#define BSP_V02
+		#endif
+		
 // </h>
 
 /* SFUD ----------------------------------------------------------------------*/
@@ -165,6 +176,19 @@
 
 //<<< end of configuration section >>>
 #endif
+
+/* ---------------------------------------------------------------------------*/
+#define IAP_FLAG_808_ADDR_OFFSET					0X0000	//0X0000
+#define IAP_FLAG_808_PROTECT_ADDR_OFFSET	0X0000	//0X0004
+
+#define IAP_FLAG_MASSAGER_ADDR_OFFSET							0X0008	//0X0008
+#define IAP_FLAG_MASSAGER_PROTECT_ADDR_OFFSET			0X000C	//0X000C
+
+#define IAP_FLAG_980_ADDR_OFFSET					0X0010					//0X0010
+#define IAP_FLAG_980_PROTECT_ADDR_OFFSET	IAP_FLAG_980_ADDR_OFFSET + 4	//0X0014
+/* ---------------------------------------------------------------------------*/
+#define IAP_FLAG_ADDR_SETOFF		IAP_FLAG_980_PROTECT_ADDR_OFFSET //customize
+
 
 /*
 

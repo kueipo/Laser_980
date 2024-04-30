@@ -215,31 +215,32 @@ static void MX_NVIC_Init(void)
 static void Write_App_Flag(void)
 {
 	uint8_t flag;
+	uint32_t addr = 0 + IAP_FLAG_ADDR_SETOFF;
 #if defined(ENABLE_FAL_SUPPORT)
 	const struct fal_partition *part = fal_partition_find ("upd");
 
 	if (part == NULL)
 		return;
 
-	if (fal_partition_read(part, 0, &flag, 1) >= 0)
+	if (fal_partition_read(part, addr, &flag, 1) >= 0)
 	{
 		if (flag != ENTER_APP)
 		{	
 			flag = ENTER_APP;
-			fal_partition_erase(part, 0, 1);
-			fal_partition_write(part, 0, &flag, 1);
+			fal_partition_erase(part, addr, 1);
+			fal_partition_write(part, addr, &flag, 1);
 		}
 	}
 #else
-	FLASH_Read(UPD_FLAG_ADDRESS, &flag, 1);
+	FLASH_Read(UPD_FLAG_ADDRESS + addr, &flag, 1);
 	if (flag != ENTER_APP)
 	{
 		flag = ENTER_APP;
 		FLASH_Init();
-		FLASH_Erase(UPD_FLAG_ADDRESS, 1);
-		FLASH_Write(UPD_FLAG_ADDRESS, &flag, 1);
+		FLASH_Erase(UPD_FLAG_ADDRESS + addr, 1);
+		FLASH_Write(UPD_FLAG_ADDRESS + addr, &flag, 1);
 	}
-#endif	
+#endif
 }
 /* USER CODE END 4 */
 

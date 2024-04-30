@@ -57,6 +57,8 @@
 .\app\bsp_gpio.o: ../Fal/porting/fal_cfg.h
 .\app\bsp_gpio.o: ../User/UI/UI_Img_Map.h
 .\app\bsp_gpio.o: ../Fal/inc/fal_def.h
+.\app\bsp_gpio.o: ../User/sys/ConfigFlag.h
+.\app\bsp_gpio.o: ../User/BSP/BSP_Common.h
 .\app\bsp_gpio.o: ../User/BSP/BSP_GPIO.h
 .\app\bsp_gpio.o: ../User/BSP/BSP_Adc.h
 .\app\bsp_gpio.o: ../User/BSP/BSP_Uart.h

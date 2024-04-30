@@ -32,6 +32,7 @@
 ".\app\dev_config.o"
 ".\app\sys.o"
 ".\app\ringbuffer.o"
+".\app\configflag.o"
 ".\app\crc16.o"
 ".\app\bsp_common.o"
 ".\app\bsp_gpio.o"

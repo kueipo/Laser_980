@@ -261,21 +261,7 @@ static void App_Updata(void *arg)
 	else
 		return;
 
-#if defined(ENABLE_FAL_SUPPORT)	/* use FAL */	
-	const struct fal_partition *part = fal_partition_find("upd");
-	if (part != NULL)
-	{
-		fal_partition_erase(part, 0, 1);
-		fal_partition_write(part, 0, &buf, 1);
-	}
-#else	/* opt flash */
-	#include "stm32flash/flash_stm32.h"
-	FLASH_Init();
-	FLASH_Erase(UPD_FLAG_ADDRESS, 1);
-	FLASH_Write(UPD_FLAG_ADDRESS, &buf, 1);
-#endif
-	
-	HAL_FLASH_OB_Launch();
+	cf_Config_App_Flag(buf);
 }
 
 /**

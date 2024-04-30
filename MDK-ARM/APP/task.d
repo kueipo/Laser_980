@@ -59,6 +59,8 @@
 .\app\task.o: ../Fal/porting/fal_cfg.h
 .\app\task.o: ../User/UI/UI_Img_Map.h
 .\app\task.o: ../Fal/inc/fal_def.h
+.\app\task.o: ../User/sys/ConfigFlag.h
+.\app\task.o: ../User/BSP/BSP_Common.h
 .\app\task.o: ../User/BSP/BSP_GPIO.h
 .\app\task.o: ../User/BSP/BSP_Adc.h
 .\app\task.o: ../User/BSP/BSP_Uart.h

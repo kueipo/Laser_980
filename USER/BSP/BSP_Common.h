@@ -21,6 +21,7 @@
 #include "Stm32Flash/flash_stm32.h"
 
 #include "iap/inc/iap.h"
+#include "sys/ConfigFlag.h"
 
 #include "BSP/BSP_GPIO.h"
 //#include "BSP/BSP_Handpiece.h"

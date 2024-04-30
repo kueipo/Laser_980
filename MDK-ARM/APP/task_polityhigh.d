@@ -59,6 +59,8 @@
 .\app\task_polityhigh.o: ../Fal/porting/fal_cfg.h
 .\app\task_polityhigh.o: ../User/UI/UI_Img_Map.h
 .\app\task_polityhigh.o: ../Fal/inc/fal_def.h
+.\app\task_polityhigh.o: ../User/sys/ConfigFlag.h
+.\app\task_polityhigh.o: ../User/BSP/BSP_Common.h
 .\app\task_polityhigh.o: ../User/BSP/BSP_GPIO.h
 .\app\task_polityhigh.o: ../User/BSP/BSP_Adc.h
 .\app\task_polityhigh.o: ../User/BSP/BSP_Uart.h

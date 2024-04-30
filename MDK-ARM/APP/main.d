@@ -60,6 +60,8 @@
 .\app\main.o: ../Fal/porting/fal_cfg.h
 .\app\main.o: ../User/UI/UI_Img_Map.h
 .\app\main.o: ../Fal/inc/fal_def.h
+.\app\main.o: ../User/sys/ConfigFlag.h
+.\app\main.o: ../User/BSP/BSP_Common.h
 .\app\main.o: ../User/BSP/BSP_GPIO.h
 .\app\main.o: ../User/BSP/BSP_Adc.h
 .\app\main.o: ../User/BSP/BSP_Uart.h

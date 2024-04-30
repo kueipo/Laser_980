@@ -82,7 +82,7 @@ static int erase(long offset, size_t size)
 	NbrOfPages = (size + FLASH_PAGE_SIZE - 1) / FLASH_PAGE_SIZE;
 
 	pEraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
-	pEraseInit.PageAddress = addr;
+	pEraseInit.PageAddress = ((addr - FLASH_BASE) / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE + FLASH_BASE;
 #if defined(FLASH_BANK_1)
 	pEraseInit.Banks = FLASH_BANK_1;
 #endif
