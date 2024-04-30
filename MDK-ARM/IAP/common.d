@@ -34,6 +34,7 @@
 .\iap\common.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_spi_ex.h
 .\iap\common.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h
 .\iap\common.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
+.\iap\common.o: ..\..\IAP\Config/Configure.h
 .\iap\common.o: ..\..\IAP\iap/inc/ymodem.h
 .\iap\common.o: ..\..\IAP\iap/inc/common.h
 .\iap\common.o: ..\..\IAP\iap/inc/iap.h

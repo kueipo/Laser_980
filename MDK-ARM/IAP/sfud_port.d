@@ -42,3 +42,4 @@
 .\iap\sfud_port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\iap\sfud_port.o: ../Inc/spi.h
 .\iap\sfud_port.o: ../Inc/main.h
+.\iap\sfud_port.o: ..\..\IAP\Config/Configure.h

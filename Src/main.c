@@ -68,14 +68,14 @@ uint8_t flag;
 
 static bool Write_App_Flag(uint8_t flag)
 {
+	uint32_t addr = 0 + IAP_FLAG_ADDR_SETOFF;
 	opt_area = fal_partition_find ("upd");
 	
 	if (opt_area == NULL)
 		return false;
 
-	fal_partition_erase(opt_area, 0, 1);
-	fal_partition_write(opt_area, 0, &flag, 1);
-	flag = 0;
+	fal_partition_erase(opt_area, addr, 1);
+	fal_partition_write(opt_area, addr, &flag, 1);
 	return true;
 
 }
@@ -119,7 +119,7 @@ int main(void)
 	
 	opt_area = fal_partition_find("upd");
 
-	if (fal_partition_read(opt_area, 0, &flag, 1) >= 0)
+	if (fal_partition_read(opt_area, 0 + IAP_FLAG_ADDR_SETOFF, &flag, 1) >= 0)
 	{
 	//	flag = DOWN_TO_FAC;
 		/* successful read data */

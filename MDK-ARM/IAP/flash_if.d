@@ -33,3 +33,4 @@
 .\iap\flash_if.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_spi_ex.h
 .\iap\flash_if.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h
 .\iap\flash_if.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
+.\iap\flash_if.o: ..\..\IAP\Config/Configure.h

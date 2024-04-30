@@ -33,4 +33,5 @@
 .\iap\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_spi_ex.h
 .\iap\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h
 .\iap\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
+.\iap\usart.o: ..\..\IAP\Config/Configure.h
 .\iap\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

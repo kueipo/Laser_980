@@ -66,7 +66,7 @@
 #ifdef FAL_PART_HAS_TABLE_CFG
 /* partition table */
 #define FAL_PART_TABLE 		                                                        \
-{                                                                                 \
+{                                                                              \
 	{FAL_PART_MAGIC_WORD,	"app", 		FAL_USING_STM_FLASH_DEV_NAME,	(20)*1024, 	  	    (64-1-20)*1024, 0}, \
 	{FAL_PART_MAGIC_WORD,	"upd", 		FAL_USING_STM_FLASH_DEV_NAME,	(64-1)*1024, 	    	(1)*1024, 0}, \
 	\

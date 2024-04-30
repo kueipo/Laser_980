@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\IAP\IAP.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\IAP\IAP.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Nov 09 10:49:49 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Apr 22 17:23:45 2024
 <BR><P>
 <H3>Maximum Stack Usage =       1120 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1160,7 +1160,7 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[95]"></a>Write_App_Flag</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, main.o(i.Write_App_Flag))
+<P><STRONG><a name="[95]"></a>Write_App_Flag</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, main.o(i.Write_App_Flag))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = Write_App_Flag &rArr; fal_partition_write &rArr; flash_device_find_by_part &rArr; __aeabi_idivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fal_partition_write
@@ -1414,8 +1414,8 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> fal_flash_sfud_port.o(.data)
 </UL>
-<P><STRONG><a name="[31]"></a>erase</STRONG> (Thumb, 60 bytes, Stack size 32 bytes, fal_flash_stm32_port.o(i.erase))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation &rArr; FLASH_SetErrorCode
+<P><STRONG><a name="[31]"></a>erase</STRONG> (Thumb, 66 bytes, Stack size 40 bytes, fal_flash_stm32_port.o(i.erase))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation &rArr; FLASH_SetErrorCode
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASHEx_Erase
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Unlock
