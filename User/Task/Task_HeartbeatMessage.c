@@ -4,6 +4,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define ENABLE_SEND_ERR_CODE 1
 #define ENABLE_SEND_VERSION 1
 #define ENABLE_SEND_FAN_SPEED 0
 #define ENABLE_SEND_FAN_TEMPERATURE 0
@@ -20,7 +21,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
+#if ENABLE_SEND_ERR_CODE
 static void SendErrorInfo(void);
+#endif /* ENABLE_SEND_ERR_CODE */
 
 #if ENABLE_SEND_WATER_TEMPERATURE
 static void SendWaterTemperature(void);
@@ -83,7 +86,9 @@ typedef struct
 } TaskLocal_TypeDef;
 
 static TaskLocal_TypeDef TaskLocal[] = {
+#if ENABLE_SEND_ERR_CODE
 	{*SendErrorInfo},
+#endif /* ENABLE_SEND_ERR_CODE */
 #if ENABLE_SEND_WATER_TEMPERATURE
 	{*SendWaterTemperature},
 #endif /* ENABLE_SEND_WATER_TEMPERATURE */
@@ -166,18 +171,15 @@ void Task_Heartbeat_Message(void)
  * @param  None.
  * @retval None.
  */
+#if ENABLE_SEND_ERR_CODE
 static void SendErrorInfo(void)
 {
-#if 0
-	uint32_t state = Read_DeviceState();
-	uint16_t buff[2] = {0};
+	uint16_t errorcode[1];
+	errorcode[0] = (uint16_t)APP_Operate_ReadErrCode();
 	
-	buff[0] = state >> 16;
-	buff[1] = state;
-
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_HB_ERROR, 2, buff);
-#endif
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_ERROR_CODE, 1, errorcode);
 }
+#endif /* ENABLE_SEND_ERR_CODE */
 
 /**
  * @brief  SendWaterTemperature.

@@ -13,8 +13,8 @@ typedef struct
 } TaskLocal_TypeDef;
 
 static TaskLocal_TypeDef TaskLocal[] = {
-	{*APP_LaserRunning},
-	{*APP_SafeGuard},
+	{*APP_Operate_Task},
+	{*APP_Operate_SafeGuardTask},
 };
 static volatile uint8_t TaskLocal_Total = sizeof(TaskLocal) / sizeof(TaskLocal[0]);
 

@@ -165,8 +165,8 @@ static void App_SetSystemReady(void *arg)
 	
 	tmp = (bool)data[OFFSET_DATA_CONTENT_START + 1];
 	
-	APP_SystemReady(tmp);
-#if 1 /* Executed in function :APP_SystemReady  */
+	APP_Operate_WreiteSystemReady(tmp);
+#if 1 /* Executed in function :APP_Operate_WreiteSystemReady  */
 	Enable_Feedback(TASK_FB_SYSTEM_READY, 0);
 #endif
 }
@@ -179,7 +179,7 @@ static void App_SetSystemReady(void *arg)
  */
 static void Task_FB_SetSystemReady(void)
 {
-	uint16_t state = (uint16_t)APP_IsSystemReady();
+	uint16_t state = (uint16_t)APP_Operate_IsSystemReady();
 	
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_SYSTEM_READY, 1, &state);
 	
