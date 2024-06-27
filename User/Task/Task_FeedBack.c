@@ -28,8 +28,8 @@ static void Task_FB_SetWaterLevelProt(void);
 static void App_SetHandpiecePROT(void *arg);
 static void Task_FB_SetHandpiecePROT(void);
 
-static void App_SetSafeLockerPROT(void *arg);
-static void Task_FB_SetSafeLockerPROT(void);
+static void App_SetSafeLockEnableBit(void *arg);
+static void Task_FB_SetSafeLockEnableBit(void);
 
 static void App_SetLaserPulse(void *arg);
 static void Task_FB_SetLaserPulse(void);
@@ -95,8 +95,8 @@ static volatile LOCAL_APP_TABLE AppTable[] = {
 	{INDEX_TYPE_OPERATE,	INDEX_SET_TEMP_THRESHOLD, (*App_WriteTempTH)			},
 	{INDEX_TYPE_OPERATE,	INDEX_WATER_FLOW_PORTECT, (*App_SetWaterFlowPROT)	},
 	{INDEX_TYPE_OPERATE,	INDEX_HANDPIECE_PROTECT, 	(*App_SetHandpiecePROT)	},
-	{INDEX_TYPE_OPERATE,	INDEX_SAFELOCKER_PROTECT, (*App_SetSafeLockerPROT)},
-	{INDEX_TYPE_OPERATE,	INDEX_LASER_PULSE_WIDTH, 	(*App_SetLaserPulseWidth)	},
+	{INDEX_TYPE_OPERATE,	SET_SAFELOCK_ENABLE, 			(*App_SetSafeLockEnableBit)},
+	{INDEX_TYPE_OPERATE,	SET_LASER_PULSE_WIDTH, 		(*App_SetLaserPulseWidth)	},
 	{INDEX_TYPE_OPERATE,	INDEX_LASER_PULSE, 				(*App_SetLaserPulse)	},
 	{INDEX_TYPE_OPERATE,	INDEX_LASER_FREQUENCY, 		(*App_SetLaserFrequency)},
 	{INDEX_TYPE_OPERATE,	INDEX_LASER_POWER, 				(*App_SetLaserPower)	},
@@ -124,7 +124,7 @@ static volatile Task_Typedef TaskLocal[] = {
 	{ SUSPEND,	0,			1,		(*Task_FB_WriteTempTH)		},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetWaterFlowPROT)	},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetHandpiecePROT)	},
-	{ SUSPEND,	0,			1,		(*Task_FB_SetSafeLockerPROT)},
+	{ SUSPEND,	0,			1,		(*Task_FB_SetSafeLockEnableBit)},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetLaserPulse)	},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetLaserPulseWidth)	},
 	{ SUSPEND,	0,			1,		(*Task_FB_SetLaserFrequency)},
@@ -165,8 +165,8 @@ static void App_SetSystemReady(void *arg)
 	
 	tmp = (bool)data[OFFSET_DATA_CONTENT_START + 1];
 	
-	APP_Operate_WriteSystemReady(tmp);
-#if 1 /* Executed in function :APP_Operate_WriteSystemReady  */
+	APP_SystemReady(tmp);
+#if 1 /* Executed in function :APP_SystemReady  */
 	Enable_Feedback(TASK_FB_SYSTEM_READY, 0);
 #endif
 }
@@ -179,7 +179,7 @@ static void App_SetSystemReady(void *arg)
  */
 static void Task_FB_SetSystemReady(void)
 {
-	uint16_t state = (uint16_t)APP_Operate_IsSystemReady();
+	uint16_t state = (uint16_t)APP_IsSystemReady();
 	
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_SYSTEM_READY, 1, &state);
 	
@@ -330,37 +330,47 @@ static void Task_FB_SetHandpiecePROT(void)
 
 /* ------------------------------------------------------------------------------ */
 /**
- * @brief  App_SetSafeLockerPROT.
+ * @brief  App_SetSafeLockEnableBit.
  * @note   None.
  * @param  arg.
  * @retval None.
  */
-static void App_SetSafeLockerPROT(void *arg)
+static void App_SetSafeLockEnableBit(void *arg)
 {
 	uint8_t *data = arg;
+	uint8_t devid = data[OFFSET_DATA_TARGET_H];
 	uint8_t temp;
 	uint8_t length = data[OFFSET_DATA_LENGTH];
-	uint8_t devid = data[OFFSET_DATA_TARGET_H];
-
+	
 	if (devid != DEVICE_TYPE)
 		return;
 	
-	for (uint8_t index = 0; index < length; index += 2)
+	for (uint8_t i = 0; i < length; i++)
 	{
-		temp = data[OFFSET_DATA_CONTENT_START + 1 + index];
-		APP_SafeLock_WritePROT(index, (bool)temp);
+		temp = data[OFFSET_DATA_CONTENT_START + 1 + i * 2];
+		APP_SafeLock_WritePROT(i, (bool)temp);
 	}
+
+	uint16_t respond[LOCK_ID_MAX];
+	for (uint8_t i = 0; i < LOCK_ID_MAX; i++)
+	{
+		if (APP_SafeLock_ReadPROT(i))
+			respond[i] = 0xAA;
+		else
+			respond[i] = 0;
+	}
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_FEEDBACK, SET_SAFELOCK_ENABLE, LOCK_ID_MAX, respond);
 	
-	Enable_Feedback(TASK_FB_SET_SAFELOCKER_PROTECT, 0);
+	//	Enable_Feedback(TASK_FB_SET_SAFELOCK_ENABLE, 0);
 }
 
 /**
- * @brief  Task_FB_SetSafeLockerPROT.
+ * @brief  Task_FB_SetSafeLockEnableBit.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-static void Task_FB_SetSafeLockerPROT(void)
+static void Task_FB_SetSafeLockEnableBit(void)
 {
 	TaskLocal[TASK_FB_SET_SAFELOCKER_PROTECT].State = SUSPEND;
 }
@@ -436,7 +446,7 @@ static void Task_FB_SetLaserPulseWidth(void)
 {
 	uint16_t state = (uint16_t)APP_LaserReadPulseWidth();
 		
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_LASER_PULSE_WIDTH, 1, &state);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, SET_LASER_PULSE_WIDTH, 1, &state);
 	
 	TaskLocal[TASK_FB_SET_LASER_PULSE_WIDTH].State = SUSPEND;
 }
@@ -1070,8 +1080,8 @@ static void App_GetVersion(void *arg)
 static void Task_FB_GetVersion(void)
 {
 	uint16_t temp[2];
-	temp[0] = (uint16_t)(BSP_VERSION >> 16);
-	temp[1] = (uint16_t)(BSP_VERSION);
+	temp[0] = (uint16_t)(BSP_SOFTWARE_VERSION >> 16);
+	temp[1] = (uint16_t)(BSP_SOFTWARE_VERSION);
 	
 	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_FEEDBACK, INDEX_TARGET_VERSION, 2, temp);
 	

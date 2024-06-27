@@ -15,7 +15,7 @@ typedef struct
 typedef struct 
 {
 	volatile uint32_t ulPulseCNT;
-	volatile uint8_t ucErrCode;
+	volatile uint8_t ucErr;
 	volatile bool bReady;
 	volatile bool bRun;
 	Time_Struct stTime;
@@ -29,15 +29,13 @@ void APP_SendLaserCount(void);
 void APP_SetTime(uint8_t hour, uint8_t minute, uint8_t second);
 void APP_TimeCallback(void);
 void APP_SendTime(void);
-void APP_Operate_Task(void);
-void APP_Operate_SafeGuardTask(void);
-void APP_Operate_WriteLaserRunState(bool bState);
-bool APP_Operate_IsLaserRunning(void);
+void APP_LaserRunning(void);
+void APP_SafeGuard(void);
+void APP_LaserRunSet(bool bState);
+bool APP_IsLaserRunning(void);
 
-void APP_Operate_WriteSystemReady(bool bState);
-bool APP_Operate_IsSystemReady(void);
-uint8_t APP_Operate_ReadErrCode(void);
-
+void APP_SystemReady(bool bState);
+bool APP_IsSystemReady(void);
 #ifdef __cplusplus
 }
 #endif

@@ -369,12 +369,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //		APP_Buzzer_Config(BUZZER_0, true);
 	}
 	
-	if(TIM2 == htim->Instance)
+	else if(TIM2 == htim->Instance)
 	{
 		BSP_Fan_CaptureOverflow();
   }
 }
 
+/**
+  * @brief  Input Capture callback in non-blocking mode
+  * @param  htim TIM IC handle
+  * @retval None
+  */
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
 	if(TIM2 == htim->Instance)

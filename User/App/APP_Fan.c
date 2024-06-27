@@ -12,6 +12,14 @@
 /* Variables -----------------------------------------------------------------*/
 uint16_t Speed[IN_FAN_MAX_MUNBER + EX_FAN_MAX_MUNBER] = {0};
 
+typedef struct {
+	uint8_t AutoPower:1;
+	uint8_t sw:1;
+	uint8_t Power;
+	uint8_t Temperature;
+	uint8_t number;
+	uint16_t *Speed;
+} FanModel_TypeDef;
 FanModel_TypeDef s_stFanTcb[FAN_MODULE_MAX_NUMBER];
 
 /* Function prototypes -------------------------------------------------------*/
@@ -58,8 +66,8 @@ void APP_Fan_Task(void)
 	s_stFanTcb[IN_FAN_MODULE].Temperature = APP_Mos_ReadTemperature();
 	/* Automatic speed regulation */
 	s_stFanTcb[IN_FAN_MODULE].Power = ( s_stFanTcb[IN_FAN_MODULE].Temperature <= WORKING_MIN_TEMPERTATURE ? \
-													0 : s_stFanTcb[IN_FAN_MODULE].Temperature >= (WORKING_MIN_TEMPERTATURE + 10) ? \
-													10 : (s_stFanTcb[IN_FAN_MODULE].Temperature - WORKING_MIN_TEMPERTATURE) );
+																	0 : s_stFanTcb[IN_FAN_MODULE].Temperature >= (WORKING_MIN_TEMPERTATURE + 10) ? \
+																10 : (s_stFanTcb[IN_FAN_MODULE].Temperature - WORKING_MIN_TEMPERTATURE) );
 	
 	BSP_Fan_Config(FAN_ID_0, (s_stFanTcb[IN_FAN_MODULE].Power * 10));
 	

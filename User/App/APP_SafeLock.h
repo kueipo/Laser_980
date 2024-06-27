@@ -3,8 +3,9 @@
 
 typedef struct
 {
-	bool bState;
-	bool bProtect;
+	volatile uint8_t ucFilter;
+	volatile bool bState;
+	volatile bool bProtect;
 } SafeLock_Struct;
 
 typedef enum
@@ -17,8 +18,8 @@ typedef enum
 void APP_SafeLock_Init(void);
 void APP_SafeLock_Task(void);
 uint8_t APP_SafeLock_ReadConn(uint8_t id);
-bool APP_SafeLock_WritePROT(uint8_t id, bool bState);
+void APP_SafeLock_WritePROT(uint8_t id, bool bState);
 bool APP_SafeLock_ReadPROT(uint8_t id);
 bool APP_SafeLock_IsErr(void);
 
-#endif
+#endif /* __APP_SAFELOCK_H */

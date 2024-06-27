@@ -25,6 +25,7 @@ typedef struct
 {
 	volatile uint16_t pulse;
 	volatile uint16_t speed[FAN_ID_MAX];
+	volatile uint16_t pwm[FAN_ID_MAX];
 	volatile uint8_t overtime;
 	volatile uint8_t period;
 	volatile uint8_t step;
@@ -89,7 +90,7 @@ void BSP_Fan_Task(void)
 		if (s_stFanBspTcb.CompleteFlg > 1)
 			s_stFanBspTcb.speed[s_stFanBspTcb.id] = 0;
 		else // success
-		{		
+		{
 			uint32_t temp;
 			temp = 100000 / (s_stFanBspTcb.pulse + 10000 * s_stFanBspTcb.period);
 			s_stFanBspTcb.speed[s_stFanBspTcb.id] = (uint16_t)temp;
@@ -165,10 +166,14 @@ void BSP_Fan_Config(uint8_t id, uint16_t uiPwmOut)
 {
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
-
+ 
 	if (id >= FAN_ID_MAX)
 		return;
-
+	
+	if (s_stFanBspTcb.pwm[id] == uiPwmOut)
+		return;
+	
+	s_stFanBspTcb.pwm[id] = uiPwmOut;
 	htim = s_stFanBspCfg[id].htim;
 	Channel = s_stFanBspCfg[id].Channel;
 	

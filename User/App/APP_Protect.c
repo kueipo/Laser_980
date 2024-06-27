@@ -124,7 +124,7 @@ void APP_Protect_RefreshReady(void)
 {
 	uint16_t val[1];
 	
-	val[0] = (uint16_t)APP_Operate_IsSystemReady();
+	val[0] = (uint16_t)APP_IsSystemReady();
 
 	APP_Send_Data(DEV_INDEX_PORTECT, INDEX_TYPE_OPERATE, INDEX_SYSTEM_READY, 1, val);
 }
@@ -140,7 +140,7 @@ void APP_Protect_RefreshRun(void)
 {
 	uint16_t val[1];
 	
-	val[0] = (uint16_t)APP_Operate_IsLaserRunning();
+	val[0] = (uint16_t)APP_IsLaserRunning();
 
 	APP_Send_Data(DEV_INDEX_PORTECT, INDEX_TYPE_OPERATE, INDEX_SYSTEM_RUNNING, 1, val);
 }

@@ -76,7 +76,6 @@ void APP_Laser_Init(void)
 	APP_Laser_WriteMode(false);
 	APP_Laser_EnergyReady(false);
 	APP_Laser_OutEnable(false);
-	
 	APP_Laser_IndicatorWriteEnergy(0);
 }
 
@@ -440,6 +439,24 @@ uint16_t APP_LaserReadPulseWidth(void)
 #define LEVEL_630_MAX	5
 uint16_t const LaserIndicator[LEVEL_630_MAX] = {
 	0, 1200, 1474, 1802, 2129};
+
+/**
+ * @brief  APP_IndicatiorRefresh.
+ * @note   None.
+ * @param  None.
+ * @retval None.
+ */
+static void APP_IndicatiorRefresh(void)
+{
+	uint16_t val;
+	uint8_t index = LASER_630;
+	uint8_t energy = s_stLaserTcb[index].ucEnergy;
+	uint8_t channel = s_stLaserTcb[index].ucChannel;
+	
+	val = LaserIndicator[energy];
+	BSP_DAC_Config(channel, val);
+}
+
 /**
  * @brief  APP_Laser_IndicatorWriteEnergy.
  * @note   None.
@@ -448,17 +465,20 @@ uint16_t const LaserIndicator[LEVEL_630_MAX] = {
  */
 bool APP_Laser_IndicatorWriteEnergy(uint8_t energy)
 {
-	uint16_t val;
 	uint8_t index = LASER_630;
-	uint8_t channel = s_stLaserTcb[index].ucChannel;
-	
+
 	if (energy >= LEVEL_630_MAX)
 		return false;
 	
-	s_stLaserTcb[index].ucEnergy = energy;
-	val = LaserIndicator[energy];
+	if (s_stLaserTcb[index].ucEnergy == energy)
+		return true;
 	
-	BSP_DAC_Config(channel, val);
+	s_stLaserTcb[index].ucEnergy = energy;
+	
+	if (s_stLaserTcb[index].bRun)
+	{
+		APP_IndicatiorRefresh();
+	}
 		
 	return true;
 }
@@ -472,6 +492,36 @@ bool APP_Laser_IndicatorWriteEnergy(uint8_t energy)
 uint8_t APP_Laser_IndicatorReadEnergy(void)
 {
 	uint8_t index = LASER_630;
-	
+
 	return s_stLaserTcb[index].ucEnergy;
+}
+
+/**
+ * @brief  APP_Laser_IndicatorEnable.
+ * @note   None.
+ * @param  state.
+ * @retval None.
+ */
+void APP_Laser_IndicatorEnable(bool state)
+{
+#if 0
+	uint16_t val;
+	uint8_t index = LASER_630;
+	uint8_t energy = s_stLaserTcb[index].ucEnergy;
+	uint8_t channel = s_stLaserTcb[index].ucChannel;
+	
+	if (state == s_stLaserTcb[index].bRun)
+		return;
+		
+	s_stLaserTcb[index].bRun = state;
+	
+	if (state)
+	{
+		APP_IndicatiorRefresh();
+	}
+	else
+		BSP_DAC_Config(channel, 0);
+#else
+	UNUSED(state);
+#endif
 }

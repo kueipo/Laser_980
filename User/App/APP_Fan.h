@@ -23,14 +23,6 @@ typedef enum {
 } FAN_MODULE_ENUM;
 
 typedef struct {
-	uint8_t AutoPower:1;
-	uint8_t Power;
-	uint8_t Temperature;
-	uint8_t number;
-	uint16_t *Speed;
-} FanModel_TypeDef;
-
-typedef struct {
 	uint8_t Power;
 } InFanModel_TypeDef;
 

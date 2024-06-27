@@ -18,5 +18,6 @@ uint16_t APP_LaserReadPulseWidth(void);
 
 bool APP_Laser_IndicatorWriteEnergy(uint8_t energy);
 uint8_t APP_Laser_IndicatorReadEnergy(void);
+void APP_Laser_IndicatorEnable(bool state);
 
 #endif

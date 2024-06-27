@@ -23,10 +23,27 @@
 	//	<i>Board Name
 	#define BOARD_Name "980nm"
 	
+	// <o>Hardware Version
+	// <i>Hardware Version Select
+	//  <01=> V1
+	//  <02=> V2
+	//  <03=> V3
+	//  <04=> V4
+		#define BSP_HARDWARE_VERSION 1
+		#if   (BSP_HARDWARE_VERSION == 1) || (BSP_HARDWARE_VERSION == 0)
+			#define BSP_V01
+		#elif (BSP_HARDWARE_VERSION == 2)
+			#define BSP_V02
+		#elif (BSP_HARDWARE_VERSION == 3)
+			#define BSP_V03
+		#elif (BSP_HARDWARE_VERSION == 4)
+			#define BSP_V04
+		#endif
+	
 	// <o>Version
 	// <10000-999999>
 	// <i>Enter version rang <10000 - 999999>
-	#define BSP_VERSION		10001
+	#define BSP_SOFTWARE_VERSION 10001
 	
 	// <o>Type
 	// <i>Type Select

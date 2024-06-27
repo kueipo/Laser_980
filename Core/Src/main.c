@@ -115,7 +115,7 @@ int main(void)
 #endif /* ENABLE_FAL_SUPPORT */
 
 /* Print version information */
-//	printf("Ver %d.%d\r\n", BSP_VERSION / 10, BSP_VERSION % 10);
+//	printf("Ver %d.%d\r\n", BSP_SOFTWARE_VERSION / 10, BSP_SOFTWARE_VERSION % 10);
 
 	BSP_Init();
 	APP_Init();

@@ -74,7 +74,7 @@ void BSP_Frenquency_Enable(void)
 		
 	if (Pulse < Period)
 	{
-		/*  Clear the specified TIM interrupt flag */
+		/* Clear the specified TIM interrupt flag */
 		__BSP_TIM_CLEAR_CCIT_FLAG(htim, Channel);
 		/* Capture/Compare X interrupt */
 		__BSP_TIM_ENABLE_CCIT(htim, Channel);

@@ -2,12 +2,17 @@
 /* Includes ------------------------------------------------------------------*/
 #include "APP/APP_Common.h"
 
+/* Define --------------------------------------------------------------------*/
+#define FILTER_LONG     	0x03 //0b00000011
+#define LOCK_PROTECT_FLAG "lock"
+
 /* Configuration table -------------------------------------------------------*/
-__IOM SafeLock_Struct s_stSafeLockTcb[LOCK_ID_MAX];
+SafeLock_Struct s_stSafeLockerTcb[LOCK_ID_MAX];
+
+/* Private Function prototypes -----------------------------------------------*/
+static void Check_LockerState(uint8_t id);
 
 /* Function prototypes -------------------------------------------------------*/
-static uint8_t Read_LockPinState(uint8_t id);
-
 /**
  * @brief  APP_SafeLock_Init.
  * @note   None.
@@ -15,15 +20,14 @@ static uint8_t Read_LockPinState(uint8_t id);
  * @retval None.
  */
 void APP_SafeLock_Init(void)
-{
-	uint8_t id;
-
-	memset((uint8_t *)&s_stSafeLockTcb, 0, sizeof(s_stSafeLockTcb));
-
-	for (id = 0; id < LOCK_ID_MAX; id++)
+{	
+	uint8_t data[LOCK_ID_MAX];
+	/* flag */
+	APP_Common_GetParameters(LOCK_PROTECT_FLAG, data, sizeof(data));
+	for (uint8_t i = 0; i < LOCK_ID_MAX; i++)
 	{
-		s_stSafeLockTcb[id].bState = false;
-		s_stSafeLockTcb[id].bProtect = true;
+		s_stSafeLockerTcb[i].bState = true;
+		s_stSafeLockerTcb[i].bProtect = data[i];
 	}
 }
 
@@ -34,29 +38,11 @@ void APP_SafeLock_Init(void)
  * @retval None.
  */
 void APP_SafeLock_Task(void)
-{	
-	uint8_t id;
-	for (id = 0; id < LOCK_ID_MAX; id++)
-	{
-		if (Read_LockPinState(id) == true)
-			s_stSafeLockTcb[id].bState = true;
-		else
-			s_stSafeLockTcb[id].bState = false;
-	}
-}
-
-/**
- * @brief  Read_LockPinState.
- * @note   None.
- * @param  id.
- * @retval result.
- */
-static uint8_t Read_LockPinState(uint8_t id)
 {
-    if (id >= LOCK_ID_MAX)
-        return 0XFF;
-
-	return	((BSP_SafeLock_ReadState(id) == true) ? true : false);
+	for (uint8_t i = 0; i < LOCK_ID_MAX; i++)
+	{
+		Check_LockerState(i);
+	}
 }
 
 /**
@@ -68,9 +54,9 @@ static uint8_t Read_LockPinState(uint8_t id)
 uint8_t APP_SafeLock_ReadConn(uint8_t id)
 {
 	if (id >= LOCK_ID_MAX)
-        return SAFELOCK_ERROR;
-		
-	if (s_stSafeLockTcb[id].bState)
+		return SAFELOCK_ERROR;
+
+	if (s_stSafeLockerTcb[id].bState)
 		return SAFELOCK_CONN;
 	else
 		return SAFELOCK_DISCONN;
@@ -79,23 +65,32 @@ uint8_t APP_SafeLock_ReadConn(uint8_t id)
 /**
  * @brief  APP_SafeLock_WritePROT.
  * @note   None.
- * @param  id:lock index;
- *		  	 st:true,false;
- * @retval bool.
+ * @param
+ *		  	id:locker index;
+ *		  	bState:true, false;
+ * @retval HandpieceState.
  */
-bool APP_SafeLock_WritePROT(uint8_t id, bool bState)
+void APP_SafeLock_WritePROT(uint8_t id, bool bState)
 {
 	if (id > LOCK_ID_MAX)
-		return false;
+		return;
 	
-	s_stSafeLockTcb[id].bProtect = bState;
-	return true;
+	if (s_stSafeLockerTcb[id].bProtect == bState)
+		return;
+	
+	s_stSafeLockerTcb[id].bProtect = bState;
+	
+	uint8_t data[LOCK_ID_MAX];
+	for (uint8_t i = 0; i < LOCK_ID_MAX; i++)
+		data[i] = s_stSafeLockerTcb[id].bProtect;
+	
+	APP_Common_SaveParameters(LOCK_PROTECT_FLAG, data, sizeof(data));
 }
 
 /**
  * @brief  APP_SafeLock_ReadPROT.
  * @note   None.
- * @param  id:lock index;
+ * @param  id:locker index;
  * @retval bProtect.
  */
 bool APP_SafeLock_ReadPROT(uint8_t id)
@@ -103,7 +98,7 @@ bool APP_SafeLock_ReadPROT(uint8_t id)
 	if (id > LOCK_ID_MAX)
 		return false;
 
-	return s_stSafeLockTcb[id].bProtect;
+	return s_stSafeLockerTcb[id].bProtect;
 }
 
 /**
@@ -114,13 +109,37 @@ bool APP_SafeLock_ReadPROT(uint8_t id)
  */
 bool APP_SafeLock_IsErr(void)
 {
-	for (uint8_t id = 0; id < LOCK_ID_MAX; id++)
+	for (uint8_t i = 0; i < LOCK_ID_MAX; i++)
 	{
-		if (s_stSafeLockTcb[id].bProtect)
+		if (s_stSafeLockerTcb[i].bProtect)
 		{
-			if (s_stSafeLockTcb[id].bState == false)
+			if (s_stSafeLockerTcb[i].bState == false)
+			{
 				return true;
+			}
 		}
 	}
 	return false;
+}
+
+/* Private Function prototypes -----------------------------------------------*/
+/**
+ * @brief  Check_LockerState.
+ * @note   None.
+ * @param  id.
+ * @retval SafeLock ConnectState.
+ */
+static void Check_LockerState(uint8_t id)
+{
+	if (id >= LOCK_ID_MAX)
+		return;
+		
+	s_stSafeLockerTcb[id].ucFilter <<= 1;
+	s_stSafeLockerTcb[id].ucFilter |= BSP_SafeLock_State(id);
+	
+	uint8_t filter = s_stSafeLockerTcb[id].ucFilter & FILTER_LONG;
+	if (filter == FILTER_LONG)
+		s_stSafeLockerTcb[id].bState = true;
+	else if (filter == 0x00)
+		s_stSafeLockerTcb[id].bState = false;
 }

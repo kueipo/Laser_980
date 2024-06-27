@@ -124,6 +124,7 @@ link *InitLink(link *head)
 		body->next = NULL;
 		body->index = i;
 		// 新节点与链表最后一个节点建立关系
+
 		P = list->next;
 
 		// next
