@@ -744,8 +744,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\User\BSP\BSP_SafeLocker.c</PathWithFileName>
-      <FilenameWithoutPath>BSP_SafeLocker.c</FilenameWithoutPath>
+      <PathWithFileName>..\User\BSP\BSP_SafeLock.c</PathWithFileName>
+      <FilenameWithoutPath>BSP_SafeLock.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -896,8 +896,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\User\App\APP_SafeLocker.c</PathWithFileName>
-      <FilenameWithoutPath>APP_SafeLocker.c</FilenameWithoutPath>
+      <PathWithFileName>..\User\App\APP_SafeLock.c</PathWithFileName>
+      <FilenameWithoutPath>APP_SafeLock.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

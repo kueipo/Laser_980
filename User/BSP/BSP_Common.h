@@ -28,7 +28,7 @@
 #include "BSP/BSP_Frequency.h"
 #include "BSP/BSP_DAC.h"
 #include "BSP/BSP_Uart.h"
-#include "BSP/BSP_SafeLocker.h"
+#include "BSP/BSP_SafeLock.h"
 #include "BSP/BSP_LED.h"
 #include "BSP/BSP_FAN.h"
 #include "BSP/BSP_Buzzer.h"

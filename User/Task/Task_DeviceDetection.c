@@ -30,7 +30,7 @@ static volatile Task_Typedef TaskLocal[] = {
 	{READY, 104, 	100, 	(*APP_Pump_Task)},
 #endif /* ENABLE_PUMP_TASK */
 	
-	{READY, 105, 	100, 	(*APP_SafeLocker_Task)},
+	{READY, 105, 	100, 	(*APP_SafeLock_Task)},
 	
 #if ENABLE_27V_TASK
 	{READY, 106, 	50, 	(*APP_Voltage_Task)},
@@ -58,11 +58,11 @@ static volatile uint8_t TaskLocal_Total = sizeof(TaskLocal) / sizeof(TaskLocal[0
  */
 void Task_SysDete_Marks_Handler_Callback(void)
 {
-	uint8_t index;
-
-	for (index = 0; index < TaskLocal_Total; index++)
+	for (uint8_t index = 0; index < TaskLocal_Total; index++)
+	{
 		if (TaskLocal[index].RunTime)
 			TaskLocal[index].RunTime--;
+	}
 }
 
 /**

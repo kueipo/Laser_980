@@ -16,7 +16,7 @@ void APP_Init(void)
 #if 0
 	APP_Water_Init();
 #endif
-	APP_SafeLocker_Init();
+	APP_SafeLock_Init();
 	APP_LED_Init();
 	APP_Laser_Init();
 	APP_Factory_Init();

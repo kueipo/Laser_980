@@ -23,7 +23,7 @@ typedef enum {
 //#include "APP/APP_PUMP.h"
 //#include "APP/APP_COOLER.h"
 #include "APP/APP_Laser.h"
-#include "APP/APP_SafeLocker.h"
+#include "APP/APP_SafeLock.h"
 #include "APP/APP_Operate.h"
 #include "APP/APP_ACvoltage.h"
 #include "APP/APP_VoltageAdj.h"

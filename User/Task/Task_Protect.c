@@ -41,6 +41,6 @@ void Task_Protect(void)
 
 	TaskLocal[index].TaskHook();
 	index = (index + 1) % TaskLocal_Total;
-	
+
 	APP_Protect_WDG_Callback(500);
 }

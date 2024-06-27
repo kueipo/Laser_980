@@ -52,7 +52,7 @@ void BSP_Init(void)
 	BSP_Frequency_Init();
 	BSP_DAC_Init();
   BSP_Uart_Init();
-	BSP_SafeLocker_Init();
+	BSP_SafeLock_Init();
 	BSP_Handpiece_Init();
 	BSP_Led_Init();
 	BSP_Fan_Init();

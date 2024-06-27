@@ -12,7 +12,7 @@ SystemParameter_Struct s_stSystemParametser =
 {
 	.bReady = false,
 	.bRun = false,
-	.ucErr = 0xFF,
+	.ucErrCode = 0xFF,
 };
 
 /* Function prototypes -------------------------------------------------------*/
@@ -35,7 +35,7 @@ uint32_t APP_ReadLaserCount(void)
  */
 void APP_LaserCountCallback(void)
 {
-	if (APP_IsLaserRunning() == false)
+	if (APP_Operate_IsLaserRunning() == false)
 		return;
 	
 	s_stSystemParametser.ulPulseCNT++;
@@ -92,7 +92,7 @@ Time_Struct APP_ReadTime(void)
  */
 void APP_TimeCallback(void)
 {
-	if (APP_IsLaserRunning() == false)
+	if (APP_Operate_IsLaserRunning() == false)
 		return;
 
 	if (++s_stSystemParametser.stTime.ucCnt >= 100)
@@ -151,17 +151,17 @@ void APP_SendTime(void)
 }
 
 /**
- * @brief  Task_LaserRunning.
+ * @brief  APP_Operate_Task.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-void APP_LaserRunning(void)
+void APP_Operate_Task(void)
 {
 	static bool oldflag = false;
 	bool flag = false;
 	
-	if ( APP_KEY_IsPress() && APP_IsSystemReady() ) // || APP_IsFactory()) )
+	if ( APP_KEY_IsPress() && APP_Operate_IsSystemReady() ) // || APP_IsFactory()) )
 		flag = true;
 	
 	if (oldflag == flag)
@@ -170,7 +170,7 @@ void APP_LaserRunning(void)
 	oldflag = flag;
 	
 	APP_Laser_OutEnable(flag);
-	APP_LaserRunSet(flag);
+	APP_Operate_WriteLaserRunState(flag);
 	
 	/* Refresh */
 	APP_Protect_RefreshRun();
@@ -188,12 +188,12 @@ void APP_LaserRunning(void)
 
 
 /**
- * @brief  APP_SafeGuard.
+ * @brief  APP_Operate_SafeGuardTask.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-void APP_SafeGuard(void)
+void APP_Operate_SafeGuardTask(void)
 {
 	uint8_t errorcode = 0;
 #if 0
@@ -226,7 +226,7 @@ void APP_SafeGuard(void)
 
 #if 1
 	/* SafeLocker disconnect */
-	if ( APP_IsSafeLockErr() )
+	if ( APP_SafeLock_IsErr() )
 	{
 		errorcode |= ERROR_CODE_SAFELOCKER;
 		goto _stopRun;
@@ -269,47 +269,47 @@ _stopPump:
 #endif
 	
 _stopRun:
-	APP_SystemReady(false);
+	APP_Operate_WriteSystemReady(false);
 
 	/* Updata Err Code */
 _exit:
-	if (s_stSystemParametser.ucErr != errorcode)
+	if (s_stSystemParametser.ucErrCode != errorcode)
 	{
-		s_stSystemParametser.ucErr = errorcode;
+		s_stSystemParametser.ucErrCode = errorcode;
 		APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_ERROR_CODE, 1, (uint16_t*)(&errorcode));
 	}
 }
 
 /**
- * @brief  APP_LaserRunSet.
+ * @brief  APP_Operate_WriteLaserRunState.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-void APP_LaserRunSet(bool bState)
+void APP_Operate_WriteLaserRunState(bool bState)
 {
 	s_stSystemParametser.bRun = bState;
 }
 
 /**
- * @brief  APP_IsLaserRunning.
+ * @brief  APP_Operate_IsLaserRunning.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-bool APP_IsLaserRunning(void)
+bool APP_Operate_IsLaserRunning(void)
 {
 	return s_stSystemParametser.bRun;
 }
 
 /**********************************************************************************************/
 /**
- * @brief  APP_SystemReady.
+ * @brief  APP_Operate_WriteSystemReady.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-void APP_SystemReady(bool bState)
+void APP_Operate_WriteSystemReady(bool bState)
 {
 	if (bState && APP_KEY_IsPress())	/* Release key */
 		return;
@@ -330,12 +330,23 @@ void APP_SystemReady(bool bState)
 }
 
 /**
- * @brief  APP_IsSystemReady.
+ * @brief  APP_Operate_IsSystemReady.
  * @note   None.
  * @param  None.
  * @retval None.
  */
-bool APP_IsSystemReady(void)
+bool APP_Operate_IsSystemReady(void)
 {
 	return s_stSystemParametser.bReady;
+}
+
+/**
+ * @brief  APP_Operate_ReadErrCode.
+ * @note   None.
+ * @param  None.
+ * @retval err code.
+ */
+uint8_t APP_Operate_ReadErrCode(void)
+{
+	return s_stSystemParametser.ucErrCode;
 }

@@ -901,9 +901,9 @@
               <FilePath>..\User\BSP\BSP_Uart.c</FilePath>
             </File>
             <File>
-              <FileName>BSP_SafeLocker.c</FileName>
+              <FileName>BSP_SafeLock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\BSP\BSP_SafeLocker.c</FilePath>
+              <FilePath>..\User\BSP\BSP_SafeLock.c</FilePath>
             </File>
             <File>
               <FileName>BSP_LED.c</FileName>
@@ -966,9 +966,9 @@
               <FilePath>..\User\App\APP_Callback.c</FilePath>
             </File>
             <File>
-              <FileName>APP_SafeLocker.c</FileName>
+              <FileName>APP_SafeLock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\App\APP_SafeLocker.c</FilePath>
+              <FilePath>..\User\App\APP_SafeLock.c</FilePath>
             </File>
             <File>
               <FileName>APP_Operate.c</FileName>

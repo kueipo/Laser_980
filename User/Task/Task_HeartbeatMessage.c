@@ -4,6 +4,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define ENABLE_SEND_ERR_CODE 1
 #define ENABLE_SEND_VERSION 1
 #define ENABLE_SEND_FAN_SPEED 0
 #define ENABLE_SEND_FAN_TEMPERATURE 0
@@ -20,7 +21,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
+#if ENABLE_SEND_ERR_CODE
 static void SendErrorInfo(void);
+#endif /* ENABLE_SEND_ERR_CODE */
 
 #if ENABLE_SEND_WATER_TEMPERATURE
 static void SendWaterTemperature(void);
@@ -83,7 +86,9 @@ typedef struct
 } TaskLocal_TypeDef;
 
 static TaskLocal_TypeDef TaskLocal[] = {
+#if ENABLE_SEND_ERR_CODE
 	{*SendErrorInfo},
+#endif /* ENABLE_SEND_ERR_CODE */
 #if ENABLE_SEND_WATER_TEMPERATURE
 	{*SendWaterTemperature},
 #endif /* ENABLE_SEND_WATER_TEMPERATURE */
@@ -166,18 +171,15 @@ void Task_Heartbeat_Message(void)
  * @param  None.
  * @retval None.
  */
+#if ENABLE_SEND_ERR_CODE
 static void SendErrorInfo(void)
 {
-#if 0
-	uint32_t state = Read_DeviceState();
-	uint16_t buff[2] = {0};
-	
-	buff[0] = state >> 16;
-	buff[1] = state;
+	uint16_t code[1];
+	code[0] = (uint16_t)APP_Operate_ReadErrCode();
 
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_TARGET_HB_ERROR, 2, buff);
-#endif
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_ERROR_CODE, 1, code);
 }
+#endif /* ENABLE_SEND_ERR_CODE */
 
 /**
  * @brief  SendWaterTemperature.
@@ -300,13 +302,13 @@ static void SendPumpElInfor(void)
  */
 static void SendSafeLockerInfor(void)
 {
-	uint16_t temp[LOCKER_ID_MAX];
+	uint16_t state[LOCK_ID_MAX];
 
-	for (uint8_t index = 0; index < LOCKER_ID_MAX; index++)
+	for (uint8_t id = 0; id < LOCK_ID_MAX; id++)
 	{
-		temp[index] = (uint16_t)APP_ReadSafeLockerConn(index);
+		state[id] = (uint16_t)APP_SafeLock_ReadConn(id);
 	}
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_SAFELOCKER_STATE, LOCKER_ID_MAX, temp);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_SAFELOCKER_STATE, LOCK_ID_MAX, state);
 }
 
 #if ENABLE_SEND_FAN_SPEED
@@ -370,8 +372,10 @@ static void SendFanCurrentTemperature(void)
 #if ENABLE_SEND_ACVOLTAGE
 static void SendACVoltage(void)
 {
-	uint16_t AcVoltage = Voltage_Read();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_AC_VOLTAGE, 1, &AcVoltage);
+	uint16_t AcVoltage[1];
+	AcVoltage[0] = Voltage_Read();
+	
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_AC_VOLTAGE, 1, AcVoltage);
 }
 #endif /* ENABLE_SEND_ACVOLTAGE */
 
@@ -402,9 +406,10 @@ static void SendFanPower(void)
  */
 static void SendDC05Info(void)
 {
-	uint16_t val = (uint16_t)APP_VoltageDetection_Read(INDEX_DC5V);
+	uint16_t voltage[1];
+	voltage[0] = (uint16_t)APP_VoltageDetection_Read(INDEX_DC5V);
 
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DC05_INFO, 1, &val);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DC05_INFO, 1, voltage);
 }
 
 /**
@@ -415,9 +420,10 @@ static void SendDC05Info(void)
  */
 static void SendDC12Info(void)
 {
-	uint16_t val = (uint16_t)APP_VoltageDetection_Read(INDEX_DC12V);
+	uint16_t voltage[1];
+	voltage[0] = (uint16_t)APP_VoltageDetection_Read(INDEX_DC12V);
 
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DC12_INFO, 1, &val);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DC12_INFO, 1, voltage);
 }
 
 /**
@@ -428,9 +434,10 @@ static void SendDC12Info(void)
  */
 static void SendDCLdInfo(void)
 {
-	uint16_t val = (uint16_t)APP_VoltageDetection_Read(INDEX_DCLD);
+	uint16_t voltage[1];
+	voltage[0] = (uint16_t)APP_VoltageDetection_Read(INDEX_DCLD);
 
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DCLD_INFO, 1, &val);
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_DCLD_INFO, 1, voltage);
 }
 
 #if ENABLE_SEND_MOS_TEMPERATURE
@@ -442,7 +449,8 @@ static void SendDCLdInfo(void)
  */
 static void SendMosTemperature(void)
 {
-	uint16_t temp = (uint16_t)APP_Mos_ReadTemperature();
-	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_MOS_TEMPERATURE, 1, &temp);
+	uint16_t temp[1];
+	temp[0] = (uint16_t)APP_Mos_ReadTemperature();
+	APP_Send_Data(DEVICE_TYPE, INDEX_TYPE_HEARTBEAT, INDEX_MOS_TEMPERATURE, 1, temp);
 }
 #endif /* ENABLE_SEND_FAN_POWER */
